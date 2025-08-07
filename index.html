@@ -9,17 +9,9 @@
     html, body { height: 100%; overflow: hidden; font-family: "Segoe UI", Roboto, sans-serif; color: #333; }
 
     /* — Fade & Visibility Utilities — */
-    .fade {
-      transition: opacity 0.4s ease;
-    }
-    .hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .fade { transition: opacity 0.4s ease; }
+    .hidden { opacity: 0; pointer-events: none; }
+    .visible { opacity: 1; pointer-events: auto; }
 
     /* ← Ensure login overlay is always on top → */
     #login-screen { z-index: 9999; }
@@ -185,25 +177,29 @@
 
     /* ===== Mobile‐only tweaks ===== */
     @media (max-width: 480px) {
-      /* let the whole document scroll */
+      /* allow full document scrolling */
       html, body { height: auto; overflow: auto !important; }
       /* let pages size to content */
       .page { height: auto; }
+      /* adjust login overlay */
       #login-screen { height: auto; }
       #login-box { padding: 20px; }
       #login-box h2 { font-size: 1.5rem; }
       .input-group input { font-size: 0.9rem; }
       #login-btn { font-size: 1rem; padding: 10px; }
 
+      /* shrink header */
       .header { padding: 40px 10px 60px; }
       .header-label { top: 10px; left: 10px; }
       .main-title { font-size: 2rem; }
 
+      /* shrink content */
       .content { margin: 10px auto 20px; padding: 0 10px; }
       .section h3 { font-size: 1rem; }
       .account-header { padding: 10px; }
       .account-header h2 { font-size: 1.4rem; }
 
+      /* buttons & modal */
       .btn-recent, .btn-manage { font-size: 1rem; padding: 12px; }
       .modal { width: 90%; }
     }
