@@ -3,18 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>Chase Sapphire Checking</title>
-  <!-- ADDED: make it responsive on mobile -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <style>
     /* ===== Reset & Base ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; overflow: hidden; font-family: "Segoe UI", Roboto, sans-serif; color: #333; }
 
     /* — Fade & Visibility Utilities — */
-    .fade { transition: opacity 0.4s ease; }
-    .hidden { opacity: 0; pointer-events: none; }
-    .visible { opacity: 1; pointer-events: auto; }
+    .fade {
+      transition: opacity 0.4s ease;
+    }
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
     /* ← Ensure login overlay is always on top → */
     #login-screen { z-index: 9999; }
@@ -178,33 +183,61 @@
       color: #1e8e3e;
     }
 
-    /* ===== Mobile‐only tweaks ===== */
-    @media (max-width: 480px) {
-      /* allow full document scrolling */
-      html, body { height: auto; overflow: auto !important; }
-      /* let pages size to content */
-      .page { height: auto; }
-      /* adjust login overlay */
-      #login-screen { height: auto; }
-      #login-box { padding: 20px; }
-      #login-box h2 { font-size: 1.5rem; }
-      .input-group input { font-size: 0.9rem; }
-      #login-btn { font-size: 1rem; padding: 10px; }
-
-      /* shrink header */
-      .header { padding: 40px 10px 60px; }
-      .header-label { top: 10px; left: 10px; }
-      .main-title { font-size: 2rem; }
-
-      /* shrink content */
-      .content { margin: 10px auto 20px; padding: 0 10px; }
-      .section h3 { font-size: 1rem; }
-      .account-header { padding: 10px; }
-      .account-header h2 { font-size: 1.4rem; }
-
-      /* buttons & modal */
-      .btn-recent, .btn-manage { font-size: 1rem; padding: 12px; }
-      .modal { width: 90%; }
+    /* ===== MOBILE OVERRIDE (up to 767px) ===== */
+    @media (max-width: 767px) {
+      html, body {
+        height: auto !important;
+        overflow: auto !important;
+      }
+      .page {
+        height: auto !important;
+      }
+      #login-screen {
+        height: auto !important;
+        position: relative;
+      }
+      #login-box {
+        padding: 20px !important;
+      }
+      #login-box h2 {
+        font-size: 1.5rem !important;
+      }
+      .input-group input {
+        font-size: 0.9rem !important;
+      }
+      #login-btn {
+        font-size: 1rem !important;
+        padding: 10px !important;
+      }
+      .header {
+        padding: 40px 10px 60px !important;
+      }
+      .header-label {
+        top: 10px !important; left: 10px !important;
+      }
+      .main-title {
+        font-size: 2rem !important;
+      }
+      .content {
+        margin: 10px auto 20px !important;
+        padding: 0 10px !important;
+      }
+      .section h3 {
+        font-size: 1rem !important;
+      }
+      .account-header {
+        padding: 10px !important;
+      }
+      .account-header h2 {
+        font-size: 1.4rem !important;
+      }
+      .btn-recent, .btn-manage {
+        font-size: 1rem !important;
+        padding: 12px !important;
+      }
+      .modal {
+        width: 90% !important;
+      }
     }
   </style>
 </head>
@@ -217,12 +250,16 @@
     <div id="login-box" style="background:rgba(255,255,255,0.1);padding:40px;border-radius:12px;
          width:90%;max-width:360px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.3);">
       <h2 style="margin-bottom:24px;font-weight:300;font-size:1.8rem;">Login</h2>
-      <div id="login-error" style="height:1.2em;margin-bottom:12px;color:#ff5e5e;opacity:0;
-             transition:opacity 0.3s;font-size:0.9rem;">Invalid credentials</div>
+      <div id="login-error"
+           style="height:1.2em;margin-bottom:12px;color:#ff5e5e;opacity:0;
+                  transition:opacity 0.3s;font-size:0.9rem;">
+        Invalid credentials
+      </div>
       <div style="position:relative;margin-bottom:20px;">
         <!-- user icon SVG -->
-        <svg viewBox="0 0 24 24" style="position:absolute;top:50%;left:12px;
-               transform:translateY(-50%);width:20px;height:20px;fill:rgba(255,255,255,0.8);">
+        <svg viewBox="0 0 24 24"
+             style="position:absolute;top:50%;left:12px;transform:translateY(-50%);
+                    width:20px;height:20px;fill:rgba(255,255,255,0.8);">
           <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 
                    0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
         </svg>
@@ -233,8 +270,9 @@
       </div>
       <div style="position:relative;margin-bottom:20px;">
         <!-- lock icon SVG -->
-        <svg viewBox="0 0 24 24" style="position:absolute;top:50%;left:12px;
-               transform:translateY(-50%);width:20px;height:20px;fill:rgba(255,255,255,0.8);">
+        <svg viewBox="0 0 24 24"
+             style="position:absolute;top:50%;left:12px;transform:translateY(-50%);
+                    width:20px;height:20px;fill:rgba(255,255,255,0.8);">
           <path d="M17 8V6c0-2.8-2.2-5-5-5S7 3.2 7 6v2H5v14h14V8h-2zm-8 0V6c0-
                    1.7 1.3-3 3-3s3 1.3 3 3v2H9z"/>
         </svg>
@@ -243,9 +281,12 @@
                       border-radius:6px;background:rgba(255,255,255,0.2);
                       color:#fff;font-size:1rem;"/>
       </div>
-      <button id="login-btn" style="width:100%;padding:12px;background:#1e8e3e;border:none;
-              border-radius:6px;color:#fff;font-size:1.1rem;font-weight:500;
-              cursor:pointer;transition:background 0.2s;">Log In</button>
+      <button id="login-btn"
+              style="width:100%;padding:12px;background:#1e8e3e;border:none;
+                     border-radius:6px;color:#fff;font-size:1.1rem;
+                     font-weight:500;cursor:pointer;transition:background 0.2s;">
+        Log In
+      </button>
     </div>
   </div>
 
@@ -311,80 +352,3 @@
       </div>
     </div>
   </div>
-  <!-- /#dashboard -->
-
-  <!-- === TRANSACTIONS MODAL === -->
-  <div id="overlay" class="overlay"></div>
-  <div id="modal" class="modal">
-    <button id="close-trans" class="close-btn">×</button>
-    <h3>Recent transactions</h3>
-    <ul class="transactions-list">
-      <li>Aug 05, 2025: Online Transfer from SAVINGS ****9124 – <span class="credit">+$350.00</span></li>
-      <!-- add more items here -->
-    </ul>
-  </div>
-
-  <script>
-    function show(id) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-    // Checking → Money
-    document.getElementById('to-money').addEventListener('click', e => {
-      e.preventDefault(); show('money');
-    });
-    // Checking → Pay
-    document.getElementById('to-pay').addEventListener('click', () => show('pay'));
-    // Back links
-    document.getElementById('back-from-money').addEventListener('click', e => {
-      e.preventDefault(); show('checking');
-    });
-    document.getElementById('back-from-pay').addEventListener('click', e => {
-      e.preventDefault(); show('checking');
-    });
-    // Transactions modal
-    const overlay = document.getElementById('overlay'),
-          modal   = document.getElementById('modal');
-    document.getElementById('show-trans').addEventListener('click', () => {
-      overlay.classList.add('visible');
-      modal.classList.add('visible');
-    });
-    document.getElementById('close-trans').addEventListener('click', () => {
-      modal.classList.remove('visible');
-      overlay.classList.remove('visible');
-    });
-  </script>
-
-  <script>
-    const loginScreen = document.getElementById('login-screen');
-    const dashboard   = document.getElementById('dashboard');
-    const errMsg      = document.getElementById('login-error');
-    const btn         = document.getElementById('login-btn');
-
-    btn.addEventListener('click', () => {
-      const u = document.getElementById('username').value.trim();
-      const p = document.getElementById('password').value;
-      if (u === 'shloak' && p === 'Sac') {
-        loginScreen.classList.remove('visible');
-        loginScreen.classList.add('hidden');
-        setTimeout(() => {
-          dashboard.classList.remove('hidden');
-          dashboard.classList.add('visible');
-        }, 400);
-      } else {
-        errMsg.style.opacity = '1';
-        setTimeout(() => errMsg.style.opacity = '0', 2000);
-      }
-    });
-
-    // allow Enter key
-    ['username','password'].forEach(id => {
-      document.getElementById(id)
-        .addEventListener('keydown', e => {
-          if (e.key === 'Enter') btn.click();
-        });
-    });
-  </script>
-
-</body>
-</html>
