@@ -26,17 +26,14 @@
       transition: opacity 0.4s ease;
       overflow-y: auto;
     }
-    .page.active {
-      opacity: 1; pointer-events: auto;
-    }
+    .page.active { opacity: 1; pointer-events: auto; }
 
     /* ===== Hero Header ===== */
     .header {
       position: relative;
       background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%);
       padding: 80px 20px 100px;
-      text-align: center;
-      color: #fff;
+      text-align: center; color: #fff;
     }
     .header-label {
       position: absolute; top: 20px; left: 20px;
@@ -49,15 +46,10 @@
 
     /* ===== Section Headers ===== */
     .account-header {
-      padding: 20px;
-      border-bottom: 1px solid #eee;
-      text-align: center;
+      padding: 20px; border-bottom: 1px solid #eee; text-align: center;
     }
     .account-header h2 {
-      font-size: 1.6rem;
-      letter-spacing: 0.5px;
-      font-weight: 400;
-      color: #222;
+      font-size: 1.6rem; letter-spacing: 0.5px; font-weight: 400; color: #222;
     }
 
     /* ===== Content Sections ===== */
@@ -77,18 +69,11 @@
       transition: background 0.2s, border-color 0.2s;
       margin-bottom: 12px;
     }
-    .account-link:hover {
-      background: #f9f9f9; border-color: #ccc;
-    }
+    .account-link:hover { background: #f9f9f9; border-color: #ccc; }
 
     /* ===== Balances ===== */
-    .balance {
-      font-size: 2.2rem; font-weight: 600; margin-bottom: 4px;
-    }
-    .label {
-      font-size: 0.9rem; color: #777; margin-bottom: 16px;
-      display: block;
-    }
+    .balance { font-size: 2.2rem; font-weight: 600; margin-bottom: 4px; }
+    .label { font-size: 0.9rem; color: #777; margin-bottom: 16px; display: block; }
 
     /* ===== Buttons ===== */
     .btn-manage, .btn-recent {
@@ -119,21 +104,17 @@
       background: rgba(0,0,0,0.3); padding: 6px 10px;
       border-radius: 4px; transition: background 0.2s;
     }
-    .back-btn:hover {
-      background: rgba(0,0,0,0.5);
-    }
+    .back-btn:hover { background: rgba(0,0,0,0.5); }
 
     /* ===== Details Box ===== */
     .details-box {
       border: 1px solid #ddd; border-radius: 6px;
       background: #fafafa; padding: 20px; margin-bottom: 40px;
     }
-    .details-box p {
-      margin-bottom: 12px; line-height: 1.5;
-    }
+    .details-box p { margin-bottom: 12px; line-height: 1.5; }
     .details-box p:last-child { margin-bottom: 0; }
 
-    /* ===== Overlay (fade only) ===== */
+    /* ===== Overlay & Modal ===== */
     .overlay {
       position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
@@ -141,11 +122,7 @@
       opacity: 0; pointer-events: none;
       transition: opacity 0.3s ease;
     }
-    .overlay.visible {
-      opacity: 1; pointer-events: auto;
-    }
-
-    /* ===== Modal (fade only) ===== */
+    .overlay.visible { opacity: 1; pointer-events: auto; }
     .modal {
       position: fixed; top: 50%; left: 50%;
       transform: translate(-50%, -50%) scale(0.9);
@@ -165,7 +142,6 @@
       font-size: 1.2rem; cursor: pointer;
     }
 
-    /* ===== Transactions List ===== */
     .transactions-list {
       list-style: none; margin-top: 16px; padding: 0;
     }
@@ -208,9 +184,9 @@
       <div id="login-error" style="height:1.2em;margin-bottom:12px;color:#ff5e5e;opacity:0;
              transition:opacity 0.3s;font-size:0.9rem;">Invalid credentials</div>
       <div class="input-group" style="position:relative;margin-bottom:20px;">
-        <!-- user icon SVG -->
-        <svg viewBox="0 0 24 24" style="position:absolute;top:50%;left:12px;
-               transform:translateY(-50%);width:20px;height:20px;fill:rgba(255,255,255,0.8);">
+        <svg viewBox="0 0 24 24"
+             style="position:absolute;top:50%;left:12px;transform:translateY(-50%);
+                    width:20px;height:20px;fill:rgba(255,255,255,0.8);">
           <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 
                    0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
         </svg>
@@ -220,9 +196,9 @@
                       color:#fff;font-size:1rem;"/>
       </div>
       <div class="input-group" style="position:relative;margin-bottom:20px;">
-        <!-- lock icon SVG -->
-        <svg viewBox="0 0 24 24" style="position:absolute;top:50%;left:12px;
-               transform:translateY(-50%);width:20px;height:20px;fill:rgba(255,255,255,0.8);">
+        <svg viewBox="0 0 24 24"
+             style="position:absolute;top:50%;left:12px;transform:translateY(-50%);
+                    width:20px;height:20px;fill:rgba(255,255,255,0.8);">
           <path d="M17 8V6c0-2.8-2.2-5-5-5S7 3.2 7 6v2H5v14h14V8h-2zm-8 0V6c0-
                    1.7 1.3-3 3-3s3 1.3 3 3v2H9z"/>
         </svg>
@@ -231,9 +207,12 @@
                       border-radius:6px;background:rgba(255,255,255,0.2);
                       color:#fff;font-size:1rem;"/>
       </div>
-      <button id="login-btn" style="width:100%;padding:12px;background:#1e8e3e;border:none;
-              border-radius:6px;color:#fff;font-size:1.1rem;font-weight:500;
-              cursor:pointer;transition:background 0.2s;">Log In</button>
+      <button id="login-btn"
+              style="width:100%;padding:12px;background:#1e8e3e;border:none;
+                     border-radius:6px;color:#fff;font-size:1.1rem;
+                     font-weight:500;cursor:pointer;transition:background 0.2s;">
+        Log In
+      </button>
     </div>
   </div>
 
@@ -248,14 +227,12 @@
         <h2>CHASE SAPPHIRE CHECKING (...2431)</h2>
       </div>
       <div class="content">
-        <!-- Pay in Full -->
         <div class="section">
           <h3>Pay in full</h3>
           <a href="#" id="to-money" class="account-link">CHECKING 2431</a>
           <div class="balance">$350.00</div>
           <div class="label">Available balance</div>
         </div>
-        <!-- Pay Later -->
         <div class="section">
           <h3>Pay later</h3>
           <button id="to-pay" class="btn-manage">Manage plans</button>
@@ -263,7 +240,6 @@
       </div>
     </div>
 
-    <!-- === MONEY PAGE === -->
     <div id="money" class="page">
       <div class="header">
         <a href="#" id="back-from-money" class="back-btn">&larr; Back</a>
@@ -284,7 +260,6 @@
       </div>
     </div>
 
-    <!-- === PAY OVER TIME PAGE === -->
     <div id="pay" class="page">
       <div class="header">
         <a href="#" id="back-from-pay" class="back-btn">&larr; Back</a>
@@ -311,7 +286,7 @@
   </div>
 
   <script>
-    // page nav
+    // navigation
     function show(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(id).classList.add('active');
@@ -324,14 +299,14 @@
     // transactions modal
     const overlay = document.getElementById('overlay'),
           modal   = document.getElementById('modal');
-    document.getElementById('show-trans').onclick   = () => { overlay.classList.add('visible'); modal.classList.add('visible'); };
-    document.getElementById('close-trans').onclick  = () => { overlay.classList.remove('visible'); modal.classList.remove('visible'); };
+    document.getElementById('show-trans').onclick  = () => { overlay.classList.add('visible'); modal.classList.add('visible'); };
+    document.getElementById('close-trans').onclick = () => { overlay.classList.remove('visible'); modal.classList.remove('visible'); };
 
     // login logic
-    const loginScreen = document.getElementById('login-screen');
-    const dashboard   = document.getElementById('dashboard');
-    const errMsg      = document.getElementById('login-error');
-    const btn         = document.getElementById('login-btn');
+    const loginScreen = document.getElementById('login-screen'),
+          dashboard   = document.getElementById('dashboard'),
+          errMsg      = document.getElementById('login-error'),
+          btn         = document.getElementById('login-btn');
 
     btn.addEventListener('click', () => {
       const u = document.getElementById('username').value.trim();
