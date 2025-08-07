@@ -28,31 +28,33 @@
     }
     .page.active { opacity: 1; pointer-events: auto; }
 
-    /* ===== Hero Header (now unused) ===== */
+    /* ===== Hero Header ===== */
     .header {
       position: relative;
       background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%);
       padding: 80px 20px 100px;
-      text-align: center; color: #fff;
+      text-align: center;
+      color: #fff;
     }
-    .header-label {
-      position: absolute; top: 20px; left: 20px;
-      font-size: 0.9rem; opacity: 0.8;
-    }
+    /* header-label removed */
     .main-title {
-      font-size: 3rem; /* keep size */
+      font-size: 3rem;
+      font-weight: 500;
       color: #6AAA64;
-      margin: 20px 0;  /* add vertical margin */
+      margin-bottom: 10px;
     }
 
     /* ===== Section Headers ===== */
     .account-header {
-      padding: 20px; border-bottom: 1px solid #eee;
+      padding: 20px;
+      border-bottom: 1px solid #eee;
       text-align: center;
     }
     .account-header h2 {
-      font-size: 1.6rem; letter-spacing: 0.5px;
-      font-weight: 400; color: #222;
+      font-size: 1.6rem;
+      letter-spacing: 0.5px;
+      font-weight: 400;
+      color: #222;
     }
 
     /* ===== Content Sections ===== */
@@ -151,19 +153,21 @@
     .transactions-list li {
       margin-bottom: 8px; line-height: 1.4;
     }
-    .transactions-list li .credit { color: #1e8e3e; }
+    .transactions-list li .credit {
+      color: #1e8e3e;
+    }
 
     /* ==== MOBILE OVERRIDE ==== */
     @media only screen and (max-width: 480px) {
       html, body { height: auto !important; overflow-y: auto !important; }
       .page, #login-screen { height: auto !important; }
       #login-box { padding: 20px !important; }
-      #login-box h2 { font-size: 1.5rem !important; }
       input { font-size: 0.9rem !important; }
       #login-btn { font-size: 1rem !important; padding: 10px !important; }
+      .header { padding: 40px 10px 60px !important; }
+      .main-title { font-size: 2rem !important; }
       .content { margin: 10px auto 20px !important; padding: 0 10px !important; }
       .section h3 { font-size: 1rem !important; }
-      .account-header { padding: 10px !important; }
       .account-header h2 { font-size: 1.4rem !important; }
       .btn-recent, .btn-manage { font-size: 1rem !important; padding: 12px !important; }
       .modal { width: 90% !important; max-height: 80vh !important; overflow-y: auto !important; }
@@ -189,11 +193,11 @@
         Invalid credentials
       </div>
       <div style="position:relative;margin-bottom:20px;">
-        <!-- user icon SVG -->
         <svg viewBox="0 0 24 24"
              style="position:absolute;top:50%;left:12px;transform:translateY(-50%);
                     width:20px;height:20px;fill:rgba(255,255,255,0.8);">
-          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 
+                   0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
         </svg>
         <input id="username" type="text" placeholder="Username"
                style="width:100%;padding:12px 12px 12px 44px;border:none;
@@ -204,7 +208,8 @@
         <svg viewBox="0 0 24 24"
              style="position:absolute;top:50%;left:12px;transform:translateY(-50%);
                     width:20px;height:20px;fill:rgba(255,255,255,0.8);">
-          <path d="M17 8V6c0-2.8-2.2-5-5-5S7 3.2 7 6v2H5v14h14V8h-2zm-8 0V6c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9z"/>
+          <path d="M17 8V6c0-2.8-2.2-5-5-5S7 3.2 7 6v2H5v14h14V8h-2zm-8 0V6c0-
+                   1.7 1.3-3 3-3s3 1.3 3 3v2H9z"/>
         </svg>
         <input id="password" type="password" placeholder="Password"
                style="width:100%;padding:12px 12px 12px 44px;border:none;
@@ -223,20 +228,21 @@
   <!-- === CHECKING DASHBOARD === -->
   <div id="dashboard" class="hidden fade">
     <div id="checking" class="page active">
-      <!-- Header removed, title bolded instead -->
-      <div style="text-align:center;">
+      <div class="header">
         <div class="main-title"><strong>Chase Sapphire Checking</strong></div>
       </div>
       <div class="account-header">
         <h2>CHASE SAPPHIRE CHECKING (...2431)</h2>
       </div>
       <div class="content">
+        <!-- Pay in Full -->
         <div class="section">
           <h3>Pay in full</h3>
           <a href="#" id="to-money" class="account-link">CHECKING 2431</a>
           <div class="balance">$350.00</div>
           <div class="label">Available balance</div>
         </div>
+        <!-- Pay Later -->
         <div class="section">
           <h3>Pay later</h3>
           <button id="to-pay" class="btn-manage">Manage plans</button>
@@ -292,34 +298,31 @@
   </div>
 
   <script>
+    // navigation
     function show(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
-    document.getElementById('to-money').addEventListener('click', e => { e.preventDefault(); show('money'); });
-    document.getElementById('to-pay').addEventListener('click', () => show('pay'));
-    document.getElementById('back-from-money').addEventListener('click', e => { e.preventDefault(); show('checking'); });
-    document.getElementById('back-from-pay').addEventListener('click', e => { e.preventDefault(); show('checking'); });
+    document.getElementById('to-money').onclick = e => { e.preventDefault(); show('money'); };
+    document.getElementById('to-pay').onclick    = () => show('pay');
+    document.getElementById('back-from-money').onclick = e => { e.preventDefault(); show('checking'); };
+    document.getElementById('back-from-pay').onclick   = e => { e.preventDefault(); show('checking'); };
 
+    // transactions modal
     const overlay = document.getElementById('overlay'),
           modal   = document.getElementById('modal');
-    document.getElementById('show-trans').addEventListener('click', () => {
-      overlay.classList.add('visible');
-      modal.classList.add('visible');
-    });
-    document.getElementById('close-trans').addEventListener('click', () => {
-      modal.classList.remove('visible');
-      overlay.classList.remove('visible');
-    });
+    document.getElementById('show-trans').onclick  = () => { overlay.classList.add('visible'); modal.classList.add('visible'); };
+    document.getElementById('close-trans').onclick = () => { overlay.classList.remove('visible'); modal.classList.remove('visible'); };
 
     // login logic
     const loginScreen = document.getElementById('login-screen'),
           dashboard   = document.getElementById('dashboard'),
           errMsg      = document.getElementById('login-error'),
           btn         = document.getElementById('login-btn');
+
     btn.addEventListener('click', () => {
-      const u = document.getElementById('username').value.trim(),
-            p = document.getElementById('password').value;
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value;
       if (u === 'shloak' && p === 'Sac') {
         loginScreen.classList.remove('visible');
         loginScreen.classList.add('hidden');
@@ -332,6 +335,8 @@
         setTimeout(() => errMsg.style.opacity = '0', 2000);
       }
     });
+
+    // allow Enter key
     ['username','password'].forEach(id =>
       document.getElementById(id).addEventListener('keydown', e => {
         if (e.key === 'Enter') btn.click();
