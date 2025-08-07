@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chase Sapphire Checking</title>
+  <style>
+    /* ===== Reset & Base ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; font-family: "Segoe UI", Roboto, sans-serif; color: #333; }
+
+    /* — Fade & Visibility Utilities — */
+    .fade {
+      transition: opacity 0.4s ease;
+    }
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ← Ensure login overlay is always on top → */
+    #login-screen { z-index: 9999; }
+
+    /* ===== Page Container & Transitions ===== */
+    .page {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #fff;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+      overflow-y: auto;
+    }
+    .page.active {
+      opacity: 1; pointer-events: auto;
+    }
+
+    /* ===== Hero Header ===== */
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%);
+      padding: 80px 20px 100px;
+      text-align: center;
+      color: #fff;
+    }
+    .header-label {
+      position: absolute; top: 20px; left: 20px;
+      font-size: 0.9rem; opacity: 0.8;
+    }
+    .main-title {
+      font-size: 3rem; font-weight: 500;
+      color: #6AAA64; margin-bottom: 10px;
+    }
+
+    /* ===== Section Headers ===== */
+.account-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  text-align: center;       /* ← add this */
+}
+.account-header h2 {
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  color: #222;
+  /* text-align: center;    ← you could put it here instead */
+}
+
+
+    /* ===== Content Sections ===== */
+    .content {
+      max-width: 600px; margin: 20px auto 40px; padding: 0 20px;
+    }
+    .section { margin-bottom: 40px; }
+    .section h3 {
+      font-size: 1.2rem; margin-bottom: 12px; color: #2C3E50;
+    }
+
+    /* ===== Pay In Full Link ===== */
+    .account-link {
+      display: inline-block; font-size: 1rem;
+      text-decoration: none; color: #1A73E8; font-weight: 500;
+      padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px;
+      transition: background 0.2s, border-color 0.2s;
+      margin-bottom: 12px;
+    }
+    .account-link:hover {
+      background: #f9f9f9; border-color: #ccc;
+    }
+
+    /* ===== Balances ===== */
+    .balance {
+      font-size: 2.2rem; font-weight: 600; margin-bottom: 4px;
+    }
+    .label {
+      font-size: 0.9rem; color: #777; margin-bottom: 16px;
+      display: block;
+    }
+
+    /* ===== Buttons ===== */
+    .btn-manage, .btn-recent {
+      display: inline-block; font-size: 1.1rem; font-weight: 500;
+      padding: 14px 20px; border-radius: 8px; cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s; border: none;
+      text-align: center;
+    }
+    .btn-recent {
+      width: 100%; background: linear-gradient(90deg, #0c2a4e, #123b61);
+      color: #fff; margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .btn-recent:hover {
+      background: linear-gradient(90deg, #0a2340, #0f2f4d);
+    }
+    .btn-manage {
+      border: 1px solid #0d3b61; background: #fff; color: #0d3b61;
+    }
+    .btn-manage:hover {
+      background: #0d3b61; color: #fff;
+    }
+
+    /* ===== Back Button ===== */
+    .back-btn {
+      position: absolute; top: 20px; left: 20px;
+      text-decoration: none; font-size: 0.9rem; color: #fff;
+      background: rgba(0,0,0,0.3); padding: 6px 10px;
+      border-radius: 4px; transition: background 0.2s;
+    }
+    .back-btn:hover {
+      background: rgba(0,0,0,0.5);
+    }
+
+    /* ===== Details Box ===== */
+    .details-box {
+      border: 1px solid #ddd; border-radius: 6px;
+      background: #fafafa; padding: 20px; margin-bottom: 40px;
+    }
+    .details-box p {
+      margin-bottom: 12px; line-height: 1.5;
+    }
+    .details-box p:last-child { margin-bottom: 0; }
+
+    /* ===== Overlay (fade only) ===== */
+    .overlay {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .overlay.visible {
+      opacity: 1; pointer-events: auto;
+    }
+
+    /* ===== Modal (fade only) ===== */
+    .modal {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: #fff; border-radius: 8px;
+      width: 320px; max-width: 90%; padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .modal.visible {
+      opacity: 1; pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .modal .close-btn {
+      position: absolute; top: 8px; right: 8px;
+      border: none; background: none;
+      font-size: 1.2rem; cursor: pointer;
+    }
+
+    /* ===== Transactions List ===== */
+    .transactions-list {
+      list-style: none; margin-top: 16px; padding: 0;
+    }
+    .transactions-list li {
+      margin-bottom: 8px; line-height: 1.4;
+    }
+    .transactions-list li .credit {
+      color: #1e8e3e;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN OVERLAY -->
+  <div id="login-screen" class="fade visible" style="position:absolute;top:0;left:0;
+      width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#2C3E50 0%,#4CA1AF 100%);color:#fff;">
+    <div id="login-box" style="background:rgba(255,255,255,0.1);padding:40px;border-radius:12px;
+         width:90%;max-width:360px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.3);">
+      <h2 style="margin-bottom:24px;font-weight:300;font-size:1.8rem;">
+        Login
+      </h2>
+      <div id="login-error"
+           style="height:1.2em;margin-bottom:12px;color:#ff5e5e;opacity:0;
+                  transition:opacity 0.3s;font-size:0.9rem;">
+        Invalid credentials
+      </div>
+      <div style="position:relative;margin-bottom:20px;">
+        <!-- user icon SVG -->
+        <svg viewBox="0 0 24 24"
+             style="position:absolute;top:50%;left:12px;transform:translateY(-50%);
+                    width:20px;height:20px;fill:rgba(255,255,255,0.8);">
+          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 
+                   0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        </svg>
+        <input id="username" type="text" placeholder="Username"
+               style="width:100%;padding:12px 12px 12px 44px;border:none;
+                      border-radius:6px;background:rgba(255,255,255,0.2);
+                      color:#fff;font-size:1rem;"
+        />
+      </div>
+      <div style="position:relative;margin-bottom:20px;">
+        <!-- lock icon SVG -->
+        <svg viewBox="0 0 24 24"
+             style="position:absolute;top:50%;left:12px;transform:translateY(-50%);
+                    width:20px;height:20px;fill:rgba(255,255,255,0.8);">
+          <path d="M17 8V6c0-2.8-2.2-5-5-5S7 3.2 7 6v2H5v14h14V8h-2zm-8 0V6c0-
+                   1.7 1.3-3 3-3s3 1.3 3 3v2H9z"/>
+        </svg>
+        <input id="password" type="password" placeholder="Password"
+               style="width:100%;padding:12px 12px 12px 44px;border:none;
+                      border-radius:6px;background:rgba(255,255,255,0.2);
+                      color:#fff;font-size:1rem;"
+        />
+      </div>
+      <button id="login-btn"
+              style="width:100%;padding:12px;background:#1e8e3e;border:none;
+                     border-radius:6px;color:#fff;font-size:1.1rem;
+                     font-weight:500;cursor:pointer;transition:background 0.2s;">
+        Log In
+      </button>
+    </div>
+  </div>
+
+  <!-- === CHECKING PAGE === -->
+  <div id="dashboard" class="hidden fade">
+    <div id="checking" class="page active">
+      <div class="header">
+        <div class="header-label">Chase Checking</div>
+        <div class="main-title">Chase Sapphire Checking</div>
+      </div>
+      <div class="account-header">
+        <h2>CHASE SAPPHIRE CHECKING (...2431)</h2>
+      </div>
+      <div class="content">
+        <!-- Pay in Full -->
+        <div class="section">
+          <h3>Pay in full</h3>
+          <a href="#" id="to-money" class="account-link">CHECKING 2431</a>
+          <div class="balance">$350.00</div>
+          <div class="label">Available balance</div>
+        </div>
+        <!-- Pay Later -->
+        <div class="section">
+          <h3>Pay later</h3>
+          <button id="to-pay" class="btn-manage">Manage plans</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- === MONEY PAGE === -->
+    <div id="money" class="page">
+      <div class="header">
+        <a href="#" id="back-from-money" class="back-btn">&larr; Back</a>
+        <div class="main-title">Money</div>
+      </div>
+      <div class="content">
+        <div class="balance">$350.00</div>
+        <div class="label">Available balance</div>
+        <button id="show-trans" class="btn-recent">Recent transactions</button>
+        <div class="details-box">
+          <p><strong>Available balance:</strong> $350.00</p>
+          <p><strong>Present balance:</strong> $350.00</p>
+          <p><strong>Account number:</strong> 501262431</p>
+          <p><strong>Routing number:</strong> 072000326</p>
+          <p><strong>Interest rate:</strong> 0.00%</p>
+          <p><strong>Interest in 2025:</strong> $0.00</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- === PAY OVER TIME PAGE === -->
+    <div id="pay" class="page">
+      <div class="header">
+        <a href="#" id="back-from-pay" class="back-btn">&larr; Back</a>
+        <div class="main-title">Pay over Time</div>
+      </div>
+      <div class="content">
+        <h3>Active</h3>
+        <div class="balance">$0.00</div>
+        <div class="label">Total balance</div>
+        <h3>Current plans</h3>
+        <p>No plans</p>
+      </div>
+    </div>
+  </div>
+  <!-- /#dashboard -->
+
+  <!-- === TRANSACTIONS MODAL === -->
+  <div id="overlay" class="overlay"></div>
+  <div id="modal" class="modal">
+    <button id="close-trans" class="close-btn">×</button>
+    <h3>Recent transactions</h3>
+    <ul class="transactions-list">
+      <li>Aug 05, 2025: Online Transfer from SAVINGS ****9124 – <span class="credit">+$350.00</span></li>
+      <!-- add more items here -->
+    </ul>
+  </div>
+
+  <script>
+    function show(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+    // Checking → Money
+    document.getElementById('to-money').addEventListener('click', e => {
+      e.preventDefault(); show('money');
+    });
+    // Checking → Pay
+    document.getElementById('to-pay').addEventListener('click', () => show('pay'));
+    // Back links
+    document.getElementById('back-from-money').addEventListener('click', e => {
+      e.preventDefault(); show('checking');
+    });
+    document.getElementById('back-from-pay').addEventListener('click', e => {
+      e.preventDefault(); show('checking');
+    });
+    // Transactions modal
+    const overlay = document.getElementById('overlay'),
+          modal   = document.getElementById('modal');
+    document.getElementById('show-trans').addEventListener('click', () => {
+      overlay.classList.add('visible');
+      modal.classList.add('visible');
+    });
+    document.getElementById('close-trans').addEventListener('click', () => {
+      modal.classList.remove('visible');
+      overlay.classList.remove('visible');
+    });
+  </script>
+
+  <script>
+    const loginScreen = document.getElementById('login-screen');
+    const dashboard   = document.getElementById('dashboard');
+    const errMsg      = document.getElementById('login-error');
+    const btn         = document.getElementById('login-btn');
+
+    btn.addEventListener('click', () => {
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value;
+      if (u === 'shloak' && p === 'Sac') {
+        loginScreen.classList.remove('visible');
+        loginScreen.classList.add('hidden');
+        setTimeout(() => {
+          dashboard.classList.remove('hidden');
+          dashboard.classList.add('visible');
+        }, 400);
+      } else {
+        errMsg.style.opacity = '1';
+        setTimeout(() => errMsg.style.opacity = '0', 2000);
+      }
+    });
+
+    // allow Enter key
+    ['username','password'].forEach(id => {
+      document.getElementById(id)
+        .addEventListener('keydown', e => {
+          if (e.key === 'Enter') btn.click();
+        });
+    });
+  </script>
+
+</body>
+</html>
