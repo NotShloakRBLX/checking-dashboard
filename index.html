@@ -8,14 +8,11 @@
 :root{
   --bg:#0a0a10; --panel:#0b0c14; --panel-2:#0e0f17;
   --text:#e9e8f7; --muted:#a5a3c9; --grid:rgba(140,140,200,.06);
-  --violet:#8b5cf6; --sky:#60a5fa; --pink:#ec4899; --mint:#34d399; --amber:#fbbf24;
+  --violet:#8b5cf6; --sky:#60a5fa; --mint:#34d399; --pink:#ec4899; --amber:#fbbf24;
   --glass: linear-gradient( to bottom right, rgba(18,18,30,.86), rgba(12,12,22,.86) ) padding-box,
            linear-gradient(135deg, var(--sky), var(--violet)) border-box;
-
-  --dur-s:220ms; --dur-m:360ms; --dur-l:520ms;
-  --ease: cubic-bezier(.22,.9,.2,1);
+  --dur-s:200ms; --dur-m:320ms; --dur-l:520ms; --ease:cubic-bezier(.22,.9,.2,1);
   --radius:16px; --radius-lg:20px;
-
   --h1: clamp(1.4rem, 4.3vw, 2.0rem);
   --h2: clamp(1.1rem, 3.6vw, 1.4rem);
   --body: clamp(.92rem, 3.2vw, 1rem);
@@ -30,7 +27,7 @@ body{
 }
 a{color:inherit; text-decoration:none}
 
-/* bg fx */
+/* background */
 .fx{position:fixed; inset:0; z-index:-2; pointer-events:none;
   background:
     radial-gradient(900px 600px at 15% -10%, rgba(96,165,250,.22), transparent 60%),
@@ -52,62 +49,37 @@ a{color:inherit; text-decoration:none}
   mask: radial-gradient(60% 60% at 50% 50%, #000 68%, transparent 100%);
 }
 
-/* shared */
-.container{max-width:1100px; margin:20px auto 60px; padding:0 14px}
-.card{
-  border-radius:var(--radius); padding:16px; background:var(--glass); border:2px solid transparent;
-  box-shadow: 0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.03);
-  transition:transform var(--dur-s) var(--ease), filter var(--dur-s) var(--ease);
-}
-.card:hover{transform:translateY(-2px); filter:saturate(1.06)}
-.kpis{display:grid; grid-template-columns:repeat(12,1fr); gap:12px}
-.balance-panel{grid-column:span 8; display:flex; align-items:center; gap:14px}
-.facts{grid-column:span 4}
-
 /* app bar */
 .topbar{
   position:sticky; top:0; z-index:5; padding:12px 14px; backdrop-filter: blur(10px);
   background: linear-gradient( to right, rgba(12,12,22,.72), rgba(11,11,20,.58) );
   border-bottom:1px solid rgba(255,255,255,.06);
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
 }
 .brand{
-  font-weight:800; letter-spacing:.3px;
+  font-weight:900; letter-spacing:.3px;
   background: linear-gradient(90deg, var(--sky), var(--violet));
   -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
   font-size:var(--h2);
 }
 .chip{padding:7px 10px; border-radius:999px; background:linear-gradient(120deg,#121225,#0e0f18); border:1px solid rgba(255,255,255,.08); font-size:var(--small); color:#dfe3ff}
 
-/* pages */
-#app{position:absolute; inset:0; opacity:0; transform:translateY(8px); pointer-events:none; overflow:auto;
-  transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
-#app.active{opacity:1; transform:none; pointer-events:auto}
-
-/* login */
-#login-screen{position:fixed; inset:0; display:grid; place-items:center; padding:20px; z-index:9999}
-.login-shell{width:min(420px,94vw); border-radius:22px; padding:3px;
-  background: linear-gradient(120deg, #60a5fa, #8b5cf6, #60a5fa);
-  box-shadow: 0 26px 80px rgba(0,0,0,.65), 0 0 120px rgba(96,165,250,.35);
+/* layout */
+.container{max-width:1100px; margin:20px auto 60px; padding:0 14px}
+.kpis{display:grid; grid-template-columns:repeat(12,1fr); gap:12px}
+.card{
+  border-radius:var(--radius); padding:16px; background:var(--glass); border:2px solid transparent;
+  box-shadow: 0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.03);
+  transition:transform var(--dur-s) var(--ease), filter var(--dur-s) var(--ease);
 }
-#login-box{border-radius:20px; padding:24px 18px; text-align:center; background:#0b0b10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04)}
-.login-title{font-size:var(--h1); font-weight:800; letter-spacing:.2px; margin:0 0 14px;
-  background: linear-gradient(90deg, #60a5fa, #c084fc 45%, #60a5fa);
-  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
-#login-error{min-height:1.1em; margin:0 0 8px; color:#ff7b7b; opacity:0; transition:opacity var(--dur-s) var(--ease)}
-.input-group{position:relative; margin:10px 0}
-.input{
-  width:100%; padding:12px 12px 12px 42px; border-radius:12px; font-size:1rem; color:#e5e7eb;
-  background:#111223; border:1px solid #26263a; transition:border-color var(--dur-s), box-shadow var(--dur-s), background var(--dur-s)}
-.input:focus{outline:none; border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.20)}
-.input-icon{position:absolute; top:50%; left:12px; transform:translateY(-50%); width:18px; height:18px; opacity:.9}
-#login-btn{
-  width:100%; display:inline-flex; align-items:center; justify-content:center; gap:8px;
-  padding:11px 12px; border-radius:12px; cursor:pointer; margin-top:8px;
-  background:#0f0f18; color:#fff; font-weight:800; border:1px solid #2a2b36; transition: transform var(--dur-s), box-shadow var(--dur-s)}
-#login-btn svg{width:18px;height:18px; flex:0 0 18px}
-#login-btn:hover{box-shadow:0 10px 30px rgba(96,165,250,.25)}
-#login-btn:active{transform:translateY(1px)}
+.card:hover{transform:translateY(-2px); filter:saturate(1.06)}
+.balance-panel{grid-column:span 8; display:flex; align-items:center; gap:14px}
+.facts{grid-column:span 4}
+@media(max-width:980px){.card,.balance-panel,.facts{grid-column:span 12}}
+.stat-gradient{
+  background: linear-gradient(90deg, var(--sky), var(--violet));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
 
 /* actions */
 .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px}
@@ -119,44 +91,82 @@ a{color:inherit; text-decoration:none}
 .action-btn:active{transform:translateY(1px)}
 .action-btn svg{width:18px;height:18px}
 
-/* ring */
-.ring-3d{position:relative; width:86px; height:86px; display:grid; place-items:center}
-.ring-svg{width:100%; height:100%; transform:rotate(-90deg)}
-.ring-track{fill:none; stroke:#151b25; stroke-width:12}
-.ring-progress{fill:none; stroke:#60a5fa; stroke-width:12; stroke-linecap:round; stroke-dasharray:0 100; transition: stroke-dasharray var(--dur-l) var(--ease), stroke var(--dur-s)}
-.ring-txt{position:absolute; inset:0; display:grid; place-items:center; font-weight:800; color:#d9ecff}
+/* app root */
+#app{position:absolute; inset:0; opacity:0; transform:translateY(8px); pointer-events:none; overflow:auto;
+  transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
+#app.active{opacity:1; transform:none; pointer-events:auto}
+
+/* login */
+#login-screen{position:fixed; inset:0; display:grid; place-items:center; padding:20px; z-index:9999}
+.login-shell{width:min(420px,94vw); border-radius:22px; padding:3px;
+  background: linear-gradient(120deg, #60a5fa, #8b5cf6, #60a5fa);
+  box-shadow: 0 26px 80px rgba(0,0,0,.65), 0 0 120px rgba(96,165,250,.35);
+}
+#login-box{border-radius:20px; padding:24px 18px; text-align:center; background:#0b0b10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04)}
+.login-title{font-size:var(--h1); font-weight:900; margin:0 0 14px;
+  background: linear-gradient(90deg, #60a5fa, #c084fc 45%, #60a5fa);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+#login-error{min-height:1.1em; margin:0 0 8px; color:#ff7b7b; opacity:0; transition:opacity var(--dur-s)}
+.input-group{position:relative; margin:10px 0}
+.input{
+  width:100%; padding:12px 12px 12px 42px; border-radius:12px; font-size:1rem; color:#e5e7eb;
+  background:#111223; border:1px solid #26263a; transition:border-color var(--dur-s), box-shadow var(--dur-s)}
+.input:focus{outline:none; border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.20)}
+.input-icon{position:absolute; top:50%; left:12px; transform:translateY(-50%); width:18px; height:18px; opacity:.9}
+#login-btn{width:100%; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 12px; border-radius:12px; cursor:pointer; margin-top:8px;
+  background:#0f0f18; color:#fff; font-weight:800; border:1px solid #2a2b36; transition: transform var(--dur-s), box-shadow var(--dur-s)}
+#login-btn svg{width:18px;height:18px}
+#login-btn:hover{box-shadow:0 10px 30px rgba(96,165,250,.25)}
+#login-btn:active{transform:translateY(1px)}
 
 /* overlay + modal */
-#overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease)}
+#overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease); z-index:50}
 #overlay.visible{opacity:1; pointer-events:auto}
 .modal{
   position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.96); width:min(520px,92vw);
   border-radius:var(--radius-lg); padding:16px; background:var(--glass); border:2px solid transparent; color:var(--text);
   box-shadow: 0 24px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.03); backdrop-filter:blur(10px);
-  opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
+  opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease); z-index:60}
 .modal.visible{opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1)}
 .close-btn{position:absolute; top:8px; right:10px; font-size:1.2rem; background:none; border:none; color:var(--muted); cursor:pointer}
 
-/* pay-over-time UI */
+/* transactions list */
+.transactions-list{list-style:none; margin:8px 0 0; padding:0; max-height:420px; overflow:auto}
+.date-header{font-weight:700; color:#dfe2ff; margin:10px 0 6px}
+.tx-item{padding:12px; border-radius:12px; margin:10px 0; cursor:pointer;
+  background: linear-gradient(#121222,#0f1020) padding-box, linear-gradient(135deg, rgba(96,165,250,.55), rgba(139,92,246,.55)) border-box;
+  border:1px solid transparent; transition:filter var(--dur-s), transform var(--dur-s), box-shadow var(--dur-s)}
+.tx-item:hover{filter:saturate(1.06); box-shadow: 0 10px 26px rgba(96,165,250,.28)}
+.tx-summary{display:flex; justify-content:space-between; gap:10px}
+.credit{color:#22c55e; font-weight:700}
+.debit{color:#f87171; font-weight:700}
+.search-wrap{display:flex; align-items:center; gap:10px; margin:10px 0 6px; padding:10px 12px; border-radius:12px;
+  background: linear-gradient(#121222,#0f1020) padding-box, linear-gradient(135deg, rgba(96,165,250,.5), rgba(139,92,246,.5)) border-box;
+  border:1px solid transparent; box-shadow: 0 10px 30px rgba(96,165,250,.20)}
+.search-wrap svg{width:18px;height:18px;opacity:.8}
+#tx-search{flex:1; background:transparent; border:none; outline:none; color:var(--text); font-size:.98rem; padding:4px 0}
+#tx-clear{background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem; line-height:1; padding:2px 6px; border-radius:8px; visibility:hidden}
+#tx-clear:hover{color:#fff}
+
+/* pay-over-time page */
 .paybar{display:flex; align-items:center; gap:10px; padding:10px 14px}
 .backlink{display:inline-flex; align-items:center; gap:6px; color:#cbd5ff; font-weight:700}
 .pot-header{font-size:var(--h1); line-height:1.1; font-weight:900; margin:6px 0 8px}
 .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; font-weight:700; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08)}
 .empty{display:grid; place-items:center; gap:14px; min-height:220px}
-.primary-btn{
-  display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; cursor:pointer; font-weight:800;
+.primary-btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; cursor:pointer; font-weight:800;
   background:linear-gradient(180deg,#1b1c2a,#121320) padding-box, linear-gradient(135deg,var(--violet),var(--sky)) border-box;
   border:1px solid transparent; color:#fff; transition:transform var(--dur-s), filter var(--dur-s); box-shadow:0 16px 40px rgba(124,58,237,.25)}
 .primary-btn:active{transform:translateY(1px)}
 .primary-btn svg{width:20px;height:20px}
 
-/* planner sheet */
-.sheet{position:fixed; left:50%; transform:translateX(-50%) translateY(8px); bottom:10px; width:min(560px,96vw);
-  background:var(--glass); border:2px solid transparent; border-radius:18px; box-shadow:0 30px 80px rgba(0,0,0,.65);
-  opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
-.sheet.visible{opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(0)}
+/* planning bottom sheet (fixed height, internal scroll) */
+.sheet{position:fixed; left:50%; transform:translateX(-50%) translateY(8px); bottom:0; width:min(560px,96vw);
+  background:var(--glass); border:2px solid transparent; border-radius:18px 18px 0 0; box-shadow:0 30px 80px rgba(0,0,0,.65);
+  max-height:min(85vh, 560px); opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease); z-index:70; overflow:hidden}
+.sheet.visible{opacity:1; pointer-events:auto; transform:translateX(-50%)}
 .sheet-header{display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.06)}
-.sheet-body{padding:14px}
+.sheet-scroll{padding:14px; overflow:auto; max-height:calc(min(85vh, 560px) - 52px)}
 .step{opacity:0; transform:translateY(10px); pointer-events:none; transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
 .step.active{opacity:1; transform:none; pointer-events:auto}
 .field{display:flex; flex-direction:column; gap:8px}
@@ -170,13 +180,9 @@ a{color:inherit; text-decoration:none}
 .btn{padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.08); background:#121328; color:#fff; font-weight:700; cursor:pointer}
 .btn.secondary{background:#0f1020}
 .btn:disabled{opacity:.5; cursor:not-allowed}
-
-/* loader */
 .loader{display:grid; place-items:center; gap:10px; padding:26px; text-align:center}
 .spinner{width:26px;height:26px;border-radius:50%; border:3px solid rgba(255,255,255,.14); border-top-color:#9aa6ff; animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(1turn)}}
-
-/* plans */
 .plan{border-radius:14px; padding:14px; background:linear-gradient(#121228,#0e0f1f) padding-box,
       linear-gradient(135deg, rgba(124,58,237,.45), rgba(96,165,250,.45)) border-box;
   border:1px solid transparent; margin:10px 0; position:relative}
@@ -185,47 +191,31 @@ a{color:inherit; text-decoration:none}
 .r{display:flex; justify-content:space-between; margin:8px 0}
 .radio{position:absolute; top:14px; right:14px}
 .link{display:inline-block; margin-top:6px; background:#121226; border:1px solid rgba(255,255,255,.08); padding:8px 12px; border-radius:12px; cursor:pointer}
-
-/* sticky CTA */
-.sticky-cta{
-  position:sticky; bottom:0; display:flex; align-items:center; justify-content:space-between; gap:10px;
-  padding:12px 14px; background:linear-gradient(180deg, rgba(9,9,16,.0), rgba(9,9,16,.65) 22%, rgba(9,9,16,.85) 100%);
-  border-top:1px solid rgba(255,255,255,.08); border-bottom-left-radius:16px; border-bottom-right-radius:16px}
+.sticky-cta{position:sticky; bottom:0; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px;
+  background:linear-gradient(180deg, rgba(9,9,16,.0), rgba(9,9,16,.75) 24%, rgba(9,9,16,.92) 100%); border-top:1px solid rgba(255,255,255,.08); border-bottom-left-radius:16px; border-bottom-right-radius:16px}
 .green{background:linear-gradient(180deg,#0f1d14,#0b1410) padding-box, linear-gradient(135deg,#34d399,#10b981) border-box; color:#d9ffe9}
-.green button{all:unset; display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  padding:12px 16px; border-radius:12px; background:#16a34a; color:#fff; font-weight:900; cursor:pointer; box-shadow:0 18px 46px rgba(16,185,129,.35)}
+.green button{all:unset; display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:12px 16px; border-radius:12px; background:#16a34a; color:#fff; font-weight:900; cursor:pointer; box-shadow:0 18px 46px rgba(16,185,129,.35)}
 .green button:active{transform:translateY(1px)}
 
 /* virtual card */
-.cc-card{
-  width:100%; aspect-ratio:1.586; position:relative; border-radius:16px; padding:20px; cursor:pointer; overflow:hidden;
-  background:
-    radial-gradient(120% 140% at 0% 0%, rgba(96,165,250,.22), transparent 60%),
-    radial-gradient(120% 140% at 100% 100%, rgba(236,72,153,.22), transparent 60%),
-    linear-gradient(135deg, #101222, #0b0d18 55%, #0a0a14);
-  border:1px solid rgba(255,255,255,.10); box-shadow: 0 28px 80px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04);
-  transition:transform var(--dur-s) var(--ease), filter var(--dur-s) var(--ease)
-}
+.cc-card{width:100%; aspect-ratio:1.586; position:relative; border-radius:16px; padding:20px; cursor:pointer; overflow:hidden;
+  background:radial-gradient(120% 140% at 0% 0%, rgba(96,165,250,.22), transparent 60%), radial-gradient(120% 140% at 100% 100%, rgba(236,72,153,.22), transparent 60%), linear-gradient(135deg, #101222, #0b0d18 55%, #0a0a14);
+  border:1px solid rgba(255,255,255,.10); box-shadow: 0 28px 80px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04); transition:transform var(--dur-s), filter var(--dur-s)}
 .cc-card:hover{transform:translateY(-1px); filter:saturate(1.05)}
 .cc-name{position:absolute; left:20px; bottom:16px; font-weight:900; letter-spacing:.06rem}
 .cc-visa{position:absolute; right:16px; bottom:12px; font-weight:900; font-size:clamp(1rem, 5vw, 1.3rem)}
 .cc-drawer{overflow:hidden; border-radius:12px; margin-top:10px; max-height:0; opacity:0; transform:translateY(-6px);
-  background:var(--glass); border:2px solid transparent; transition:max-height var(--dur-m) var(--ease), opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
+  background:var(--glass); border:2px solid transparent; transition:max-height var(--dur-m), opacity var(--dur-m), transform var(--dur-m)}
 .cc-drawer.open{max-height:300px; opacity:1; transform:none}
 .cc-rows{display:grid; grid-template-columns:1fr 2fr; gap:8px 12px; padding:12px}
 .row-label{color:var(--muted); font-size:var(--small)}
 
-@media (max-width: 980px){
-  .card{grid-column:span 12}
-  .balance-panel{grid-column:span 12}
-  .facts{grid-column:span 12}
-}
-@media (max-width: 520px){
+@media(max-width:520px){
   .container{margin:14px auto 50px}
   .actions{gap:8px}
   .action-btn{padding:9px 10px}
   .plan .r{font-size:var(--small)}
-  .sheet{left:0; right:0; transform:translateY(8px); width:100%; border-radius:18px 18px 0 0}
+  .sheet{left:0; right:0; transform:translateY(8px); width:100%}
   .sheet.visible{transform:none}
   .sticky-cta{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
 }
@@ -267,25 +257,36 @@ a{color:inherit; text-decoration:none}
 <div id="overlay"></div>
 
 <script>
-/* tiny helpers */
-const $ = (q, el=document) => el.querySelector(q);
+/* utils */
+const $=(q,el=document)=>el.querySelector(q);
+const $$=(q,el=document)=>Array.from(el.querySelectorAll(q));
 const fmtMoney = n => '$' + Number(n).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
 
-/* -------- Page mounting (FIXED) --------
-   Replaces #app content with the provided HTML string
-   and then calls the onMount callback to bind events.   */
+/* mount page */
 function mount(html, onMount){
-  const app = document.getElementById('app');
+  const app = $('#app');
   app.classList.remove('active');
-  // fade-out then swap
-  setTimeout(()=>{
-    app.innerHTML = html;
-    requestAnimationFrame(()=> app.classList.add('active'));
-    if (typeof onMount === 'function') onMount(app);
-  }, 160);
+  setTimeout(()=>{ app.innerHTML = html; requestAnimationFrame(()=>app.classList.add('active')); if(onMount) onMount(app); }, 140);
 }
 
-/* -------- Checking page -------- */
+/* ----------------- DATA ----------------- */
+let balance = 414.00;
+const TX = [
+  { id:'t1', date:'Aug 07, 2025', merchant:'Online Transfer from SAVINGS ****9124', amount:+350.00, type:'credit' },
+  { id:'t2', date:'Aug 05, 2025', merchant:'APPLE.COM/BILL', amount:-11.73, type:'debit' },
+  { id:'t3', date:'Aug 01, 2025', merchant:'Deposit - Employer PAYROLL', amount:+245.00, type:'credit' },
+  { id:'t4', date:'Jul 28, 2025', merchant:'WL *STEAM PURCHASE', amount:-7.99, type:'debit' },
+  { id:'t5', date:'Jul 26, 2025', merchant:'AMAZON MKTPLACE PMTS', amount:-32.47, type:'debit' }
+];
+
+function addTransaction(merchant, amount){ // amount signed (+/-)
+  const d = new Date();
+  const date = d.toLocaleString('en-US',{month:'short',day:'2-digit',year:'numeric'});
+  TX.unshift({ id:'t'+Math.random().toString(36).slice(2,8), date, merchant, amount, type: amount>=0?'credit':'debit' });
+  balance = +(balance + amount).toFixed(2);
+}
+
+/* ----------------- CHECKING PAGE ----------------- */
 function renderChecking(){
   mount(`
     <div class="topbar">
@@ -301,9 +302,9 @@ function renderChecking(){
         <div class="card balance-panel">
           <div>
             <h4 style="margin:0 0 6px">Available Balance</h4>
-            <div id="bal" class="stat stat-gradient" style="font-weight:900; font-size:clamp(1.2rem,3.8vw,1.8rem)">$414.00</div>
+            <div id="bal" class="stat-gradient" style="font-weight:900; font-size:clamp(1.2rem,3.8vw,1.8rem)">${fmtMoney(balance)}</div>
             <div class="actions">
-              <button id="show-trans" class="action-btn" title="Recent activity">
+              <button id="show-trans" class="action-btn" title="See recent activity">
                 <svg viewBox="0 0 24 24"><path fill="#60a5fa" d="M4 4h16a1 1 0 0 1 1 1v3H3V5a1 1 0 0 1 1-1zm-1 7h18v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7zm4 2v2h2v-2H7zm4 0v2h6v-2h-6z"/></svg>
                 Recent
               </button>
@@ -319,42 +320,141 @@ function renderChecking(){
           </div>
         </div>
 
-        <div class="card" style="display:flex;align-items:center;gap:12px">
-          <div class="ring-3d">
-            <svg class="ring-svg" viewBox="0 0 120 120" aria-hidden="true">
-              <circle class="ring-track" cx="60" cy="60" r="46"></circle>
-              <circle class="ring-progress" id="budgetRing" cx="60" cy="60" r="46" pathLength="100"></circle>
-            </svg>
-            <span class="ring-txt" id="budgetPct">0%</span>
-          </div>
-          <div>
-            <h4 style="margin:0 0 4px">Budget Used</h4>
-            <div class="muted">Monthly budget: <strong id="budgetLbl">$1,000</strong></div>
-          </div>
-        </div>
-
         <div class="card facts">
           <h4>Account Snapshot</h4>
-          <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Present balance</span><strong id="present">$414.00</strong></div>
+          <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Present balance</span><strong id="present">${fmtMoney(balance)}</strong></div>
           <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Account number</span><strong>501262431</strong></div>
           <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Routing number</span><strong>072000326</strong></div>
         </div>
       </div>
     </div>
+
+    <!-- Modals -->
+    <div id="trans-modal" class="modal">
+      <button id="close-trans" class="close-btn">×</button>
+      <h3>Recent transactions</h3>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#60a5fa" d="M15.5 14h-.8l-.3-.3a6 6 0 1 0-.9.9l.3.3v.8L19 20.5 20.5 19 15.5 14Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14Z"/></svg>
+        <input id="tx-search" type="text" autocomplete="off" placeholder="Search merchant, amount, date…" />
+        <button id="tx-clear" title="Clear">×</button>
+      </div>
+      <div class="date-header" style="color:var(--muted);">Pending (0)</div>
+      <ul id="tx-list" class="transactions-list"></ul>
+    </div>
+
+    <div id="tx-detail-modal" class="modal">
+      <button class="close-btn" id="backTrans">×</button>
+      <h3>Transaction Details</h3>
+      <div class="detail-rows"></div>
+    </div>
+
+    <div id="transfer-modal" class="modal">
+      <button id="close-transfer" class="close-btn">×</button>
+      <h3>Transfer money</h3>
+      <div class="field" style="margin-top:8px">
+        <label>From</label>
+        <input value="Sapphire Checking ••••2431" disabled>
+      </div>
+      <div class="field">
+        <label>To</label>
+        <input id="toAcct" placeholder="External account / Savings">
+      </div>
+      <div class="field">
+        <label>Amount (USD)</label>
+        <input id="xAmount" inputmode="decimal" placeholder="25.00">
+      </div>
+      <div id="xErr" class="err"></div>
+      <div class="actions-row">
+        <button id="doTransfer" class="btn">Send</button>
+      </div>
+    </div>
   `, (app)=>{
-      // simple demo: ring at 14%
-      const pct = 14; $('#budgetRing',app).style.strokeDasharray = `${pct} 100`; $('#budgetPct',app).textContent=`${pct}%`;
-      // wire buttons
-      $('#payLaterBtn',app).onclick = renderPayLater;
-      $('#transferBtn',app).onclick = ()=> toast('Transfers demo coming soon.');
-      $('#show-trans',app).onclick = ()=> toast('Recent transactions demo coming soon.');
+      // open modals
+      const overlay = $('#overlay');
+      const show = m=>{ overlay.classList.add('visible'); m.classList.add('visible'); };
+      const hide = m=>{ m.classList.remove('visible'); overlay.classList.remove('visible'); };
+
+      // Transactions
+      const txListEl = $('#tx-list',app);
+      function renderList(list=TX){
+        txListEl.innerHTML='';
+        if(!list.length){ txListEl.innerHTML='<li class="muted" style="padding:12px 6px;">No matches.</li>'; return; }
+        const byDate={}; list.forEach(t=>{ (byDate[t.date]??=[]).push(t); });
+        Object.entries(byDate).forEach(([date,items])=>{
+          const header=document.createElement('div'); header.className='date-header'; header.textContent=`${date} (${items.length})`; txListEl.appendChild(header);
+          items.forEach(tx=>{
+            const li=document.createElement('li'); li.className='tx-item';
+            const amt=(tx.amount>=0?'+':'-') + fmtMoney(Math.abs(tx.amount)).slice(1);
+            li.innerHTML=`<div class="tx-summary"><span>${tx.merchant}</span><span class="${tx.amount>=0?'credit':'debit'}">${amt.startsWith('+')?'+':''}${fmtMoney(Math.abs(tx.amount))}</span></div>`;
+            li.onclick=()=> openDetail(tx);
+            txListEl.appendChild(li);
+          });
+        });
+      }
+      function openDetail(tx){
+        const m=$('#tx-detail-modal',app);
+        const rows=[
+          {label:'Merchant',value:tx.merchant},
+          {label:'Date',value:tx.date},
+          {label:'Amount',value:(tx.amount>=0?'+':'-')+fmtMoney(Math.abs(tx.amount))},
+          {label:'Type',value:tx.type}
+        ];
+        const cont=m.querySelector('.detail-rows');
+        cont.innerHTML=rows.map(r=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.08)"><span class="muted">${r.label}</span><strong>${r.value}</strong></div>`).join('');
+        hide($('#trans-modal',app)); show(m);
+      }
+      renderList();
+
+      // search
+      const searchInput=$('#tx-search',app), clearBtn=$('#tx-clear',app);
+      function escapeRegExp(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+      function filterTx(q){
+        if(!q) return TX;
+        const tokens=q.trim().toLowerCase().split(/\s+/).map(escapeRegExp);
+        return TX.filter(tx=>{ const hay=`${tx.merchant} ${tx.date} ${tx.amount.toFixed(2)} ${tx.type}`.toLowerCase(); return tokens.every(t=>new RegExp(`(^|\\b|\\s)${t}`).test(hay));});
+      }
+      searchInput.addEventListener('input',()=>{ const q=searchInput.value; renderList(filterTx(q)); clearBtn.style.visibility=q?'visible':'hidden'; });
+      clearBtn.onclick=()=>{ searchInput.value=''; renderList(TX); clearBtn.style.visibility='hidden'; searchInput.focus(); };
+
+      // open/close modal wiring
+      $('#show-trans',app).onclick=()=>{ renderList(filterTx(searchInput.value)); show($('#trans-modal',app)); setTimeout(()=>searchInput.focus(),40); };
+      $('#close-trans',app).onclick=()=> hide($('#trans-modal',app));
+      $('#backTrans',app).onclick=()=>{ hide($('#tx-detail-modal',app)); show($('#trans-modal',app)); };
+      overlay.onclick=e=>{
+        if(e.target===overlay){
+          ['trans-modal','tx-detail-modal','transfer-modal'].forEach(id=>$('#'+id,app)?.classList.remove('visible'));
+          overlay.classList.remove('visible');
+        }
+      };
+
+      // transfer modal
+      $('#transferBtn',app).onclick=()=> show($('#transfer-modal',app));
+      $('#close-transfer',app).onclick=()=> hide($('#transfer-modal',app));
+      $('#doTransfer',app).onclick=()=>{
+        const to=$('#toAcct',app).value.trim();
+        const amtRaw=$('#xAmount',app).value.trim();
+        const amt=parseFloat(amtRaw);
+        const err=$('#xErr',app);
+        if(!to){ err.textContent='Enter destination account.'; err.classList.add('show'); return; }
+        if(!(amt>0)){ err.textContent='Enter a valid amount greater than $0.'; err.classList.add('show'); return; }
+        if(amt>balance){ err.textContent='Insufficient funds.'; err.classList.add('show'); return; }
+        err.classList.remove('show');
+        addTransaction(`Transfer to ${to}`, -Math.abs(amt));
+        $('#bal',app).textContent=fmtMoney(balance);
+        $('#present',app).textContent=fmtMoney(balance);
+        hide($('#transfer-modal',app));
+        renderList(filterTx(searchInput.value));
+      };
+
+      // Pay later page
+      $('#payLaterBtn',app).onclick=renderPayLater;
   });
 }
 
-/* -------- Pay over time page -------- */
+/* ----------------- PAY OVER TIME ----------------- */
 const PLANS_KEY='sapphire_plans';
-const getPlans = () => JSON.parse(localStorage.getItem(PLANS_KEY)||'[]');
-const savePlan = p => { const arr=getPlans(); arr.unshift(p); localStorage.setItem(PLANS_KEY, JSON.stringify(arr)); };
+const getPlans=()=>JSON.parse(localStorage.getItem(PLANS_KEY)||'[]');
+const savePlan=p=>{const arr=getPlans(); arr.unshift(p); localStorage.setItem(PLANS_KEY,JSON.stringify(arr));};
 
 function renderPlansList(plans){
   return `
@@ -370,14 +470,12 @@ function renderPlansList(plans){
         <div><button class="link" data-id="${p.id}">View schedule</button></div>
       </div>
     `).join('')}
-    <div style="margin-top:12px"><button id="startPlan" class="primary-btn"><svg viewBox="0 0 24 24"><path fill="#c4c8ff" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"/></svg>Plan a purchase</button></div>
+    <div style="margin-top:12px"><button class="primary-btn startPlan"><svg viewBox="0 0 24 24"><path fill="#c4c8ff" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"/></svg>Plan a purchase</button></div>
   </div>`;
 }
 
 function renderPayLater(){
-  const plans = getPlans();
-  const count = plans.length;
-
+  const plans=getPlans(); const count=plans.length;
   mount(`
     <div class="topbar paybar">
       <a class="backlink" href="#" id="backChecking">← Checking</a>
@@ -389,23 +487,24 @@ function renderPayLater(){
       ${ count ? renderPlansList(plans) : `
         <div class="card empty" id="emptyState">
           <div class="muted">No active plans</div>
-          <button id="startPlan" class="primary-btn">
+          <button class="primary-btn startPlan">
             <svg viewBox="0 0 24 24"><path fill="#c4c8ff" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"/></svg>
             Plan a purchase
           </button>
         </div>`}
     </div>
 
+    <!-- bottom sheet -->
     <div id="sheet" class="sheet" aria-hidden="true">
       <div class="sheet-header">
         <div style="font-weight:900">Plan a purchase</div>
         <button class="close-btn" id="closeSheet">×</button>
       </div>
-      <div class="sheet-body">
+      <div class="sheet-scroll">
         <div class="step active" id="step1">
           <div class="field">
             <label>Store name</label>
-            <input id="storeInput" type="text" inputmode="text" autocomplete="off" placeholder="e.g., Best Buy" />
+            <input id="storeInput" type="text" inputmode="text" autocomplete="off" placeholder="e.g., Best Buy">
             <div id="err1" class="err">Please enter a store name.</div>
           </div>
           <div class="actions-row"><button id="s1Next" class="btn">Continue</button></div>
@@ -414,7 +513,7 @@ function renderPayLater(){
         <div class="step" id="step2">
           <div class="field">
             <label>Purchase amount (minimum $50)</label>
-            <input id="amountInput" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="50" />
+            <input id="amountInput" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="50">
             <div id="err2" class="err">Enter a whole dollar amount of $50 or more.</div>
           </div>
           <div class="actions-row"><button id="back1" class="btn secondary">Back</button><button id="s2Next" class="btn">Continue</button></div>
@@ -427,8 +526,7 @@ function renderPayLater(){
         <div class="step" id="plansStep">
           <div id="plansWrap"></div>
           <label style="display:flex;align-items:center;gap:8px;margin-top:10px">
-            <input id="agree" type="checkbox" />
-            <span>I agree to the loan terms and the Truth in Lending disclosure.</span>
+            <input id="agree" type="checkbox"><span>I agree to the loan terms and the Truth in Lending disclosure.</span>
           </label>
           <div class="sticky-cta green">
             <div class="muted" id="ctaHint">Select a plan to continue.</div>
@@ -461,96 +559,93 @@ function renderPayLater(){
       </div>
     </div>
   `, (app)=>{
-      $('#backChecking',app).onclick = e => { e.preventDefault(); renderChecking(); };
-      // open/close sheet
-      const openSheet = ()=>{ $('#sheet',app).classList.add('visible'); $('#sheet',app).setAttribute('aria-hidden','false'); };
-      const closeSheet = ()=>{ $('#sheet',app).classList.remove('visible'); $('#sheet',app).setAttribute('aria-hidden','true'); resetSheet(); };
-      $('#startPlan',app)?.addEventListener('click', openSheet);
-      $('#closeSheet',app).onclick = closeSheet;
+      $('#backChecking',app).onclick = e=>{ e.preventDefault(); renderChecking(); };
 
-      // steps
-      const s1 = $('#step1',app), s2=$('#step2',app), sLoad=$('#loadingStep',app), sPlans=$('#plansStep',app), sAct=$('#activatingStep',app), sCard=$('#cardStep',app);
-      const go = to => { [s1,s2,sLoad,sPlans,sAct,sCard].forEach(st=>st.classList.remove('active')); to.classList.add('active'); };
-      function resetSheet(){ $('#storeInput').value=''; $('#amountInput').value=''; $('#agree').checked=false; selectedPlan=null; $('#activateBtn').disabled=true; $('#ctaHint').textContent='Select a plan to continue.'; go(s1); }
+      const overlay=$('#overlay');
+      const sheet=$('#sheet',app);
+      const openSheet=()=>{ overlay.classList.add('visible'); sheet.classList.add('visible'); sheet.setAttribute('aria-hidden','false'); go(s1); };
+      const closeSheet=()=>{ sheet.classList.remove('visible'); overlay.classList.remove('visible'); sheet.setAttribute('aria-hidden','true'); };
+      $('#closeSheet',app).onclick=closeSheet;
+      overlay.onclick=e=>{ if(e.target===overlay) closeSheet(); };
 
-      $('#s1Next',app).onclick = ()=>{ const v=$('#storeInput').value.trim(); $('#err1').classList.toggle('show', !v); if(v){ go(s2); setTimeout(()=>$('#amountInput').focus(),40);} };
-      $('#amountInput',app).addEventListener('input', e=>{ e.target.value = e.target.value.replace(/[^\d]/g,''); });
-      $('#back1',app).onclick = ()=> go(s1);
+      // attach to all "Plan a purchase" buttons (list or empty state)
+      $$('.startPlan',app).forEach(b=> b.onclick=openSheet);
 
-      $('#s2Next',app).onclick = ()=>{
-        const raw=$('#amountInput').value.trim(); const amt=Number(raw);
-        const ok = raw!=='' && Number.isInteger(amt) && amt>=50;
-        $('#err2').classList.toggle('show', !ok); if(!ok) return;
-        go(sLoad); setTimeout(()=>{ renderPlans(amt, app); go(sPlans); }, 4000);
-      };
+      // steps + validation (ensure never blank)
+      const s1=$('#step1',app), s2=$('#step2',app), sLoad=$('#loadingStep',app), sPlans=$('#plansStep',app), sAct=$('#activatingStep',app), sCard=$('#cardStep',app);
+      function go(to){ [s1,s2,sLoad,sPlans,sAct,sCard].forEach(st=>st.classList.remove('active')); to.classList.add('active'); }
 
-      $('#back2',app).onclick = ()=> go(s2);
-
-      // existing plans "view schedule"
-      $$('#potContainer .link',app).forEach(btn=>{
-        btn.onclick = ()=>{
-          const id = btn.getAttribute('data-id');
-          const plan = getPlans().find(p=>p.id===id);
-          if(plan) showScheduleModal(plan);
-        };
-      });
+      $('#s1Next',app).onclick=()=>{ const v=$('#storeInput',app).value.trim(); $('#err1',app).classList.toggle('show', !v); if(v){ go(s2); setTimeout(()=>$('#amountInput',app).focus(),40);} };
+      $('#amountInput',app).addEventListener('input',e=>{ e.target.value=e.target.value.replace(/[^\d]/g,''); });
+      $('#back1',app).onclick=()=> go(s1);
 
       let selectedPlan=null;
+      $('#s2Next',app).onclick=()=>{
+        const raw=$('#amountInput',app).value.trim(); const amt=Number(raw);
+        const ok = raw!=='' && Number.isInteger(amt) && amt>=50;
+        $('#err2',app).classList.toggle('show', !ok);
+        if(!ok) return;
+        go(sLoad);
+        setTimeout(()=>{ renderPlans(amt, app); go(sPlans); }, 4000);
+      };
+      $('#back2',app).onclick=()=> go(s2);
+
       function renderPlans(amount, appRoot){
-        const wrap = $('#plansWrap',appRoot); wrap.innerHTML='';
-        const biweekly = makeBiweekly(amount);
-        const sixmo   = makeMonthly(amount, 6);
-        const twelve  = amount>=100 ? makeMonthly(amount, 12) : null;
-        [biweekly, sixmo, twelve].filter(Boolean).forEach(p=>{
-          const div = document.createElement('div'); div.className='plan';
-          div.innerHTML = `
+        const wrap=$('#plansWrap',appRoot); wrap.innerHTML='';
+        const biweekly=makeBiweekly(amount);
+        const sixmo=makeMonthly(amount,6);
+        const twelve=amount>=100?makeMonthly(amount,12):null;
+        [biweekly,sixmo,twelve].filter(Boolean).forEach(p=>{
+          const div=document.createElement('div'); div.className='plan';
+          div.innerHTML=`
             <input class="radio" type="radio" name="planPick">
             <h4>${p.title}</h4>
             <div class="sub">${p.subtitle}</div>
             <div class="r"><span>Payment</span><strong>${fmtMoney(p.perPayment)} ${p.freqLabel}</strong></div>
             <div class="r"><span>First due</span><strong>${p.firstDue.label}</strong></div>
             <div class="link">View schedule</div>`;
-          div.querySelector('.radio').addEventListener('change', ()=>{ selectedPlan=p; $('#ctaHint',appRoot).textContent='Review terms and activate.'; enableActivate(); });
-          div.querySelector('.link').onclick = ()=> showScheduleModal(p);
+          div.querySelector('.radio').addEventListener('change',()=>{ selectedPlan=p; $('#ctaHint',appRoot).textContent='Review terms and activate.'; enableActivate(); });
+          div.querySelector('.link').onclick=()=> showScheduleModal(materializePlan(p,$('#storeInput',appRoot).value.trim(),amount,false));
           wrap.appendChild(div);
         });
         function enableActivate(){ $('#activateBtn',appRoot).disabled = !(selectedPlan && $('#agree',appRoot).checked); }
         $('#agree',appRoot).onchange = enableActivate;
 
-        $('#activateBtn',appRoot).onclick = ()=>{
+        $('#activateBtn',appRoot).onclick=()=>{
           go(sAct);
           setTimeout(()=>{
-            const plan = materializePlan(selectedPlan, $('#storeInput').value.trim(), amount);
+            const plan = materializePlan(selectedPlan, $('#storeInput',appRoot).value.trim(), amount, true);
             savePlan(plan);
             const card = genVisa();
             $('#cardMsg',appRoot).textContent = `Use this virtual VISA to pay ${plan.store}. Tap to reveal info.`;
             $('#ccNum',appRoot).textContent = card.number; $('#ccExp',appRoot).textContent = card.exp; $('#ccCvv',appRoot).textContent = card.cvv;
-            $('#vcard',appRoot).onclick = ()=> $('#ccDrawer',appRoot).classList.toggle('open');
+            $('#vcard',appRoot).onclick=()=> $('#ccDrawer',appRoot).classList.toggle('open');
             go(sCard);
-            $('#planCount',app).textContent = getPlans().length;
+            // refresh counter + list behind the sheet
+            $('#planCount',app).textContent=getPlans().length;
             $('#potContainer',app).innerHTML = renderPlansList(getPlans());
-            // rebind "view schedule" buttons in list
+            // rebind "view schedule" buttons
             $$('#potContainer .link',app).forEach(btn=>{
-              btn.onclick = ()=>{
-                const id = btn.getAttribute('data-id');
-                const plan = getPlans().find(p=>p.id===id);
-                if(plan) showScheduleModal(plan);
-              };
+              btn.onclick=()=>{ const id=btn.getAttribute('data-id'); const p=getPlans().find(x=>x.id===id); if(p) showScheduleModal(p); };
             });
+            // also rebind "startPlan" buttons in refreshed list
+            $$('.startPlan',app).forEach(b=> b.onclick=openSheet);
           }, 5000);
         };
       }
-
-      $('#finish',app).onclick = ()=>{ closeSheet(); toast('Virtual card ready. Plan saved.'); };
+      $('#finish',app).onclick=()=>{ closeSheet(); };
+      // list View schedule after mount
+      $$('#potContainer .link',app).forEach(btn=>{
+        btn.onclick=()=>{ const id=btn.getAttribute('data-id'); const p=getPlans().find(x=>x.id===id); if(p) showScheduleModal(p); };
+      });
   });
 }
 
 /* schedule modal */
 function showScheduleModal(plan){
-  const overlay = $('#overlay'); overlay.classList.add('visible');
-  const modal = document.createElement('div');
-  modal.className='modal';
-  modal.innerHTML = `
+  const overlay=$('#overlay'); overlay.classList.add('visible');
+  const modal=document.createElement('div'); modal.className='modal';
+  modal.innerHTML=`
     <button class="close-btn">×</button>
     <h3 style="margin:6px 0 10px; font-weight:800">${plan.title} — ${plan.store}</h3>
     <div class="muted" style="margin-bottom:10px">Created <strong>${plan.created}</strong></div>
@@ -564,8 +659,8 @@ function showScheduleModal(plan){
     </div>`;
   document.body.appendChild(modal);
   requestAnimationFrame(()=> modal.classList.add('visible'));
-  const close = ()=>{ modal.classList.remove('visible'); overlay.classList.remove('visible'); setTimeout(()=>modal.remove(),220); };
-  modal.querySelector('.close-btn').onclick = close; overlay.onclick = e=>{ if(e.target===overlay) close(); };
+  const close=()=>{ modal.classList.remove('visible'); overlay.classList.remove('visible'); setTimeout(()=>modal.remove(),200); };
+  modal.querySelector('.close-btn').onclick=close; overlay.onclick=e=>{ if(e.target===overlay) close(); };
 }
 
 /* plan math */
@@ -573,30 +668,7 @@ function shiftDate(d,{days=0,months=0}={}){const nd=new Date(d); nd.setMonth(nd.
 function labelDate(d,down=false){const o={month:'numeric',day:'numeric',year:'numeric'}; return `${d.toLocaleDateString(undefined,o)}${down?' (downpayment)':''}`;}
 function makeBiweekly(amount){const per=Math.round(amount/4); const schedule=[]; const start=new Date(); schedule.push({label:labelDate(start,true),amount:per}); for(let i=1;i<4;i++){schedule.push({label:labelDate(shiftDate(start,{days:14*i})),amount:per});} return {key:'biweekly',title:'Bi-weekly',subtitle:'4 payments • first due today (downpayment)',perPayment:per,freqLabel:'/ every 2 weeks',firstDue:schedule[0],schedule};}
 function makeMonthly(amount,months){const per=Math.round(amount/months); const start=shiftDate(new Date(),{months:1}); const schedule=[]; for(let i=0;i<months;i++){schedule.push({label:labelDate(shiftDate(start,{months:i})),amount:per});} return {key:`${months}mo`,title:months===6?'6 months':'12 months',subtitle:months===6?'Equal monthly payments':'Lower monthly payments',perPayment:per,freqLabel:'/ month',firstDue:schedule[0],schedule};}
-function materializePlan(def,store,amount){return {id:'pln_'+Math.random().toString(36).slice(2,10),created:new Date().toLocaleString(),store,amount,defKey:def.key,title:def.title,perPayment:def.perPayment,schedule:def.schedule};}
-
-/* tiny toast */
-function toast(msg){
-  const t=document.createElement('div');
-  t.style.cssText='position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(10px);background:#121226;border:1px solid rgba(255,255,255,.08);padding:10px 12px;border-radius:10px;opacity:0;transition:opacity .25s,transform .25s;z-index:9999';
-  t.textContent=msg; document.body.appendChild(t);
-  requestAnimationFrame(()=>{t.style.opacity='1'; t.style.transform='translateX(-50%)';});
-  setTimeout(()=>{t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(10px)'; setTimeout(()=>t.remove(),220);},1600);
-}
-
-/* login */
-document.addEventListener('DOMContentLoaded', ()=>{
-  function tryLogin(){
-    const u=$('#username').value.trim(), p=$('#password').value, err=$('#login-error');
-    if(u && p){
-      const ls=$('#login-screen'); ls.style.transition='opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)';
-      ls.style.opacity='0'; ls.style.transform='scale(.98)'; setTimeout(()=>ls.remove(),360);
-      renderChecking();
-    }else{ err.textContent='Enter username & password'; err.style.opacity='1'; setTimeout(()=> err.style.opacity='0',1600); }
-  }
-  $('#login-btn').onclick = tryLogin;
-  ['username','password'].forEach(id=> $('#'+id).addEventListener('keydown',e=>{ if(e.key==='Enter') tryLogin(); }));
-});
+function materializePlan(def,store,amount,assignId){return {id:assignId?('pln_'+Math.random().toString(36).slice(2,10)):undefined,created:new Date().toLocaleString(),store,amount,defKey:def.key,title:def.title,perPayment:def.perPayment,schedule:def.schedule};}
 
 /* virtual card generator */
 function genVisa(){
@@ -607,6 +679,20 @@ function genVisa(){
   const cvv = String(Math.floor(Math.random()*900)+100);
   return {number, exp:`${m}/${y}`, cvv};
 }
+
+/* login */
+document.addEventListener('DOMContentLoaded', ()=>{
+  function tryLogin(){
+    const u=$('#username').value.trim(), p=$('#password').value, err=$('#login-error');
+    if(u && p){
+      const ls=$('#login-screen'); ls.style.transition='opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)';
+      ls.style.opacity='0'; ls.style.transform='scale(.98)'; setTimeout(()=>ls.remove(),320);
+      renderChecking();
+    }else{ err.textContent='Enter username & password'; err.style.opacity='1'; setTimeout(()=> err.style.opacity='0',1400); }
+  }
+  $('#login-btn').onclick=tryLogin;
+  ['username','password'].forEach(id=> $('#'+id).addEventListener('keydown',e=>{ if(e.key==='Enter') tryLogin(); }));
+});
 </script>
 </body>
 </html>
