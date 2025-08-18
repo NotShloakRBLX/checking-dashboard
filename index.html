@@ -5,1064 +5,752 @@
 <title>Chase Sapphire Checking</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-  /* =========================
-     2030 NEON–GLASS DASHBOARD
-     ========================= */
+/* =========================
+   2030 NEON–GLASS + MOTION
+   ========================= */
+:root{
+  --bg:#0a0a10; --panel:#0b0c14; --panel-2:#0e0f17;
+  --text:#e9e8f7; --muted:#a5a3c9; --grid:rgba(140,140,200,.06);
+  --violet:#8b5cf6; --sky:#60a5fa; --pink:#ec4899; --mint:#34d399; --amber:#fbbf24;
+  --glass: linear-gradient( to bottom right, rgba(18,18,30,.86), rgba(12,12,22,.86) ) padding-box,
+           linear-gradient(135deg, var(--sky), var(--violet)) border-box;
 
-  :root{
-    --bg:#0a0a10;
-    --panel:#0e0f17;
-    --panel-2:#0b0c14;
-    --text:#e9e8f7;
-    --muted:#a5a3c9;
-    --grid:rgba(140,140,200,.06);
+  /* motion + radii */
+  --dur-s:220ms; --dur-m:360ms; --dur-l:520ms;
+  --ease: cubic-bezier(.22,.9,.2,1);
+  --radius:16px; --radius-lg:20px;
 
-    --violet:#8b5cf6;
-    --sky:#60a5fa;
-    --pink:#ec4899;
-    --mint:#34d399;
-    --amber:#fbbf24;
-    --red:#f87171;
+  /* type scale (mobile first, use clamp) */
+  --h1: clamp(1.4rem, 4.3vw, 2.0rem);
+  --h2: clamp(1.1rem, 3.6vw, 1.4rem);
+  --body: clamp(.92rem, 3.2vw, 1rem);
+  --small: clamp(.82rem, 2.8vw, .92rem);
+}
 
-    --glow-sky:    0 10px 30px rgba(96,165,250,.35);
-    --glow-violet: 0 10px 30px rgba(139,92,246,.35);
-    --glass: linear-gradient( to bottom right, rgba(18,18,30,.85), rgba(14,14,24,.85) ) padding-box,
-             linear-gradient(135deg, var(--sky), var(--violet)) border-box;
-  }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, -apple-system, sans-serif;
+  color:var(--text); background:var(--bg);
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  font-size:var(--body);
+}
+a{color:inherit; text-decoration:none}
 
-  *{ box-sizing:border-box; }
-  html,body{ height:100%; }
-  body{
-    margin:0; font-family: "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
-    color:var(--text); background:var(--bg); overflow:auto;
-    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-  }
+.fx{position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(900px 600px at 15% -10%, rgba(96,165,250,.22), transparent 60%),
+    radial-gradient(900px 700px at 85% 120%, rgba(139,92,246,.18), transparent 60%),
+    linear-gradient(180deg, #090911 0%, #0a0a12 60%, #090911 100%);
+}
+.fx::before,.fx::after{
+  content:""; position:absolute; inset:-40%;
+  background: conic-gradient(from 0turn, rgba(96,165,250,.12), rgba(124,58,237,.12), rgba(236,72,153,.12), rgba(96,165,250,.12));
+  filter: blur(60px); animation: swirl 26s linear infinite;
+}
+.fx::after{animation-duration:34s; animation-direction:reverse; opacity:.6}
+@keyframes swirl{to{transform:rotate(1turn)}}
+.grid{position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    linear-gradient(transparent 79px, var(--grid) 80px),
+    linear-gradient(90deg, transparent 79px, var(--grid) 80px);
+  background-size:80px 80px;
+  mask: radial-gradient(60% 60% at 50% 50%, #000 68%, transparent 100%);
+}
 
-  /* ============= Global FX background ============= */
-  .fx{
-    position:fixed; inset:0; z-index:-2; pointer-events:none;
-    background:
-      radial-gradient(900px 600px at 15% -10%, rgba(96,165,250,.22), transparent 60%),
-      radial-gradient(900px 700px at 85% 120%, rgba(139,92,246,.18), transparent 60%),
-      linear-gradient(180deg, #090911 0%, #0a0a12 60%, #090911 100%);
-  }
-  .fx::before,
-  .fx::after{
-    content:""; position:absolute; inset:-40%;
-    background: conic-gradient(from 0turn, rgba(96,165,250,.12), rgba(124,58,237,.12), rgba(236,72,153,.12), rgba(96,165,250,.12));
-    filter: blur(60px); animation: swirl 26s linear infinite;
-  }
-  .fx::after{ animation-duration: 34s; animation-direction: reverse; opacity: .6; }
-  @keyframes swirl{ to{ transform: rotate(1turn); } }
-  /* Subtle grid */
-  .grid{
-    position:fixed; inset:0; z-index:-1; pointer-events:none;
-    background:
-      linear-gradient(transparent 79px, var(--grid) 80px),
-      linear-gradient(90deg, transparent 79px, var(--grid) 80px);
-    background-size:80px 80px;
-    mask: radial-gradient(60% 60% at 50% 50%, #000 68%, transparent 100%);
-  }
+/* shared containers */
+.container{max-width:1100px; margin:20px auto 60px; padding:0 14px}
+.card{
+  border-radius:var(--radius); padding:16px; background:var(--glass); border:2px solid transparent;
+  box-shadow: 0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.03);
+  -webkit-backface-visibility:hidden; backface-visibility:hidden;
+  will-change:transform,opacity; transition:transform var(--dur-s) var(--ease), filter var(--dur-s) var(--ease);
+}
+.card:hover{transform:translateY(-2px); filter:saturate(1.06)}
+.kpis{display:grid; grid-template-columns:repeat(12,1fr); gap:12px}
+.balance-panel{grid-column:span 8; display:flex; align-items:center; gap:14px}
+.facts{grid-column:span 4}
 
-  /* ===== Visibility helpers ===== */
-  .fade{ transition:opacity .35s ease; }
-  .hidden{ opacity:0; pointer-events:none; }
-  .visible{ opacity:1; pointer-events:auto; }
+/* sticky app bars */
+.topbar{
+  position:sticky; top:0; z-index:5; padding:12px 14px; backdrop-filter: blur(10px);
+  background: linear-gradient( to right, rgba(12,12,22,.72), rgba(11,11,20,.58) );
+  border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand{
+  font-weight:800; letter-spacing:.3px;
+  background: linear-gradient(90deg, var(--sky), var(--violet));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  font-size:var(--h2);
+}
+.chip{padding:7px 10px; border-radius:999px; background:linear-gradient(120deg,#121225,#0e0f18); border:1px solid rgba(255,255,255,.08); font-size:var(--small); color:#dfe3ff}
 
-  /* ===================== LOGIN ===================== */
-  #login-screen{
-    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-    padding:24px; color:#fff; z-index:9999;
-  }
-  .login-shell{
-    width:min(440px, 94vw); border-radius:22px; padding:3px; background:
-      linear-gradient(120deg, #60a5fa, #8b5cf6, #60a5fa);
-    box-shadow: 0 26px 80px rgba(0,0,0,.65), 0 0 120px rgba(96,165,250,.35);
-  }
-  #login-box{
-    border-radius:20px; padding:36px 30px 28px; text-align:center; color:#e8e7ef;
-    background:#0b0b10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
-  }
-  .login-title{
-    font-size: clamp(1.8rem, 3.6vw, 2.2rem); font-weight:700; letter-spacing:.3px;
-    background: linear-gradient(90deg, #60a5fa, #c084fc 45%, #60a5fa);
-    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-    margin-bottom:22px;
-  }
-  #login-error{ height:1.2em; margin-bottom:12px; color:#ff6b6b; opacity:0; transition:opacity .3s; }
-  .input-group{ position:relative; margin:14px 0; }
-  .input{
-    width:100%; padding:14px 14px 14px 50px; border-radius:14px;
-    background:#111223; border:1px solid #26263a; color:#e5e7eb; font-size:1rem;
-    transition: border-color .2s, box-shadow .2s, background .2s;
-  }
-  .input::placeholder{ color:#979bb2; }
-  .input:focus{ outline:none; border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.22), var(--glow-violet); background:#0f1020; }
-  .input-icon{ position:absolute; top:50%; left:14px; transform:translateY(-50%); width:22px; height:22px; filter: drop-shadow(0 2px 4px rgba(96,165,250,.55)); }
+/* page transitions */
+.page{position:absolute; inset:0; opacity:0; pointer-events:none; overflow:auto; transform:translateY(8px);
+  transition: opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease);}
+.page.active{opacity:1; transform:none; pointer-events:auto}
 
-  #login-btn{
-    width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
-    padding:13px 16px; border-radius:14px; cursor:pointer;
-    background:#0f0f18; color:#fff; font-weight:700; border:1px solid #2a2b36;
-    transition: box-shadow .2s, border-color .2s, transform .05s, filter .2s;
-  }
-  #login-btn:hover, #login-btn:focus{ border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.18), var(--glow-violet); outline:none; filter:saturate(1.08); }
-  #login-btn:active{ transform:translateY(1px); }
-  .btn-icon{ width:20px; height:20px; filter: drop-shadow(0 2px 4px rgba(96,165,250,.45)); }
+/* Login */
+#login-screen{position:fixed; inset:0; display:grid; place-items:center; padding:20px; z-index:9999}
+.login-shell{width:min(420px,94vw); border-radius:22px; padding:3px;
+  background: linear-gradient(120deg, #60a5fa, #8b5cf6, #60a5fa);
+  box-shadow: 0 26px 80px rgba(0,0,0,.65), 0 0 120px rgba(96,165,250,.35);
+}
+#login-box{border-radius:20px; padding:30px 24px; text-align:center; background:#0b0b10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04)}
+.login-title{font-size:var(--h1); font-weight:800; letter-spacing:.2px; margin:0 0 16px;
+  background: linear-gradient(90deg, #60a5fa, #c084fc 45%, #60a5fa);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+#login-error{min-height:1.2em; margin:0 0 8px; color:#ff7b7b; opacity:0; transition:opacity var(--dur-s) var(--ease)}
+.input-group{position:relative; margin:12px 0}
+.input{
+  width:100%; padding:12px 12px 12px 46px; border-radius:12px; font-size:1rem; color:#e5e7eb;
+  background:#111223; border:1px solid #26263a; transition:border-color var(--dur-s), box-shadow var(--dur-s), background var(--dur-s)}
+.input:focus{outline:none; border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.20)}
+.input-icon{position:absolute; top:50%; left:14px; transform:translateY(-50%); width:20px; height:20px}
+#login-btn{
+  width:100%; display:flex; align-items:center; justify-content:center; gap:8px;
+  padding:12px 14px; border-radius:12px; cursor:pointer; margin-top:6px;
+  background:#0f0f18; color:#fff; font-weight:800; border:1px solid #2a2b36; transition: transform var(--dur-s), box-shadow var(--dur-s)}
+#login-btn:hover{box-shadow:0 10px 30px rgba(96,165,250,.25)}
+#login-btn:active{transform:translateY(1px)}
 
-  /* ===================== PAGES ===================== */
-  .page{ position:absolute; inset:0; opacity:0; pointer-events:none; overflow:auto; }
-  .page.active{ opacity:1; pointer-events:auto; }
+/* Actions */
+.actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px}
+.action-btn{
+  display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; cursor:pointer;
+  background: linear-gradient(#0f0f18,#0a0a14) padding-box, linear-gradient(135deg, var(--sky), var(--violet)) border-box;
+  border:1px solid transparent; color:#fff; font-weight:700; box-shadow: 0 12px 30px rgba(96,165,250,.20);
+  transition: transform var(--dur-s), filter var(--dur-s); will-change:transform}
+.action-btn:active{transform:translateY(1px)}
+.action-btn svg{width:18px;height:18px}
 
-  .topbar{
-    position:sticky; top:0; z-index:5; padding:14px 20px; backdrop-filter: blur(10px);
-    background: linear-gradient( to right, rgba(12,12,22,.72), rgba(11,11,20,.58) );
-    border-bottom:1px solid rgba(255,255,255,.06);
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .brand{
-    font-weight:800; letter-spacing:.4px;
-    background: linear-gradient(90deg, var(--sky), var(--violet));
-    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-    font-size: clamp(1.2rem, 2.2vw, 1.5rem);
-  }
-  .top-actions{ display:flex; gap:10px; flex-wrap:wrap; }
-  .chip{
-    padding:8px 12px; border-radius:999px; font-size:.9rem; color:#dfe3ff;
-    background: linear-gradient(120deg, #121225, #0e0f18); border:1px solid rgba(255,255,255,.08);
-  }
-  .linklike{ background:none; border:none; color:#a9b3ff; cursor:pointer; font-weight:700; }
+/* Progress ring */
+.ring-3d{position:relative; width:86px; height:86px; display:grid; place-items:center}
+.ring-svg{width:100%; height:100%; transform:rotate(-90deg)}
+.ring-track{fill:none; stroke:#151b25; stroke-width:12}
+.ring-progress{fill:none; stroke:#60a5fa; stroke-width:12; stroke-linecap:round; stroke-dasharray:0 100; transition: stroke-dasharray var(--dur-l) var(--ease), stroke var(--dur-s)}
+.ring-txt{position:absolute; inset:0; display:grid; place-items:center; font-weight:800; color:#d9ecff}
 
-  .container{ max-width:1200px; margin:28px auto 56px; padding:0 20px; }
-  .kpis{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; margin-bottom:16px; }
-  .card{
-    grid-column: span 4; border-radius:16px; padding:18px; background: var(--glass);
-    border:2px solid transparent; color:var(--text);
-    box-shadow: 0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.03);
-    backdrop-filter: blur(10px);
-    transition: transform .06s, box-shadow .25s, filter .25s;
-  }
-  .card:hover{ transform: translateY(-2px); box-shadow: 0 28px 80px rgba(96,165,250,.28); filter: saturate(1.05); }
-  .card h4{ margin-bottom:10px; font-weight:700; color:#dfe2ff; }
-  .stat{ font-size: clamp(1.4rem, 2.6vw, 2rem); font-weight:800; letter-spacing:.2px; }
-  .stat-gradient{
-    background: linear-gradient(90deg, var(--sky), var(--violet));
-    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-  }
-  .muted{ color:var(--muted); font-size:.92rem; }
+/* MODALS / OVERLAY */
+.overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); opacity:0; pointer-events:none;
+  transition:opacity var(--dur-m) var(--ease)}
+.overlay.visible{opacity:1; pointer-events:auto}
+.modal{
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.96); width:min(520px,92vw);
+  border-radius:var(--radius-lg); padding:16px; background:var(--glass); border:2px solid transparent; color:var(--text);
+  box-shadow: 0 24px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.03); backdrop-filter:blur(10px);
+  opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
+.modal.visible{opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1)}
+.close-btn{position:absolute; top:8px; right:10px; font-size:1.2rem; background:none; border:none; color:var(--muted); cursor:pointer}
 
-  .balance-panel{ grid-column: span 8; display:flex; align-items:center; gap:18px; }
-  .actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
-  .action-btn{
-    display:inline-flex; align-items:center; gap:10px; padding:12px 14px; border-radius:12px; cursor:pointer;
-    background: linear-gradient(#0f0f18,#0a0a14) padding-box,
-                linear-gradient(135deg, var(--sky), var(--violet)) border-box;
-    border:1px solid transparent; color:#fff; font-weight:700; box-shadow: var(--glow-sky);
-    transition: transform .05s, box-shadow .2s, filter .2s;
-  }
-  .action-btn:hover{ box-shadow: 0 14px 34px rgba(96,165,250,.35); filter:saturate(1.1); }
-  .action-btn:active{ transform: translateY(1px); }
-  .action-btn svg{ width:20px; height:20px; }
+/* ===== Pay over time ===== */
+.paybar{display:flex; align-items:center; gap:10px; padding:10px 14px}
+.backlink{display:inline-flex; align-items:center; gap:6px; color:#cbd5ff; font-weight:700}
+.pot-header{font-size:var(--h1); line-height:1.1; font-weight:900; margin:6px 0 8px}
+.pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; font-weight:700; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08)}
+.empty{display:grid; place-items:center; gap:14px; min-height:220px}
+.primary-btn{
+  display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; cursor:pointer; font-weight:800;
+  background:linear-gradient(180deg,#1b1c2a,#121320) padding-box, linear-gradient(135deg,var(--violet),var(--sky)) border-box;
+  border:1px solid transparent; color:#fff; transition:transform var(--dur-s), filter var(--dur-s); box-shadow:0 16px 40px rgba(124,58,237,.25)}
+.primary-btn:active{transform:translateY(1px)}
+.primary-btn svg{width:20px;height:20px}
 
-  .facts{ grid-column: span 4; }
-  .kv{ display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid rgba(255,255,255,.07); }
-  .kv:first-child{ border-top:none; }
+/* planner sheet (full-height on mobile) */
+.sheet{position:fixed; left:50%; transform:translateX(-50%) translateY(8px); bottom:10px; width:min(560px,96vw);
+  background:var(--glass); border:2px solid transparent; border-radius:18px; box-shadow:0 30px 80px rgba(0,0,0,.65);
+  opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
+.sheet.visible{opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(0)}
+.sheet-header{display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.06)}
+.sheet-body{padding:14px}
+.step{opacity:0; transform:translateY(10px); pointer-events:none; transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
+.step.active{opacity:1; transform:none; pointer-events:auto}
+.field{display:flex; flex-direction:column; gap:8px}
+.field input{
+  appearance:textfield; -moz-appearance:textfield; -webkit-appearance:none;
+  padding:12px 12px; border-radius:12px; background:#101226; border:1px solid #2a2b3a; color:#fff; font-size:1rem}
+.field input:focus{outline:none; border-color:var(--violet); box-shadow:0 0 0 4px rgba(139,92,246,.20)}
+.err{color:#ff7b7b; min-height:1em; font-size:var(--small); margin-top:4px; opacity:0; transition:opacity var(--dur-s)}
+.err.show{opacity:1}
+.actions-row{display:flex; gap:10px; margin-top:12px}
+.btn{padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.08); background:#121328; color:#fff; font-weight:700; cursor:pointer}
+.btn.secondary{background:#0f1020}
+.btn:disabled{opacity:.5; cursor:not-allowed}
 
-  /* ====== RING ====== */
-  .ring-3d{
-    position:relative; width:92px; height:92px; display:grid; place-items:center;
-    filter: drop-shadow(0 6px 18px rgba(96,165,250,.18));
-  }
-  .ring-3d::before{ content:""; position:absolute; inset:10px; border-radius:50%;
-    background: radial-gradient(60% 60% at 50% 40%, rgba(96,165,250,.16), transparent 70%); }
-  .ring-svg{ width:100%; height:100%; transform:rotate(-90deg); }
-  .ring-track{ fill:none; stroke:#151b25; stroke-width:12; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); opacity:.95; }
-  .ring-progress{
-    fill:none; stroke:url(#ringGradBlue); stroke-width:12; stroke-linecap:round;
-    filter:url(#ringGlowBlue); stroke-dasharray: 0 100;
-    transition: stroke-dasharray .8s cubic-bezier(.22,.9,.2,1), stroke .2s;
-  }
-  .ring-txt{ position:absolute; inset:0; display:grid; place-items:center; font-weight:800; color:#d9ecff; text-shadow: 0 1px 0 rgba(0,0,0,.4); }
+/* loading cards */
+.loader{display:grid; place-items:center; gap:10px; padding:26px; text-align:center}
+.spinner{width:26px;height:26px;border-radius:50%; border:3px solid rgba(255,255,255,.14); border-top-color:#9aa6ff; animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(1turn)}}
 
-  /* ====== OVERLAY & MODALS ====== */
-  .overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,.5);
-    opacity:0; pointer-events:none; transition:opacity .25s ease;
-  }
-  .overlay.visible{ opacity:1; pointer-events:auto; }
-  .modal{
-    position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.94);
-    width:min(520px, 94vw); border-radius:16px; padding:18px;
-    background: var(--glass); border:2px solid transparent; color:var(--text);
-    box-shadow: 0 24px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.03);
-    backdrop-filter: blur(10px);
-    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
-  }
-  .modal.visible{ opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1); }
-  .modal h3{ margin:6px 0 10px; font-weight:800; }
-  .modal .close-btn{ position:absolute; top:8px; right:10px; font-size:1.3rem; background:none; border:none; color:var(--muted); cursor:pointer; }
+/* plans */
+.plan{border-radius:14px; padding:14px; background:linear-gradient(#121228,#0e0f1f) padding-box,
+      linear-gradient(135deg, rgba(124,58,237,.45), rgba(96,165,250,.45)) border-box;
+  border:1px solid transparent; margin:10px 0; position:relative}
+.plan h4{margin:0 0 6px; font-size:var(--h2)}
+.plan .sub{color:#c6c7df; font-size:var(--small)}
+.r{display:flex; justify-content:space-between; margin:8px 0}
+.radio{position:absolute; top:14px; right:14px}
+.link{display:inline-block; margin-top:6px; background:#121226; border:1px solid rgba(255,255,255,.08); padding:8px 12px; border-radius:12px; cursor:pointer}
 
-  /* ====== TX LIST ====== */
-  .transactions-list{ list-style:none; margin:8px 0 0; padding:0; max-height:420px; overflow:auto; }
-  .transactions-list .date-header{ font-weight:700; color:#dfe2ff; margin-bottom:6px; }
-  .tx-item{
-    padding:12px; border-radius:12px; margin:10px 0; cursor:pointer;
-    background: linear-gradient(#121222,#0f1020) padding-box,
-                linear-gradient(135deg, rgba(96,165,250,.55), rgba(139,92,246,.55)) border-box;
-    border:1px solid transparent; transition:filter .2s, transform .05s, box-shadow .2s;
-  }
-  .tx-item:hover{ filter:saturate(1.06); box-shadow: 0 10px 26px rgba(96,165,250,.28); }
-  .tx-summary{ display:flex; justify-content:space-between; gap:10px; }
-  .credit{ color:#22c55e; font-weight:700; }
-  .debit{ color:#f87171; font-weight:700; }
+/* sticky CTA inside sheet */
+.sticky-cta{
+  position:sticky; bottom:0; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:12px 14px; background:linear-gradient(180deg, rgba(9,9,16,.0), rgba(9,9,16,.65) 22%, rgba(9,9,16,.85) 100%);
+  border-top:1px solid rgba(255,255,255,.08); border-bottom-left-radius:16px; border-bottom-right-radius:16px}
+.green{background:linear-gradient(180deg,#0f1d14,#0b1410) padding-box, linear-gradient(135deg,#34d399,#10b981) border-box; color:#d9ffe9}
+.green button{all:unset; display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:12px 16px; border-radius:12px; background:#16a34a; color:#fff; font-weight:900; cursor:pointer; box-shadow:0 18px 46px rgba(16,185,129,.35)}
+.green button:active{transform:translateY(1px)}
 
-  .search-wrap{
-    display:flex; align-items:center; gap:10px;
-    margin:10px 0 6px; padding:10px 12px; border-radius:12px;
-    background: linear-gradient(#121222,#0f1020) padding-box,
-                linear-gradient(135deg, rgba(96,165,250,.5), rgba(139,92,246,.5)) border-box;
-    border:1px solid transparent; box-shadow: var(--glow-sky);
-  }
-  .search-wrap svg{ width:18px; height:18px; opacity:.8; }
-  #tx-search{ flex:1; background:transparent; border:none; outline:none; color:var(--text); font-size:.98rem; padding:4px 0; }
-  #tx-clear{ background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem; line-height:1; padding:2px 6px; border-radius:8px; visibility:hidden; }
-  #tx-clear:hover{ color:#fff; }
+/* virtual card */
+.cc-card{
+  width:100%; aspect-ratio:1.586; position:relative; border-radius:16px; padding:20px; cursor:pointer; overflow:hidden;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(96,165,250,.22), transparent 60%),
+    radial-gradient(120% 140% at 100% 100%, rgba(236,72,153,.22), transparent 60%),
+    linear-gradient(135deg, #101222, #0b0d18 55%, #0a0a14);
+  border:1px solid rgba(255,255,255,.10); box-shadow: 0 28px 80px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04);
+  transition:transform var(--dur-s) var(--ease), filter var(--dur-s) var(--ease)
+}
+.cc-card:hover{transform:translateY(-1px); filter:saturate(1.05)}
+.cc-name{position:absolute; left:20px; bottom:16px; font-weight:900; letter-spacing:.06rem}
+.cc-visa{position:absolute; right:16px; bottom:12px; font-weight:900; font-size:clamp(1rem, 5vw, 1.3rem)}
+.cc-drawer{overflow:hidden; border-radius:12px; margin-top:10px; max-height:0; opacity:0; transform:translateY(-6px);
+  background:var(--glass); border:2px solid transparent; transition:max-height var(--dur-m) var(--ease), opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
+.cc-drawer.open{max-height:300px; opacity:1; transform:none}
+.cc-rows{display:grid; grid-template-columns:1fr 2fr; gap:8px 12px; padding:12px}
+.row-label{color:var(--muted); font-size:var(--small)}
 
-  /* ====== PAY LATER PAGE ====== */
-  .subtle{ color:var(--muted); }
-  .hero-card{
-    grid-column: span 12;
-    display:flex; align-items:center; justify-content:space-between; gap:18px;
-  }
-  .plan-grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; }
-  .plan-card{ grid-column:span 6; }
-  .btn-cta{
-    display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; cursor:pointer;
-    background: linear-gradient(#0f0f18,#0a0a14) padding-box,
-                linear-gradient(135deg, var(--mint), #22c55e) border-box;
-    border:1px solid transparent; color:#eafff2; font-weight:800; box-shadow: 0 10px 30px rgba(34,197,94,.25);
-  }
-  .btn-cta svg{ width:20px; height:20px; }
-  .btn-ghost{
-    display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:10px; cursor:pointer;
-    background: linear-gradient(#101120,#0c0e18) padding-box;
-    border:1px solid rgba(255,255,255,.08); color:#e7e7ff; font-weight:700;
-  }
-  .badge{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:.82rem; border:1px solid rgba(255,255,255,.08); background:#0f1020; }
-
-  /* ====== PAY LATER MODAL (multi-step) ====== */
-  .step{ display:none; }
-  .step.active{ display:block; }
-  .fields{ display:grid; gap:10px; margin:12px 0; }
-  .input-wrap{ position:relative; }
-  .input-field{
-    width:100%; padding:14px 14px; border-radius:12px; background:#111223; border:1px solid #26263a; color:#e5e7eb;
-  }
-  .input-field:focus{ outline:none; border-color:var(--violet); box-shadow:0 0 0 4px rgba(139,92,246,.18); background:#10122a; }
-  .err{ min-height:1.1em; color:var(--red); font-size:.9rem; }
-  .row-act{ display:flex; gap:10px; justify-content:flex-end; align-items:center; margin-top:8px; flex-wrap:wrap; }
-  .back{ background:none; border:none; color:#a0a6ff; cursor:pointer; font-weight:700; }
-  .continue{ padding:10px 14px; border-radius:10px; background:#0f0f18; border:1px solid #2a2b36; color:#fff; font-weight:800; }
-  .continue:hover{ border-color:var(--violet); box-shadow:0 0 0 4px rgba(139,92,246,.18); }
-  .loading{
-    display:flex; align-items:center; gap:12px; justify-content:center; padding:18px 6px; color:#cfe5ff;
-  }
-  .spinner{
-    width:22px; height:22px; border:3px solid rgba(255,255,255,.15); border-top-color:#8b5cf6; border-radius:50%;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin{ to{ transform:rotate(1turn); } }
-
-  .plan-option{
-    padding:12px; border-radius:12px; margin:10px 0;
-    background: linear-gradient(#121222,#0f1020) padding-box,
-                linear-gradient(135deg, rgba(139,92,246,.55), rgba(96,165,250,.55)) border-box;
-    border:1px solid transparent; cursor:pointer;
-  }
-  .plan-option:hover{ filter:saturate(1.05); }
-  .plan-head{ display:flex; justify-content:space-between; gap:10px; align-items:center; }
-  .schedule{ margin-top:8px; padding-top:8px; border-top:1px dashed rgba(255,255,255,.1); display:none; }
-  .schedule.show{ display:block; }
-  .agree{ display:flex; align-items:center; gap:10px; margin-top:6px; font-size:.92rem; color:#dbe6ff; }
-  .activate{
-    width:100%; padding:12px 14px; border-radius:12px; margin-top:10px; font-weight:800; color:#05261a;
-    border:1px solid #22c55e; background:linear-gradient(135deg, #34d399, #22c55e);
-    box-shadow: 0 12px 30px rgba(34,197,94,.3); cursor:not-allowed; opacity:.6;
-  }
-  .activate.enabled{ cursor:pointer; opacity:1; }
-  .subtle-note{ color:#9ad5b3; font-size:.9rem; }
-
-  /* Virtual card */
-  .cc-card{
-    width:min(520px,100%); aspect-ratio:1.586; position:relative; border-radius:18px; padding:22px; cursor:pointer; overflow:hidden;
-    background:
-      radial-gradient(120% 140% at 0% 0%, rgba(96,165,250,.22), transparent 60%),
-      radial-gradient(120% 140% at 100% 100%, rgba(236,72,153,.22), transparent 60%),
-      linear-gradient(135deg, #101222, #0b0d18 55%, #0a0a14);
-    border:1px solid rgba(255,255,255,.10);
-    box-shadow: 0 28px 80px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04);
-    backdrop-filter: blur(8px);
-    transition: transform .2s ease, box-shadow .3s ease, filter .25s ease;
-  }
-  .cc-card:hover{ transform: translateY(-2px) scale(1.01); box-shadow: 0 36px 100px rgba(124,58,237,.28); filter:saturate(1.06); }
-  .cc-brand{ position:absolute; top:14px; left:16px; font-size:.78rem; letter-spacing:.22rem; font-weight:700; color:#c9c9ffb0; text-transform:uppercase; }
-  .cc-chip{ position:absolute; top:56px; left:22px; width:50px; height:36px; border-radius:8px; background: linear-gradient(135deg, #e8d9a7, #c8b77a 40%, #fff0c5 70%); box-shadow: inset 0 0 0 1px rgba(0,0,0,.25), 0 4px 12px rgba(0,0,0,.35); }
-  .cc-wave{ position:absolute; top:58px; left:86px; width:26px; height:26px; opacity:.8; filter: drop-shadow(0 2px 4px rgba(255,255,255,.2)); }
-  .cc-name{ position:absolute; left:22px; bottom:18px; font-weight:800; letter-spacing:.06rem; color:#eef2ff; text-shadow: 0 1px 0 rgba(0,0,0,.4); }
-  .cc-visa{ position:absolute; right:18px; bottom:14px; font-weight:900; letter-spacing:.04rem; font-size: clamp(1.2rem, 2.8vw, 1.7rem); color:#e9ecff; opacity:.92; text-shadow: 0 4px 18px rgba(139,92,246,.25); }
-  .reveal{
-    width:min(520px,100%); margin-top:12px; overflow:hidden; border-radius:14px; background: var(--glass); border:2px solid transparent;
-    box-shadow: 0 22px 70px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.03); max-height:0; opacity:0; transform: translateY(-6px);
-    transition: max-height .5s ease, opacity .4s ease, transform .4s ease;
-  }
-  .reveal.open{ max-height:420px; opacity:1; transform: translateY(0); }
-  .reveal .rows{ display:grid; grid-template-columns: 1fr 2fr; gap:12px 16px; padding:16px; }
-  .reveal .label{ color:var(--muted); font-size:.9rem; }
-  .reveal .value{ font-weight:700; letter-spacing:.02rem; }
-
-  /* ====== RESPONSIVE ====== */
-  @media (max-width: 980px){
-    .card{ grid-column: span 6; }
-    .balance-panel{ grid-column: span 12; }
-    .facts{ grid-column: span 12; }
-    .plan-card{ grid-column:span 12; }
-  }
-  @media (max-width: 640px){
-    .card{ grid-column: span 12; }
-    .actions{ gap:10px; }
-    .action-btn{ width:100%; justify-content:center; }
-    .hero-card{ flex-direction:column; align-items:flex-start; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .fade, .modal, #login-btn, .tx-item, .card, .action-btn, .reveal{ transition:none !important; }
-    .fx::before, .fx::after{ animation:none !important; }
-  }
+/* responsive tweaks */
+@media (max-width: 980px){
+  .card{grid-column:span 12}
+  .balance-panel{grid-column:span 12}
+  .facts{grid-column:span 12}
+}
+@media (max-width: 520px){
+  .container{margin:14px auto 50px}
+  .actions{gap:8px}
+  .action-btn{padding:9px 10px}
+  .plan .r{font-size:var(--small)}
+  .sheet{left:0; right:0; transform:translateY(8px); width:100%; border-radius:18px 18px 0 0}
+  .sheet.visible{transform:none}
+  .modal{width:94vw}
+  .sticky-cta{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important}
+}
 </style>
 </head>
 <body>
-  <div class="fx"></div>
-  <div class="grid"></div>
+<div class="fx"></div><div class="grid"></div>
 
-  <!-- =================== LOGIN =================== -->
-  <div id="login-screen" class="fade visible">
-    <div class="login-shell">
-      <div id="login-box">
-        <h2 class="login-title">Welcome to Sapphire<br/>Checking</h2>
+<!-- =================== LOGIN =================== -->
+<div id="login-screen" class="fade visible">
+  <div class="login-shell">
+    <div id="login-box">
+      <h2 class="login-title">Welcome to Sapphire<br/>Checking</h2>
+      <div id="login-error">Invalid credentials</div>
 
-        <div id="login-error">Invalid credentials</div>
-
-        <div class="input-group">
-          <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#60a5fa" d="M12 13.2a5.2 5.2 0 1 0 0-10.4 5.2 5.2 0 0 0 0 10.4Z"/>
-            <path fill="#8b5cf6" d="M4.2 20.6c0-3.4 3.9-6.2 7.8-6.2s7.8 2.8 7.8 6.2v.2c0 .7-.6 1.2-1.3 1.2H5.5c-.7 0-1.3-.5-1.3-1.2v-.2Z"/>
-          </svg>
-          <input id="username" class="input" type="text" placeholder="Username" />
-        </div>
-
-        <div class="input-group">
-          <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#60a5fa" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm-8-2a3 3 0 1 1 6 0v2H9V7Zm4 9.7V17a1 1 0 1 0-2 0v-.3a2 2 0 1 0 2 0Z"/>
-          </svg>
-          <input id="password" class="input" type="password" placeholder="Password" />
-        </div>
-
-        <button id="login-btn">
-          <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#8b5cf6" d="M12 3a1 1 0 0 1 1 1v5h-2V5H6v14h5v-4h2v5a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7Zm8.7 9.3-4-4-1.4 1.4 1.3 1.3H12v2h4.6l-1.3 1.3 1.4 1.4 4-4a1 1 0 0 0 0-1.4Z"/>
-          </svg>
-          Log In
-        </button>
+      <div class="input-group">
+        <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#60a5fa" d="M12 13.2a5.2 5.2 0 1 0 0-10.4 5.2 5.2 0 0 0 0 10.4Z"/><path fill="#8b5cf6" d="M4.2 20.6c0-3.4 3.9-6.2 7.8-6.2s7.8 2.8 7.8 6.2v.2c0 .7-.6 1.2-1.3 1.2H5.5c-.7 0-1.3-.5-1.3-1.2v-.2Z"/></svg>
+        <input id="username" class="input" type="text" placeholder="Username" />
       </div>
+
+      <div class="input-group">
+        <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#60a5fa" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Zm-8-2a3 3 0 1 1 6 0v2H9V7Zm4 9.7V17a1 1 0 1 0-2 0v-.3a2 2 0 1 0 2 0Z"/></svg>
+        <input id="password" class="input" type="password" placeholder="Password" />
+      </div>
+
+      <button id="login-btn">
+        <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#8b5cf6" d="M12 3a1 1 0 0 1 1 1v5h-2V5H6v14h5v-4h2v5a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7Zm8.7 9.3-4-4-1.4 1.4 1.3 1.3H12v2h4.6l-1.3 1.3 1.4 1.4 4-4a1 1 0 0 0 0-1.4Z"/></svg>
+        Log In
+      </button>
     </div>
   </div>
+</div>
 
-  <!-- =================== DASHBOARD =================== -->
-  <div id="dashboard" class="hidden fade">
-    <!-- ======= CHECKING ======= -->
-    <div id="checking" class="page active">
-      <div class="topbar">
-        <div class="brand">Chase Sapphire Checking</div>
-        <div class="top-actions">
-          <div class="chip">Status: <strong>Active</strong></div>
-          <div class="chip">Acct ••••2431</div>
-        </div>
-      </div>
+<!-- =================== APP PAGES =================== -->
+<div id="dashboard" class="page hidden"></div>
 
-      <div class="container">
-        <div class="kpis">
-          <!-- Balance / actions -->
-          <div class="card balance-panel">
-            <div>
-              <h4>Available Balance</h4>
-              <div id="bal" class="stat stat-gradient">$414.00</div>
-              <div class="actions">
-                <button id="show-trans" class="action-btn" title="See recent activity">
-                  <svg viewBox="0 0 24 24"><path fill="#60a5fa" d="M4 4h16a1 1 0 0 1 1 1v3H3V5a1 1 0 0 1 1-1zm-1 7h18v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7zm4 2v2h2v-2H7zm4 0v2h6v-2h-6z"/></svg>
-                  Recent transactions
-                </button>
+<!-- ===== Templates injected by JS (keeps file shorter/readable) ===== -->
+<script>
+const $ = (q, el=document) => el.querySelector(q);
+const $$ = (q, el=document) => [...el.querySelectorAll(q)];
+const fmtMoney = n => '$' + Number(n).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
 
-                <button class="action-btn" title="Transfer">
-                  <svg viewBox="0 0 24 24"><path fill="#8b5cf6" d="M4 7h9V4l5 5-5 5v-3H4zM20 17H11v3l-5-5 5-5v3h9z"/></svg>
-                  Transfer
-                </button>
-
-                <!-- NEW: Pay later -->
-                <button id="open-paylater" class="action-btn" title="Pay over time">
-                  <svg viewBox="0 0 24 24"><path fill="#34d399" d="M12 1a11 11 0 1 0 11 11A11.013 11.013 0 0 0 12 1Zm1 11.59 3.3 1.9-.98 1.7L11 13V6h2v6.59Z"/><path fill="#34d399" d="M7 17h7a1 1 0 0 1 0 2H7a1 1 0 0 1 0-2Z"/></svg>
-                  Pay later
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Budget/Spending Ring -->
-          <div class="card" style="display:flex; align-items:center; gap:16px;">
-            <div class="ring-3d">
-              <svg class="ring-svg" viewBox="0 0 120 120" aria-hidden="true">
-                <defs>
-                  <linearGradient id="ringGradBlue" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%"  stop-color="#60a5fa"/>
-                    <stop offset="100%" stop-color="#8b5cf6"/>
-                  </linearGradient>
-                  <filter id="ringGlowBlue" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
-                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                  </filter>
-                </defs>
-                <circle class="ring-track" cx="60" cy="60" r="46"></circle>
-                <circle class="ring-progress" id="budgetRing" cx="60" cy="60" r="46" pathLength="100"></circle>
-              </svg>
-              <span class="ring-txt" id="budgetPct">0%</span>
-            </div>
-            <div>
-              <h4>Budget Used</h4>
-              <div class="muted">Monthly budget: <strong id="budgetLbl">$1,000</strong></div>
-            </div>
-          </div>
-
-          <!-- Account Snapshot -->
-          <div class="card facts">
-            <h4>Account Snapshot</h4>
-            <div class="kv"><span class="muted">Present balance</span><strong id="present">$414.00</strong></div>
-            <div class="kv"><span class="muted">Account number</span><strong>501262431</strong></div>
-            <div class="kv"><span class="muted">Routing number</span><strong>072000326</strong></div>
-            <div class="kv"><span class="muted">Interest rate</span><strong>0.00%</strong></div>
-            <div class="kv"><span class="muted">Interest in 2025</span><strong>$0.00</strong></div>
-          </div>
-        </div>
+/* ---------- Simple Router (Checking / Pay Later) ---------- */
+function viewChecking(){
+  const el = document.createElement('div');
+  el.id='checking'; el.className='page active';
+  el.innerHTML = `
+    <div class="topbar">
+      <div class="brand">Chase Sapphire Checking</div>
+      <div class="top-actions">
+        <div class="chip">Status: <strong>Active</strong></div>
+        <div class="chip">Acct ••••2431</div>
       </div>
     </div>
 
-    <!-- ======= PAY LATER PAGE ======= -->
-    <div id="paylater" class="page">
-      <div class="topbar">
-        <div class="brand">Pay over time</div>
-        <div class="top-actions">
-          <button id="back-to-checking" class="linklike">← Checking</button>
-          <div id="pot-count" class="chip">Active plans: <strong>0</strong></div>
+    <div class="container">
+      <div class="kpis">
+        <div class="card balance-panel">
+          <div>
+            <h4 style="margin:0 0 6px">Available Balance</h4>
+            <div id="bal" class="stat stat-gradient" style="font-weight:900; font-size:clamp(1.2rem,3.8vw,1.8rem)">$414.00</div>
+            <div class="actions">
+              <button id="show-trans" class="action-btn" title="Recent activity">
+                <svg viewBox="0 0 24 24"><path fill="#60a5fa" d="M4 4h16a1 1 0 0 1 1 1v3H3V5a1 1 0 0 1 1-1zm-1 7h18v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7zm4 2v2h2v-2H7zm4 0v2h6v-2h-6z"/></svg>
+                Recent
+              </button>
+              <button class="action-btn" title="Transfer">
+                <svg viewBox="0 0 24 24"><path fill="#8b5cf6" d="M4 7h9V4l5 5-5 5v-3H4zM20 17H11v3l-5-5 5-5v3h9z"/></svg>
+                Transfer
+              </button>
+              <button id="payLaterBtn" class="action-btn" title="Pay over time">
+                <svg viewBox="0 0 24 24"><path fill="#34d399" d="M12 1a11 11 0 1 0 0 22 11 11 0 0 0 0-22ZM7 11h5V6h2v7H7v-2Z"/></svg>
+                Pay later
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="display:flex;align-items:center;gap:12px">
+          <div class="ring-3d">
+            <svg class="ring-svg" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="ring-track" cx="60" cy="60" r="46"></circle>
+              <circle class="ring-progress" id="budgetRing" cx="60" cy="60" r="46" pathLength="100"></circle>
+            </svg>
+            <span class="ring-txt" id="budgetPct">0%</span>
+          </div>
+          <div>
+            <h4 style="margin:0 0 4px">Budget Used</h4>
+            <div class="muted">Monthly budget: <strong id="budgetLbl">$1,000</strong></div>
+          </div>
+        </div>
+
+        <div class="card facts">
+          <h4>Account Snapshot</h4>
+          <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Present balance</span><strong id="present">$414.00</strong></div>
+          <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Account number</span><strong>501262431</strong></div>
+          <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Routing number</span><strong>072000326</strong></div>
+          <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Interest rate</span><strong>0.00%</strong></div>
         </div>
       </div>
+    </div>
+  `;
+  // animate in page
+  mountPage(el);
+  // Ring demo
+  setBudgetProgress(140, 1000);
+  // wire pay later
+  $('#payLaterBtn', el).addEventListener('click', () => viewPayLater());
+}
 
-      <div class="container">
-        <div id="pot-empty" class="card hero-card">
-          <div>
-            <h4>No active plans</h4>
-            <div class="subtle">Create a plan to split a purchase—no interest, ever.</div>
-          </div>
-          <button id="open-plan-modal" class="btn-cta">
-            <svg viewBox="0 0 24 24"><path fill="#05261a" d="M19 3H5a2 2 0 0 0-2 2v2h18V5a2 2 0 0 0-2-2Zm-7 16a1 1 0 0 1-1 1H8v-3a1 1 0 0 0-2 0v3H4a1 1 0 0 1-1-1v-9h18v9a1 1 0 0 1-1 1h-2v-3a1 1 0 0 0-2 0v3h-3a1 1 0 0 1-1-1Z"/></svg>
+function viewPayLater(){
+  const plans = getPlans();
+  const count = plans.length;
+
+  const el = document.createElement('div');
+  el.id='paylater'; el.className='page active';
+  el.innerHTML = `
+    <div class="topbar paybar">
+      <a class="backlink" href="#" id="backChecking">← Checking</a>
+      <div class="pill">Active plans: <strong id="planCount" style="margin-left:6px">${count}</strong></div>
+    </div>
+
+    <div class="container" id="potContainer">
+      <h1 class="pot-header">Pay over<br/>time</h1>
+
+      ${ count ? renderPlansList(plans) : `
+        <div class="card empty" id="emptyState">
+          <div class="muted">No active plans</div>
+          <button id="startPlan" class="primary-btn">
+            <svg viewBox="0 0 24 24"><path fill="#c4c8ff" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"/></svg>
             Plan a purchase
           </button>
         </div>
-
-        <div id="plans-list" class="plan-grid"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ OVERLAY & MODALS ============ -->
-  <div id="overlay" class="overlay"></div>
-
-  <div id="trans-modal" class="modal">
-    <button id="close-trans" class="close-btn">×</button>
-    <h3>Recent transactions</h3>
-
-    <div class="search-wrap">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="#60a5fa" d="M15.5 14h-.8l-.3-.3a6 6 0 1 0-.9.9l.3.3v.8L19 20.5 20.5 19 15.5 14Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14Z"/>
-      </svg>
-      <input id="tx-search" type="text" autocomplete="off" placeholder="Search merchant, amount, date…" />
-      <button id="tx-clear" title="Clear">×</button>
+      `}
     </div>
 
-    <div class="date-header" style="color:var(--muted);">Pending (0)</div>
-    <div style="margin-bottom:8px;color:var(--muted);">No pending transactions</div>
-
-    <ul id="tx-list" class="transactions-list"></ul>
-  </div>
-
-  <div id="tx-detail-modal" class="modal">
-    <button class="back-btn">← Back</button>
-    <h3>Transaction Details</h3>
-    <div class="detail-rows"></div>
-  </div>
-
-  <!-- ====== PAY LATER CREATION MODAL ====== -->
-  <div id="pot-modal" class="modal">
-    <button id="close-pot" class="close-btn">×</button>
-    <div id="step-1" class="step active">
-      <h3>Plan a purchase</h3>
-      <div class="fields">
-        <label class="subtle">Store name</label>
-        <input id="store-input" class="input-field" type="text" placeholder="e.g., Apple, Best Buy, Steam" />
+    <!-- Planner Sheet -->
+    <div id="sheet" class="sheet" aria-hidden="true">
+      <div class="sheet-header">
+        <div style="font-weight:900">Plan a purchase</div>
+        <button class="close-btn" id="closeSheet">×</button>
       </div>
-      <div id="err-1" class="err"></div>
-      <div class="row-act">
-        <button class="back" disabled>Back</button>
-        <button id="go-1" class="continue">Continue</button>
-      </div>
-    </div>
-
-    <div id="step-2" class="step">
-      <h3>Purchase amount</h3>
-      <div class="fields">
-        <label class="subtle">Enter whole dollars (minimum $50)</label>
-        <div class="input-wrap">
-          <input id="amount-input" class="input-field" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="e.g., 299" />
-        </div>
-      </div>
-      <div id="err-2" class="err"></div>
-      <div class="row-act">
-        <button id="back-2" class="back">Back</button>
-        <button id="go-2" class="continue">Continue</button>
-      </div>
-    </div>
-
-    <div id="step-loading" class="step">
-      <h3>Retrieving plans</h3>
-      <div class="loading">
-        <div class="spinner"></div>
-        <div>Please wait while we craft options for your purchase…</div>
-      </div>
-    </div>
-
-    <div id="step-plans" class="step">
-      <h3>Select a plan</h3>
-      <div id="plans-container"></div>
-      <label class="agree"><input id="agree" type="checkbox"> I agree to the loan terms and the Truth in Lending disclosure.</label>
-      <button id="activate" class="activate" disabled>Activate plan</button>
-      <div class="subtle-note">No interest. No late fees. Cancel anytime before paying the downpayment.</div>
-      <div class="row-act">
-        <button id="back-plans" class="back">Back</button>
-      </div>
-    </div>
-
-    <div id="step-activating" class="step">
-      <h3>Activating plan</h3>
-      <div class="loading">
-        <div class="spinner"></div>
-        <div>Setting up your virtual card & schedule…</div>
-      </div>
-    </div>
-
-    <div id="step-card" class="step">
-      <h3>Use this virtual card at checkout</h3>
-      <div id="virtual-card" class="cc-card" role="button" aria-expanded="false" tabindex="0" title="Click to reveal details">
-        <div class="cc-brand">Virtual Debit • Sapphire</div>
-        <div class="cc-chip" aria-hidden="true"></div>
-        <svg class="cc-wave" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="#cdd1ff" d="M6 4.7a1 1 0 0 1 1.4 0 10 10 0 0 1 0 14.1 1 1 0 1 1-1.4-1.4 8 8 0 0 0 0-11.3 1 1 0 0 1 0-1.4Zm4 2a1 1 0 0 1 1.4 0 7 7 0 0 1 0 9.9 1 1 0 1 1-1.4-1.4 5 5 0 0 0 0-7.1 1 1 0 0 1 0-1.4Zm4 2a1 1 0 0 1 1.4 0 4 4 0 0 1 0 5.6 1 1 0 1 1-1.4-1.4 2 2 0 0 0 0-2.8 1 1 0 0 1 0-1.4Z"/>
-        </svg>
-        <div class="cc-name">SHLOAK PATEL</div>
-        <div class="cc-visa">VISA</div>
-      </div>
-
-      <div id="card-reveal" class="reveal" aria-hidden="true">
-        <div class="rows">
-          <div class="label">Card number</div>   <div id="v-num" class="value">•••• •••• •••• ••••</div>
-          <div class="label">Expiry</div>        <div id="v-exp" class="value">••/••</div>
-          <div class="label">Security code</div> <div id="v-cvv" class="value">•••</div>
-          <div class="label">Cardholder</div>    <div class="value">Shloak Patel</div>
-        </div>
-      </div>
-
-      <div class="row-act" style="justify-content:space-between;">
-        <span class="subtle">Tap the card to reveal details.</span>
-        <button id="start-plan" class="btn-cta">
-          <svg viewBox="0 0 24 24"><path fill="#05261a" d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm4.7 7.29-5.65 5.66a1 1 0 0 1-1.42 0L7.3 12.62l1.4-1.41 1.22 1.23 4.94-4.94Z"/></svg>
-          Start plan
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== ACTIVE PLAN DETAIL MODAL ====== -->
-  <div id="plan-detail" class="modal">
-    <button id="close-plan-detail" class="close-btn">×</button>
-    <h3 id="pd-title">Plan details</h3>
-    <div id="pd-body"></div>
-  </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const overlay     = document.getElementById('overlay');
-  const transModal  = document.getElementById('trans-modal');
-  const detailModal = document.getElementById('tx-detail-modal');
-  const loginScreen = document.getElementById('login-screen');
-  const dashboard   = document.getElementById('dashboard');
-  const btn         = document.getElementById('login-btn');
-
-  /* ========= CHECKING DATA ========= */
-  const balance = 414.00;
-  const monthlyBudget = 1000; // demo
-
-  const transactions = [
-    { date:'Aug 18, 2025', merchant:'ACH transfer from TOTAL CHECKING (..6750)', amount:64.00,  type:'credit' },
-    { date:'Aug 05, 2025', merchant:'Online Transfer from SAVINGS ****9124',     amount:350.00, type:'credit' }
-  ];
-
-  // ====== Budget ring (based on debit spending this month) ======
-  const ring = document.getElementById('budgetRing');
-  const ringTxt = document.getElementById('budgetPct');
-
-  function calcMonthSpending(list){
-    // static demo date for predictability
-    const now = new Date('2025-08-15');
-    const m = now.getMonth(), y = now.getFullYear();
-    return list
-      .filter(t => {
-        const d = new Date(Date.parse(t.date));
-        return d.getMonth()===m && d.getFullYear()===y && t.amount < 0;
-      })
-      .reduce((sum,t)=>sum + Math.abs(t.amount), 0);
-  }
-
-  function setBudgetProgress(spent, budget){
-    const pct = Math.max(0, Math.min(100, (spent/budget)*100));
-    ring.style.strokeDasharray = `${pct} 100`;
-    ringTxt.textContent = `${Math.round(pct)}%`;
-    let color = '#34d399';
-    if (pct >= 80) color = '#8b5cf6';
-    else if (pct >= 50) color = '#fbbf24';
-    ring.style.stroke = color;
-    ring.style.filter = `drop-shadow(0 6px 16px ${color}66)`;
-  }
-
-  const spentThisMonth = calcMonthSpending(transactions);
-  setBudgetProgress(spentThisMonth, monthlyBudget);
-  document.getElementById('budgetLbl').textContent = `$${monthlyBudget.toLocaleString()}`;
-  document.getElementById('bal').textContent = `$${balance.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
-  document.getElementById('present').textContent = `$${balance.toFixed(2)}`;
-
-  // ===== Render transactions =====
-  const txListEl = document.getElementById('tx-list');
-
-  function renderList(list = transactions){
-    txListEl.innerHTML = '';
-    if (!list.length){
-      txListEl.innerHTML = '<li class="muted" style="padding:12px 6px;">No matches.</li>';
-      return;
-    }
-    const byDate = {};
-    list.forEach(t => { (byDate[t.date] ??= []).push(t); });
-
-    Object.entries(byDate).forEach(([date, items])=>{
-      const header = document.createElement('div');
-      header.className = 'date-header';
-      header.textContent = `${date} (${items.length})`;
-      txListEl.appendChild(header);
-
-      items.forEach(tx => {
-        const li = document.createElement('li');
-        li.className = 'tx-item';
-        const amt = (tx.amount >= 0 ? '+' : '-') + Math.abs(tx.amount).toFixed(2);
-        li.innerHTML = `
-          <div class="tx-summary">
-            <span>${tx.merchant}</span>
-            <span class="${tx.amount >= 0 ? 'credit' : 'debit'}">$${amt}</span>
+      <div class="sheet-body">
+        <!-- step 1 -->
+        <div class="step active" id="step1">
+          <div class="field">
+            <label>Store name</label>
+            <input id="storeInput" type="text" inputmode="text" autocomplete="off" placeholder="e.g., Best Buy" />
+            <div id="err1" class="err">Please enter a store name.</div>
           </div>
-        `;
-        li.addEventListener('click', () => openDetail(tx));
-        txListEl.appendChild(li);
-      });
-    });
+          <div class="actions-row">
+            <button id="s1Next" class="btn">Continue</button>
+          </div>
+        </div>
+
+        <!-- step 2 -->
+        <div class="step" id="step2">
+          <div class="field">
+            <label>Purchase amount (minimum $50)</label>
+            <input id="amountInput" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="50" />
+            <div id="err2" class="err">Enter a whole dollar amount of $50 or more.</div>
+          </div>
+          <div class="actions-row">
+            <button id="back1" class="btn secondary">Back</button>
+            <button id="s2Next" class="btn">Continue</button>
+          </div>
+        </div>
+
+        <!-- step 3: loading -->
+        <div class="step" id="loadingStep">
+          <div class="loader">
+            <div class="spinner"></div>
+            <div>Retrieving plans…</div>
+          </div>
+        </div>
+
+        <!-- step 4: plans -->
+        <div class="step" id="plansStep">
+          <div id="plansWrap"></div>
+          <label style="display:flex;align-items:center;gap:8px;margin-top:10px">
+            <input id="agree" type="checkbox" />
+            <span>I agree to the loan terms and the Truth in Lending disclosure.</span>
+          </label>
+          <div class="sticky-cta green">
+            <div class="muted" id="ctaHint">Select a plan to continue.</div>
+            <button id="activateBtn" disabled>
+              <svg viewBox="0 0 24 24"><path fill="#fff" d="M10 17l-4-4 1.4-1.4L10 14.2l6.6-6.6L18 9l-8 8z"/></svg>
+              Activate plan
+            </button>
+          </div>
+          <div class="actions-row" style="margin-top:8px">
+            <button id="back2" class="btn secondary">Back</button>
+          </div>
+        </div>
+
+        <!-- step 5: activating -->
+        <div class="step" id="activatingStep">
+          <div class="loader">
+            <div class="spinner"></div>
+            <div>Activating plan…</div>
+          </div>
+        </div>
+
+        <!-- step 6: card -->
+        <div class="step" id="cardStep">
+          <div class="muted" id="cardMsg" style="margin-bottom:8px"></div>
+          <div id="vcard" class="cc-card" role="button" title="Tap to reveal details">
+            <div class="cc-name">SAPPHIRE • VIRTUAL</div>
+            <div class="cc-visa">VISA</div>
+          </div>
+          <div id="ccDrawer" class="cc-drawer">
+            <div class="cc-rows">
+              <div class="row-label">Card number</div><div id="ccNum"></div>
+              <div class="row-label">Expiry</div><div id="ccExp"></div>
+              <div class="row-label">Security</div><div id="ccCvv"></div>
+            </div>
+          </div>
+          <div class="actions-row">
+            <button id="finish" class="btn">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  mountPage(el);
+
+  // wiring
+  $('#backChecking', el).onclick = e => { e.preventDefault(); viewChecking(); };
+  const openSheet = () => { $('#sheet').classList.add('visible'); $('#sheet').setAttribute('aria-hidden','false'); };
+  const closeSheet = () => { $('#sheet').classList.remove('visible'); $('#sheet').setAttribute('aria-hidden','true'); resetSheet(); };
+
+  $('#closeSheet', el).onclick = closeSheet;
+  $('#startPlan', el)?.addEventListener('click', openSheet);
+
+  // planner logic
+  const s1 = $('#step1'), s2 = $('#step2'), sLoad = $('#loadingStep'), sPlans = $('#plansStep'), sAct = $('#activatingStep'), sCard = $('#cardStep');
+
+  function go(to){
+    // smooth step swap
+    [s1,s2,sLoad,sPlans,sAct,sCard].forEach(st => st.classList.remove('active'));
+    to.classList.add('active');
   }
-  renderList();
-
-  function openDetail(tx){
-    const rows = [
-      {label:'Merchant', value: tx.merchant},
-      {label:'Date',     value: tx.date},
-      {label:'Amount',   value: (tx.amount>=0?'+':'-') + '$' + Math.abs(tx.amount).toFixed(2)},
-      {label:'Type',     value: tx.type}
-    ];
-    const cont = detailModal.querySelector('.detail-rows');
-    cont.innerHTML = rows.map(r=>`<div class="row"><div class="row-label">${r.label}</div><div>${r.value}</div></div>`).join('');
-    close(transModal);
-    open(detailModal);
+  function resetSheet(){
+    $('#storeInput').value = ''; $('#amountInput').value=''; $('#agree').checked=false;
+    $('#activateBtn').disabled = true; $('#ctaHint').textContent='Select a plan to continue.'; selectedPlan=null;
+    go(s1);
   }
 
-  // ===== Search (prefix / word-start) =====
-  const searchInput = document.getElementById('tx-search');
-  const clearBtn    = document.getElementById('tx-clear');
-
-  function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-  function filterTx(q){
-    if(!q) return transactions;
-    const tokens = q.trim().toLowerCase().split(/\s+/).map(escapeRegExp);
-    return transactions.filter(tx => {
-      const hay = `${tx.merchant} ${tx.date} ${tx.amount.toFixed(2)} ${tx.type}`.toLowerCase();
-      return tokens.every(t => new RegExp(`(^|\\b|\\s)${t}`).test(hay));
-    });
-  }
-  searchInput.addEventListener('input', () => {
-    const q = searchInput.value;
-    renderList(filterTx(q));
-    clearBtn.style.visibility = q ? 'visible' : 'hidden';
-  });
-  clearBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    renderList(transactions);
-    clearBtn.style.visibility = 'hidden';
-    searchInput.focus();
-  });
-
-  // ===== Open/close helpers =====
-  const open  = (m)=>{ overlay.classList.add('visible'); m.classList.add('visible'); };
-  const close = (m)=>{ m.classList.remove('visible'); overlay.classList.remove('visible'); };
-
-  document.getElementById('show-trans').onclick = () => {
-    open(transModal);
-    renderList(filterTx(searchInput.value));
-    setTimeout(()=>searchInput.focus(), 50);
+  $('#s1Next').onclick = () => {
+    const v = $('#storeInput').value.trim();
+    $('#err1').classList.toggle('show', !v);
+    if(!v) return;
+    go(s2);
+    setTimeout(()=>$('#amountInput').focus(), 40);
   };
-  document.getElementById('close-trans').onclick = () => close(transModal);
-  document.querySelector('#tx-detail-modal .back-btn').onclick = () => { close(detailModal); open(transModal); };
 
-  /* ========= Login: allow ANY non-empty credentials ========= */
+  // numbers only
+  $('#amountInput').addEventListener('input', (e)=>{
+    e.target.value = e.target.value.replace(/[^\d]/g,''); // digits only
+  });
+
+  $('#back1').onclick = ()=> go(s1);
+  $('#s2Next').onclick = () => {
+    const raw = $('#amountInput').value.trim();
+    const amt = Number(raw);
+    const ok = raw !== '' && Number.isInteger(amt) && amt >= 50;
+    $('#err2').classList.toggle('show', !ok);
+    if(!ok) return;
+    // loading 4s then show plans
+    go(sLoad);
+    setTimeout(()=>{
+      renderPlans(amt);
+      go(sPlans);
+    }, 4000);
+  };
+
+  let selectedPlan = null;
+
+  function renderPlans(amount){
+    const wrap = $('#plansWrap'); wrap.innerHTML='';
+    const today = new Date();
+    const nextMonthSameDay = shiftDate(today, {months:1});
+    const biweekly = makeBiweekly(amount); // with downpayment
+    const sixmo   = makeMonthly(amount, 6);
+    const twelve  = amount >= 100 ? makeMonthly(amount, 12) : null;
+
+    [biweekly, sixmo, twelve].filter(Boolean).forEach(p=>{
+      const div = document.createElement('div');
+      div.className='plan';
+      div.innerHTML = `
+        <input class="radio" type="radio" name="planPick">
+        <h4>${p.title}</h4>
+        <div class="sub">${p.subtitle}</div>
+        <div class="r"><span>Payment</span><strong>${fmtMoney(p.perPayment)} ${p.freqLabel}</strong></div>
+        <div class="r"><span>First due</span><strong>${p.firstDue.label}</strong></div>
+        <div class="link">View schedule</div>
+      `;
+      div.querySelector('.radio').addEventListener('change', ()=>{
+        selectedPlan = p;
+        $('#ctaHint').textContent = 'Review terms and activate.';
+        enableActivate();
+      });
+      // schedule
+      div.querySelector('.link').onclick = ()=> showScheduleModal(p);
+      wrap.appendChild(div);
+    });
+
+    function enableActivate(){
+      $('#activateBtn').disabled = !(selectedPlan && $('#agree').checked);
+    }
+    $('#agree').onchange = enableActivate;
+
+    $('#activateBtn').onclick = ()=>{
+      // go to activating
+      go(sAct);
+      setTimeout(()=>{
+        // create + save plan with a virtual card
+        const plan = materializePlan(selectedPlan, $('#storeInput').value.trim(), amount);
+        savePlan(plan);
+        // produce card
+        const card = genVisa();
+        $('#cardMsg').textContent = `Use this virtual VISA to pay ${plan.store}. Tap to reveal info.`;
+        $('#ccNum').textContent = card.number;
+        $('#ccExp').textContent = card.exp;
+        $('#ccCvv').textContent = card.cvv;
+        $('#vcard').onclick = ()=> $('#ccDrawer').classList.toggle('open');
+        go(sCard);
+        // refresh counter / list
+        $('#planCount').textContent = getPlans().length;
+        const container = $('#potContainer');
+        container.innerHTML = renderPlansList(getPlans());
+      }, 5000);
+    };
+
+    $('#back2').onclick = ()=> go(s2);
+  }
+
+  $('#finish').onclick = () => { closeSheet(); };
+}
+
+/* ---------- Helpers for plan math ---------- */
+function shiftDate(d, {days=0, months=0} = {}){
+  const nd = new Date(d);
+  nd.setMonth(nd.getMonth()+months);
+  nd.setDate(nd.getDate()+days);
+  return nd;
+}
+function labelDate(d, down=false){
+  const opts = {month:'numeric',day:'numeric',year:'numeric'};
+  return `${d.toLocaleDateString(undefined,opts)}${down?' (downpayment)':''}`;
+}
+function makeBiweekly(amount){
+  // 4 payments over 8 weeks; first due is "today" (downpayment)
+  const per = Math.round((amount/4));
+  const schedule = [];
+  const start = new Date();
+  schedule.push({label: labelDate(start,true), amount: per});
+  for(let i=1;i<4;i++){
+    const due = shiftDate(start, {days: 14*i});
+    schedule.push({label: labelDate(due), amount: per});
+  }
+  return {
+    key:'biweekly',
+    title:'Bi-weekly',
+    subtitle:'4 payments • first due today (downpayment)',
+    perPayment: per, freqLabel:'/ every 2 weeks',
+    firstDue: schedule[0],
+    schedule
+  };
+}
+function makeMonthly(amount, months){
+  const per = Math.round(amount / months);
+  const start = shiftDate(new Date(), {months:1}); // first due next month
+  const schedule = [];
+  for(let i=0;i<months;i++){
+    const due = shiftDate(start, {months:i});
+    schedule.push({label: labelDate(due), amount: per});
+  }
+  return {
+    key:`${months}mo`,
+    title: months===6 ? '6 months' : '12 months',
+    subtitle: months===6 ? 'Equal monthly payments' : 'Lower monthly payments',
+    perPayment: per, freqLabel:'/ month',
+    firstDue: schedule[0],
+    schedule
+  };
+}
+function materializePlan(def, store, amount){
+  return {
+    id: 'pln_' + Math.random().toString(36).slice(2,10),
+    created: new Date().toLocaleString(),
+    store, amount,
+    defKey: def.key,
+    title: def.title,
+    perPayment: def.perPayment,
+    schedule: def.schedule
+  };
+}
+
+/* ---------- Local storage for plans ---------- */
+const PLANS_KEY='sapphire_plans';
+const getPlans = () => JSON.parse(localStorage.getItem(PLANS_KEY)||'[]');
+const savePlan = (p) => { const arr=getPlans(); arr.unshift(p); localStorage.setItem(PLANS_KEY, JSON.stringify(arr)); };
+function renderPlansList(plans){
+  return `
+  <div class="card">
+    <div style="font-weight:800;margin-bottom:8px">Created</div>
+    ${plans.map(p=>`
+      <div style="border-top:1px solid rgba(255,255,255,.08); padding:10px 0">
+        <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <div><strong>${p.store}</strong> • ${p.title}</div>
+          <div class="muted">${p.created}</div>
+        </div>
+        <div class="muted" style="margin-top:4px">Amount: <strong>${fmtMoney(p.amount)}</strong> — Payment: <strong>${fmtMoney(p.perPayment)}</strong></div>
+        <div><button class="link" onclick='(${showScheduleModal.toString()})(${JSON.stringify(p)})'>View schedule</button></div>
+      </div>
+    `).join('')}
+    <div style="margin-top:12px"><button id="startPlan" class="primary-btn"><svg viewBox="0 0 24 24"><path fill="#c4c8ff" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"/></svg>Plan a purchase</button></div>
+  </div>`;
+}
+
+/* ---------- Schedule modal ---------- */
+function showScheduleModal(plan){
+  const overlay = ensureOverlay();
+  const modal = document.createElement('div');
+  modal.className='modal';
+  modal.innerHTML = `
+    <button class="close-btn">×</button>
+    <h3 style="margin:6px 0 10px; font-weight:800">${plan.title} — ${plan.store}</h3>
+    <div class="muted" style="margin-bottom:10px">Created <strong>${plan.created}</strong></div>
+    <div style="font-weight:800;margin:8px 0">Schedule</div>
+    <div>
+      ${plan.schedule.map((row,i)=>`
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.08)">
+          <span>${i===0 && plan.defKey==='biweekly'?'Downpayment':'Payment ' + (i+1)}</span>
+          <strong>${row.label} • ${fmtMoney(row.amount)}</strong>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  overlay.appendChild(modal);
+  requestAnimationFrame(()=>{ overlay.classList.add('visible'); modal.classList.add('visible'); });
+  modal.querySelector('.close-btn').onclick = ()=> closeModal(overlay, modal);
+  overlay.onclick = (e)=>{ if(e.target===overlay) closeModal(overlay, modal); };
+}
+function ensureOverlay(){
+  let o = document.getElementById('overlay');
+  if(!o){ o=document.createElement('div'); o.id='overlay'; o.className='overlay'; document.body.appendChild(o); }
+  return o;
+}
+function closeModal(overlay, modal){
+  modal.classList.remove('visible'); overlay.classList.remove('visible');
+  setTimeout(()=> modal.remove(), 220);
+}
+
+/* ---------- Budget ring demo ---------- */
+function setBudgetProgress(spent, budget){
+  const ring = document.getElementById('budgetRing');
+  const txt = document.getElementById('budgetPct');
+  const pct = clamp((spent/budget)*100,0,100);
+  ring.style.strokeDasharray = `${pct} 100`;
+  txt.textContent = `${Math.round(pct)}%`;
+  ring.style.stroke = pct>80?'#8b5cf6':(pct>50?'#fbbf24':'#60a5fa');
+  ring.style.filter = `drop-shadow(0 6px 16px ${pct>80?'#8b5cf6':(pct>50?'#fbbf24':'#60a5fa')}66)`;
+}
+
+/* ---------- VISA generator ---------- */
+function genVisa(){
+  const digits = Array.from({length:16}, (_,i)=> i===0?4:Math.floor(Math.random()*10));
+  const number = digits.join('').replace(/(\d{4})(?=\d)/g,'$1 ');
+  const m = String(Math.floor(Math.random()*12)+1).padStart(2,'0');
+  const y = String(new Date().getFullYear()+3+Math.floor(Math.random()*5));
+  const cvv = String(Math.floor(Math.random()*900)+100);
+  return {number, exp:`${m}/${y}`, cvv};
+}
+
+/* ---------- Page mount / swap ---------- */
+function mountPage(newPage){
+  const root = document.getElementById('dashboard');
+  // swap pages with fade/slide
+  root.replaceWith(root.cloneNode(false)); // clear previous listeners
+  const shell = document.createElement('div');
+  shell.id='dashboard'; shell.className='page active';
+  shell.appendChild(newPage.firstElementChild); // topbar
+  shell.appendChild(newPage.lastElementChild);  // container / sheet if present
+  document.body.appendChild(shell);
+}
+
+/* ---------- Login flow ---------- */
+document.addEventListener('DOMContentLoaded', ()=>{
+  const loginScreen = document.getElementById('login-screen');
+  const btn = document.getElementById('login-btn');
   function tryLogin(){
     const u = document.getElementById('username').value.trim();
     const p = document.getElementById('password').value;
     const err = document.getElementById('login-error');
-    if (u && p){
-      loginScreen.classList.remove('visible');
-      loginScreen.classList.add('hidden');
-      setTimeout(() => {
-        dashboard.classList.remove('hidden');
-        dashboard.classList.add('visible');
-      }, 300);
-    } else {
-      err.textContent = 'Enter username & password';
-      err.style.opacity = '1';
-      setTimeout(() => err.style.opacity = '0', 1800);
+    if(u && p){
+      loginScreen.style.transition = `opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)`;
+      loginScreen.style.opacity = '0'; loginScreen.style.transform = 'scale(.98)';
+      setTimeout(()=> loginScreen.remove(), 360);
+      viewChecking();
+    }else{
+      err.textContent='Enter username & password'; err.style.opacity='1';
+      setTimeout(()=> err.style.opacity='0', 1600);
     }
   }
   btn.addEventListener('click', tryLogin);
-  ['username','password'].forEach(id=>{
-    document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
-  });
-
-  /* ========= PAY OVER TIME ========= */
-  const pageChecking = document.getElementById('checking');
-  const pagePayLater = document.getElementById('paylater');
-  document.getElementById('open-paylater').addEventListener('click', () => showPage('paylater'));
-  document.getElementById('back-to-checking').addEventListener('click', () => showPage('checking'));
-  function showPage(which){
-    [pageChecking, pagePayLater].forEach(p => p.classList.remove('active'));
-    (which==='paylater'?pagePayLater:pageChecking).classList.add('active');
-  }
-
-  // Local storage
-  const LS_KEY = 'sapphire_pot_plans';
-  function loadPlans(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)) || []; }catch{ return []; } }
-  function savePlans(plans){ localStorage.setItem(LS_KEY, JSON.stringify(plans)); }
-  let plans = loadPlans();
-
-  const potCount = document.getElementById('pot-count').querySelector('strong');
-  const potEmpty = document.getElementById('pot-empty');
-  const plansList = document.getElementById('plans-list');
-  function renderPlans(){
-    potCount.textContent = plans.length;
-    if(plans.length===0){
-      potEmpty.style.display='flex';
-      plansList.innerHTML='';
-    }else{
-      potEmpty.style.display='none';
-      plansList.innerHTML = '';
-      plans.forEach((pl, idx) => {
-        const next = pl.schedule.find(p=>!p.paid) || pl.schedule[pl.schedule.length-1];
-        const card = document.createElement('div');
-        card.className = 'card plan-card';
-        card.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-            <div>
-              <h4>${pl.store}</h4>
-              <div class="muted">${pl.typeLabel} • Total $${pl.amount.toLocaleString()}</div>
-            </div>
-            <button class="btn-ghost" data-idx="${idx}">View</button>
-          </div>
-          <div class="kv"><span class="muted">Next due</span><strong>${next.due} • $${next.amount.toFixed(2)}</strong></div>
-          <div class="kv"><span class="muted">Payments</span><strong>${pl.schedule.filter(p=>p.paid).length}/${pl.schedule.length}</strong></div>
-        `;
-        card.querySelector('.btn-ghost').addEventListener('click', () => openPlanDetail(idx));
-        plansList.appendChild(card);
-      });
-    }
-  }
-  renderPlans();
-
-  // Plan detail modal
-  const planDetail = document.getElementById('plan-detail');
-  const pdTitle = document.getElementById('pd-title');
-  const pdBody  = document.getElementById('pd-body');
-  document.getElementById('close-plan-detail').addEventListener('click', ()=>close(planDetail));
-  function openPlanDetail(idx){
-    const pl = plans[idx];
-    pdTitle.textContent = `${pl.store} • ${pl.typeLabel}`;
-    pdBody.innerHTML = `
-      <div class="kv"><span class="muted">Total</span><strong>$${pl.amount.toLocaleString()}</strong></div>
-      <div class="kv"><span class="muted">Card</span><strong>•••• ${pl.card.number.slice(-4)} (VISA)</strong></div>
-      <div class="kv"><span class="muted">Created</span><strong>${pl.created}</strong></div>
-      <div style="margin-top:12px;">
-        <h4>Schedule</h4>
-        ${pl.schedule.map((p,i)=>`
-          <div class="kv"><span class="muted">${i===0?'Downpayment':'Payment '+(i+1)}</span>
-            <strong>${p.due} • $${p.amount.toFixed(2)} ${p.paid? '✓':''}</strong></div>`).join('')}
-      </div>
-    `;
-    open(planDetail);
-  }
-
-  // Open plan modal
-  document.getElementById('open-plan-modal').addEventListener('click', ()=>openPlanWizard());
-  document.getElementById('open-paylater').addEventListener('click', ()=>{ showPage('paylater'); });
-
-  // Wizard state
-  const potModal = document.getElementById('pot-modal');
-  const steps = {
-    s1: document.getElementById('step-1'),
-    s2: document.getElementById('step-2'),
-    loading: document.getElementById('step-loading'),
-    plans: document.getElementById('step-plans'),
-    activating: document.getElementById('step-activating'),
-    card: document.getElementById('step-card'),
-  };
-  const state = { store:'', amount:0, option:null, schedule:[], card:null };
-
-  function openPlanWizard(){
-    // reset
-    Object.values(steps).forEach(el=>el.classList.remove('active'));
-    steps.s1.classList.add('active');
-    document.getElementById('store-input').value = '';
-    document.getElementById('amount-input').value = '';
-    document.getElementById('agree').checked = false;
-    document.getElementById('activate').disabled = true;
-    document.getElementById('activate').classList.remove('enabled');
-    document.getElementById('err-1').textContent = '';
-    document.getElementById('err-2').textContent = '';
-    open(potModal);
-  }
-  document.getElementById('close-pot').addEventListener('click', ()=>close(potModal));
-
-  // Step 1
-  document.getElementById('go-1').addEventListener('click', ()=>{
-    const v = document.getElementById('store-input').value.trim();
-    if(!v){ document.getElementById('err-1').textContent = 'Please enter a store name.'; return; }
-    state.store = v;
-    swapStep(steps.s1, steps.s2);
-  });
-
-  // Step 2 – only whole dollars, min $50
-  const amountInput = document.getElementById('amount-input');
-  amountInput.addEventListener('input', (e)=>{
-    // strip non-digits
-    e.target.value = e.target.value.replace(/\D+/g,'');
-  });
-  document.getElementById('back-2').addEventListener('click', ()=>swapStep(steps.s2, steps.s1));
-  document.getElementById('go-2').addEventListener('click', ()=>{
-    const raw = amountInput.value.trim();
-    const val = parseInt(raw,10);
-    if(!raw){ setErr2('Enter an amount.'); return; }
-    if(Number.isNaN(val)){ setErr2('Amount must be numbers only.'); return; }
-    if(val < 50){ setErr2('Minimum purchase is $50.'); return; }
-    document.getElementById('err-2').textContent = '';
-    state.amount = val;
-    swapStep(steps.s2, steps.loading);
-    setTimeout(()=>{ buildPlans(val); swapStep(steps.loading, steps.plans); }, 4000);
-  });
-  function setErr2(msg){ document.getElementById('err-2').textContent = msg; }
-
-  // Build plan options
-  const plansContainer = document.getElementById('plans-container');
-  function buildPlans(amount){
-    plansContainer.innerHTML = '';
-    const options = [];
-
-    // Helper to split amounts with rounding so sum equals principal
-    function splitAmount(total, parts){
-      const base = Math.floor((total*100)/parts); // in cents
-      const arr = Array(parts).fill(base);
-      let used = base*parts;
-      let remainder = total*100 - used;
-      let i = 0;
-      while(remainder>0){ arr[i%parts]++; remainder--; i++; }
-      return arr.map(c=>c/100);
-    }
-
-    // Bi-weekly Pay in 4 (downpayment first)
-    const bi4 = splitAmount(amount, 4);
-    const schedule4 = [];
-    const today = new Date();
-    for(let i=0;i<4;i++){
-      const d = new Date(today);
-      d.setDate(d.getDate() + (i*14));
-      schedule4.push({ due: d.toLocaleDateString(), amount: bi4[i], paid: i===0 }); // mark downpayment as paid once started later
-    }
-    options.push({
-      key:'pay4',
-      label:'Pay in 4 (bi-weekly)',
-      subtitle:'First payment is a downpayment today',
-      schedule:schedule4,
-      typeLabel:'Bi-weekly • 4 payments'
-    });
-
-    // 6 months
-    const mo6 = splitAmount(amount, 6);
-    const schedule6 = [];
-    for(let i=0;i<6;i++){
-      const d = new Date(today);
-      d.setMonth(d.getMonth()+i+1);
-      schedule6.push({ due: d.toLocaleDateString(), amount: mo6[i], paid:false });
-    }
-    options.push({
-      key:'m6',
-      label:'6 months',
-      subtitle:'Equal monthly payments',
-      schedule:schedule6,
-      typeLabel:'6 monthly payments'
-    });
-
-    if(amount >= 100){
-      const mo12 = splitAmount(amount, 12);
-      const schedule12 = [];
-      for(let i=0;i<12;i++){
-        const d = new Date(today);
-        d.setMonth(d.getMonth()+i+1);
-        schedule12.push({ due: d.toLocaleDateString(), amount: mo12[i], paid:false });
-      }
-      options.push({
-        key:'m12',
-        label:'12 months',
-        subtitle:'Lower monthly payments',
-        schedule:schedule12,
-        typeLabel:'12 monthly payments'
-      });
-    }
-
-    options.forEach(opt=>{
-      const totalPayments = opt.schedule.length;
-      const first = opt.schedule[0];
-      const div = document.createElement('div');
-      div.className = 'plan-option';
-      div.innerHTML = `
-        <label style="display:block; cursor:pointer;">
-          <div class="plan-head">
-            <div>
-              <strong>${opt.label}</strong>
-              <div class="muted">${opt.subtitle}</div>
-            </div>
-            <input type="radio" name="planpick" value="${opt.key}">
-          </div>
-          <div class="kv"><span class="muted">Payment</span><strong>$${opt.schedule[0].amount.toFixed(2)} / ${opt.key==='pay4'?'every 2 weeks':'month'}</strong></div>
-          <div class="kv"><span class="muted">First due</span><strong>${first.due} ${opt.key==='pay4'?'(downpayment)':''}</strong></div>
-          <button class="btn-ghost tiny" type="button">View schedule</button>
-          <div class="schedule">${opt.schedule.map((p,i)=>`<div class="kv"><span class="muted">${i===0?'Downpayment':'Payment '+(i+1)}</span><strong>${p.due} • $${p.amount.toFixed(2)}</strong></div>`).join('')}</div>
-        </label>
-      `;
-      div.querySelector('.btn-ghost').addEventListener('click', ()=>{
-        const s = div.querySelector('.schedule');
-        s.classList.toggle('show');
-      });
-      div.querySelector('input[type=radio]').addEventListener('change', ()=>{
-        state.option = opt;
-        checkActivateEnabled();
-      });
-      plansContainer.appendChild(div);
-    });
-
-    document.getElementById('agree').checked = false;
-    checkActivateEnabled();
-  }
-
-  function checkActivateEnabled(){
-    const btn = document.getElementById('activate');
-    const ok = !!state.option && document.getElementById('agree').checked;
-    btn.disabled = !ok;
-    btn.classList.toggle('enabled', ok);
-  }
-  document.getElementById('agree').addEventListener('change', checkActivateEnabled);
-
-  document.getElementById('back-plans').addEventListener('click', ()=>{
-    swapStep(steps.plans, steps.s2);
-  });
-
-  document.getElementById('activate').addEventListener('click', ()=>{
-    if(document.getElementById('activate').disabled) return;
-    swapStep(steps.plans, steps.activating);
-    setTimeout(()=>{
-      // Generate virtual card
-      const card = genVisaCard();
-      state.card = card;
-      // Fill card reveal
-      document.getElementById('v-num').textContent = card.number.replace(/(\d{4})(?=\d)/g,'$1 ');
-      document.getElementById('v-exp').textContent = card.exp;
-      document.getElementById('v-cvv').textContent = card.cvv;
-      // Show card
-      swapStep(steps.activating, steps.card);
-    }, 5000);
-  });
-
-  // Virtual card reveal
-  const virtualCard = document.getElementById('virtual-card');
-  const cardReveal = document.getElementById('card-reveal');
-  function toggleCardReveal(){
-    const isOpen = cardReveal.classList.contains('open');
-    cardReveal.classList.toggle('open', !isOpen);
-    cardReveal.setAttribute('aria-hidden', String(isOpen));
-  }
-  virtualCard.addEventListener('click', toggleCardReveal);
-  virtualCard.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggleCardReveal(); } });
-
-  // Start plan: persist & update UI
-  document.getElementById('start-plan').addEventListener('click', ()=>{
-    const created = new Date().toLocaleString();
-    const plan = {
-      store: state.store,
-      amount: state.amount,
-      type: state.option.key,
-      typeLabel: state.option.typeLabel,
-      schedule: state.option.schedule.map((p,i)=>({ ...p, paid: (state.option.key==='pay4' && i===0) })), // mark downpayment as paid
-      card: state.card,
-      created
-    };
-    plans.push(plan);
-    savePlans(plans);
-    renderPlans();
-    close(potModal);
-    showPage('paylater');
-  });
-
-  // ===== helpers =====
-  function swapStep(from, to){ from.classList.remove('active'); to.classList.add('active'); }
-  function genVisaCard(){
-    let digits = '4';
-    for(let i=0;i<15;i++) digits += Math.floor(Math.random()*10);
-    const mm = String(Math.floor(Math.random()*12)+1).padStart(2,'0');
-    const yy = String(new Date().getFullYear() + 2 + Math.floor(Math.random()*5)).slice(-2);
-    const cvv = String(Math.floor(Math.random()*900)+100);
-    return { number: digits, exp: `${mm}/${yy}`, cvv };
-  }
+  ['username','password'].forEach(id=> $( '#'+id ).addEventListener('keydown', e=>{ if(e.key==='Enter') tryLogin(); }));
 });
+
+/* expose schedule modal in inline onclick */
+window.showScheduleModal = showScheduleModal;
 </script>
 </body>
 </html>
