@@ -5,9 +5,6 @@
 <title>Chase Sapphire Checking</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-/* =========================
-   2030 NEON–GLASS + MOTION
-   ========================= */
 :root{
   --bg:#0a0a10; --panel:#0b0c14; --panel-2:#0e0f17;
   --text:#e9e8f7; --muted:#a5a3c9; --grid:rgba(140,140,200,.06);
@@ -15,28 +12,25 @@
   --glass: linear-gradient( to bottom right, rgba(18,18,30,.86), rgba(12,12,22,.86) ) padding-box,
            linear-gradient(135deg, var(--sky), var(--violet)) border-box;
 
-  /* motion + radii */
   --dur-s:220ms; --dur-m:360ms; --dur-l:520ms;
   --ease: cubic-bezier(.22,.9,.2,1);
   --radius:16px; --radius-lg:20px;
 
-  /* type scale (mobile first, use clamp) */
   --h1: clamp(1.4rem, 4.3vw, 2.0rem);
   --h2: clamp(1.1rem, 3.6vw, 1.4rem);
   --body: clamp(.92rem, 3.2vw, 1rem);
   --small: clamp(.82rem, 2.8vw, .92rem);
 }
-
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0; font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, -apple-system, sans-serif;
-  color:var(--text); background:var(--bg);
+  color:var(--text); background:var(--bg); font-size:var(--body);
   -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-  font-size:var(--body);
 }
 a{color:inherit; text-decoration:none}
 
+/* bg fx */
 .fx{position:fixed; inset:0; z-index:-2; pointer-events:none;
   background:
     radial-gradient(900px 600px at 15% -10%, rgba(96,165,250,.22), transparent 60%),
@@ -58,20 +52,19 @@ a{color:inherit; text-decoration:none}
   mask: radial-gradient(60% 60% at 50% 50%, #000 68%, transparent 100%);
 }
 
-/* shared containers */
+/* shared */
 .container{max-width:1100px; margin:20px auto 60px; padding:0 14px}
 .card{
   border-radius:var(--radius); padding:16px; background:var(--glass); border:2px solid transparent;
   box-shadow: 0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.03);
-  -webkit-backface-visibility:hidden; backface-visibility:hidden;
-  will-change:transform,opacity; transition:transform var(--dur-s) var(--ease), filter var(--dur-s) var(--ease);
+  transition:transform var(--dur-s) var(--ease), filter var(--dur-s) var(--ease);
 }
 .card:hover{transform:translateY(-2px); filter:saturate(1.06)}
 .kpis{display:grid; grid-template-columns:repeat(12,1fr); gap:12px}
 .balance-panel{grid-column:span 8; display:flex; align-items:center; gap:14px}
 .facts{grid-column:span 4}
 
-/* sticky app bars */
+/* app bar */
 .topbar{
   position:sticky; top:0; z-index:5; padding:12px 14px; backdrop-filter: blur(10px);
   background: linear-gradient( to right, rgba(12,12,22,.72), rgba(11,11,20,.58) );
@@ -86,56 +79,56 @@ a{color:inherit; text-decoration:none}
 }
 .chip{padding:7px 10px; border-radius:999px; background:linear-gradient(120deg,#121225,#0e0f18); border:1px solid rgba(255,255,255,.08); font-size:var(--small); color:#dfe3ff}
 
-/* page transitions */
-.page{position:absolute; inset:0; opacity:0; pointer-events:none; overflow:auto; transform:translateY(8px);
-  transition: opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease);}
-.page.active{opacity:1; transform:none; pointer-events:auto}
+/* pages */
+#app{position:absolute; inset:0; opacity:0; transform:translateY(8px); pointer-events:none; overflow:auto;
+  transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
+#app.active{opacity:1; transform:none; pointer-events:auto}
 
-/* Login */
+/* login */
 #login-screen{position:fixed; inset:0; display:grid; place-items:center; padding:20px; z-index:9999}
 .login-shell{width:min(420px,94vw); border-radius:22px; padding:3px;
   background: linear-gradient(120deg, #60a5fa, #8b5cf6, #60a5fa);
   box-shadow: 0 26px 80px rgba(0,0,0,.65), 0 0 120px rgba(96,165,250,.35);
 }
-#login-box{border-radius:20px; padding:30px 24px; text-align:center; background:#0b0b10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04)}
-.login-title{font-size:var(--h1); font-weight:800; letter-spacing:.2px; margin:0 0 16px;
+#login-box{border-radius:20px; padding:24px 18px; text-align:center; background:#0b0b10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04)}
+.login-title{font-size:var(--h1); font-weight:800; letter-spacing:.2px; margin:0 0 14px;
   background: linear-gradient(90deg, #60a5fa, #c084fc 45%, #60a5fa);
   -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
-#login-error{min-height:1.2em; margin:0 0 8px; color:#ff7b7b; opacity:0; transition:opacity var(--dur-s) var(--ease)}
-.input-group{position:relative; margin:12px 0}
+#login-error{min-height:1.1em; margin:0 0 8px; color:#ff7b7b; opacity:0; transition:opacity var(--dur-s) var(--ease)}
+.input-group{position:relative; margin:10px 0}
 .input{
-  width:100%; padding:12px 12px 12px 46px; border-radius:12px; font-size:1rem; color:#e5e7eb;
+  width:100%; padding:12px 12px 12px 42px; border-radius:12px; font-size:1rem; color:#e5e7eb;
   background:#111223; border:1px solid #26263a; transition:border-color var(--dur-s), box-shadow var(--dur-s), background var(--dur-s)}
 .input:focus{outline:none; border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.20)}
-.input-icon{position:absolute; top:50%; left:14px; transform:translateY(-50%); width:20px; height:20px}
+.input-icon{position:absolute; top:50%; left:12px; transform:translateY(-50%); width:18px; height:18px; opacity:.9}
 #login-btn{
-  width:100%; display:flex; align-items:center; justify-content:center; gap:8px;
-  padding:12px 14px; border-radius:12px; cursor:pointer; margin-top:6px;
+  width:100%; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:11px 12px; border-radius:12px; cursor:pointer; margin-top:8px;
   background:#0f0f18; color:#fff; font-weight:800; border:1px solid #2a2b36; transition: transform var(--dur-s), box-shadow var(--dur-s)}
+#login-btn svg{width:18px;height:18px; flex:0 0 18px}
 #login-btn:hover{box-shadow:0 10px 30px rgba(96,165,250,.25)}
 #login-btn:active{transform:translateY(1px)}
 
-/* Actions */
+/* actions */
 .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px}
 .action-btn{
   display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; cursor:pointer;
   background: linear-gradient(#0f0f18,#0a0a14) padding-box, linear-gradient(135deg, var(--sky), var(--violet)) border-box;
   border:1px solid transparent; color:#fff; font-weight:700; box-shadow: 0 12px 30px rgba(96,165,250,.20);
-  transition: transform var(--dur-s), filter var(--dur-s); will-change:transform}
+  transition: transform var(--dur-s), filter var(--dur-s)}
 .action-btn:active{transform:translateY(1px)}
 .action-btn svg{width:18px;height:18px}
 
-/* Progress ring */
+/* ring */
 .ring-3d{position:relative; width:86px; height:86px; display:grid; place-items:center}
 .ring-svg{width:100%; height:100%; transform:rotate(-90deg)}
 .ring-track{fill:none; stroke:#151b25; stroke-width:12}
 .ring-progress{fill:none; stroke:#60a5fa; stroke-width:12; stroke-linecap:round; stroke-dasharray:0 100; transition: stroke-dasharray var(--dur-l) var(--ease), stroke var(--dur-s)}
 .ring-txt{position:absolute; inset:0; display:grid; place-items:center; font-weight:800; color:#d9ecff}
 
-/* MODALS / OVERLAY */
-.overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); opacity:0; pointer-events:none;
-  transition:opacity var(--dur-m) var(--ease)}
-.overlay.visible{opacity:1; pointer-events:auto}
+/* overlay + modal */
+#overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease)}
+#overlay.visible{opacity:1; pointer-events:auto}
 .modal{
   position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.96); width:min(520px,92vw);
   border-radius:var(--radius-lg); padding:16px; background:var(--glass); border:2px solid transparent; color:var(--text);
@@ -144,7 +137,7 @@ a{color:inherit; text-decoration:none}
 .modal.visible{opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1)}
 .close-btn{position:absolute; top:8px; right:10px; font-size:1.2rem; background:none; border:none; color:var(--muted); cursor:pointer}
 
-/* ===== Pay over time ===== */
+/* pay-over-time UI */
 .paybar{display:flex; align-items:center; gap:10px; padding:10px 14px}
 .backlink{display:inline-flex; align-items:center; gap:6px; color:#cbd5ff; font-weight:700}
 .pot-header{font-size:var(--h1); line-height:1.1; font-weight:900; margin:6px 0 8px}
@@ -157,7 +150,7 @@ a{color:inherit; text-decoration:none}
 .primary-btn:active{transform:translateY(1px)}
 .primary-btn svg{width:20px;height:20px}
 
-/* planner sheet (full-height on mobile) */
+/* planner sheet */
 .sheet{position:fixed; left:50%; transform:translateX(-50%) translateY(8px); bottom:10px; width:min(560px,96vw);
   background:var(--glass); border:2px solid transparent; border-radius:18px; box-shadow:0 30px 80px rgba(0,0,0,.65);
   opacity:0; pointer-events:none; transition:opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)}
@@ -178,7 +171,7 @@ a{color:inherit; text-decoration:none}
 .btn.secondary{background:#0f1020}
 .btn:disabled{opacity:.5; cursor:not-allowed}
 
-/* loading cards */
+/* loader */
 .loader{display:grid; place-items:center; gap:10px; padding:26px; text-align:center}
 .spinner{width:26px;height:26px;border-radius:50%; border:3px solid rgba(255,255,255,.14); border-top-color:#9aa6ff; animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(1turn)}}
@@ -193,7 +186,7 @@ a{color:inherit; text-decoration:none}
 .radio{position:absolute; top:14px; right:14px}
 .link{display:inline-block; margin-top:6px; background:#121226; border:1px solid rgba(255,255,255,.08); padding:8px 12px; border-radius:12px; cursor:pointer}
 
-/* sticky CTA inside sheet */
+/* sticky CTA */
 .sticky-cta{
   position:sticky; bottom:0; display:flex; align-items:center; justify-content:space-between; gap:10px;
   padding:12px 14px; background:linear-gradient(180deg, rgba(9,9,16,.0), rgba(9,9,16,.65) 22%, rgba(9,9,16,.85) 100%);
@@ -222,7 +215,6 @@ a{color:inherit; text-decoration:none}
 .cc-rows{display:grid; grid-template-columns:1fr 2fr; gap:8px 12px; padding:12px}
 .row-label{color:var(--muted); font-size:var(--small)}
 
-/* responsive tweaks */
 @media (max-width: 980px){
   .card{grid-column:span 12}
   .balance-panel{grid-column:span 12}
@@ -235,7 +227,6 @@ a{color:inherit; text-decoration:none}
   .plan .r{font-size:var(--small)}
   .sheet{left:0; right:0; transform:translateY(8px); width:100%; border-radius:18px 18px 0 0}
   .sheet.visible{transform:none}
-  .modal{width:94vw}
   .sticky-cta{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
 }
 @media (prefers-reduced-motion: reduce){
@@ -246,8 +237,8 @@ a{color:inherit; text-decoration:none}
 <body>
 <div class="fx"></div><div class="grid"></div>
 
-<!-- =================== LOGIN =================== -->
-<div id="login-screen" class="fade visible">
+<!-- LOGIN -->
+<div id="login-screen">
   <div class="login-shell">
     <div id="login-box">
       <h2 class="login-title">Welcome to Sapphire<br/>Checking</h2>
@@ -263,29 +254,40 @@ a{color:inherit; text-decoration:none}
         <input id="password" class="input" type="password" placeholder="Password" />
       </div>
 
-      <button id="login-btn">
-        <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#8b5cf6" d="M12 3a1 1 0 0 1 1 1v5h-2V5H6v14h5v-4h2v5a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7Zm8.7 9.3-4-4-1.4 1.4 1.3 1.3H12v2h4.6l-1.3 1.3 1.4 1.4 4-4a1 1 0 0 0 0-1.4Z"/></svg>
+      <button id="login-btn" aria-label="Log in">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#8b5cf6" d="M12 3a1 1 0 0 1 1 1v5h-2V5H6v14h5v-4h2v5a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7Zm8.7 9.3-4-4-1.4 1.4 1.3 1.3H12v2h4.6l-1.3 1.3 1.4 1.4 4-4a1 1 0 0 0 0-1.4Z"/></svg>
         Log In
       </button>
     </div>
   </div>
 </div>
 
-<!-- =================== APP PAGES =================== -->
-<div id="dashboard" class="page hidden"></div>
+<!-- APP ROOT -->
+<main id="app"></main>
+<div id="overlay"></div>
 
-<!-- ===== Templates injected by JS (keeps file shorter/readable) ===== -->
 <script>
+/* tiny helpers */
 const $ = (q, el=document) => el.querySelector(q);
-const $$ = (q, el=document) => [...el.querySelectorAll(q)];
 const fmtMoney = n => '$' + Number(n).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
-const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
 
-/* ---------- Simple Router (Checking / Pay Later) ---------- */
-function viewChecking(){
-  const el = document.createElement('div');
-  el.id='checking'; el.className='page active';
-  el.innerHTML = `
+/* -------- Page mounting (FIXED) --------
+   Replaces #app content with the provided HTML string
+   and then calls the onMount callback to bind events.   */
+function mount(html, onMount){
+  const app = document.getElementById('app');
+  app.classList.remove('active');
+  // fade-out then swap
+  setTimeout(()=>{
+    app.innerHTML = html;
+    requestAnimationFrame(()=> app.classList.add('active'));
+    if (typeof onMount === 'function') onMount(app);
+  }, 160);
+}
+
+/* -------- Checking page -------- */
+function renderChecking(){
+  mount(`
     <div class="topbar">
       <div class="brand">Chase Sapphire Checking</div>
       <div class="top-actions">
@@ -305,7 +307,7 @@ function viewChecking(){
                 <svg viewBox="0 0 24 24"><path fill="#60a5fa" d="M4 4h16a1 1 0 0 1 1 1v3H3V5a1 1 0 0 1 1-1zm-1 7h18v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7zm4 2v2h2v-2H7zm4 0v2h6v-2h-6z"/></svg>
                 Recent
               </button>
-              <button class="action-btn" title="Transfer">
+              <button class="action-btn" id="transferBtn" title="Transfer">
                 <svg viewBox="0 0 24 24"><path fill="#8b5cf6" d="M4 7h9V4l5 5-5 5v-3H4zM20 17H11v3l-5-5 5-5v3h9z"/></svg>
                 Transfer
               </button>
@@ -336,26 +338,47 @@ function viewChecking(){
           <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Present balance</span><strong id="present">$414.00</strong></div>
           <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Account number</span><strong>501262431</strong></div>
           <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Routing number</span><strong>072000326</strong></div>
-          <div class="kv" style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)"><span class="muted">Interest rate</span><strong>0.00%</strong></div>
         </div>
       </div>
     </div>
-  `;
-  // animate in page
-  mountPage(el);
-  // Ring demo
-  setBudgetProgress(140, 1000);
-  // wire pay later
-  $('#payLaterBtn', el).addEventListener('click', () => viewPayLater());
+  `, (app)=>{
+      // simple demo: ring at 14%
+      const pct = 14; $('#budgetRing',app).style.strokeDasharray = `${pct} 100`; $('#budgetPct',app).textContent=`${pct}%`;
+      // wire buttons
+      $('#payLaterBtn',app).onclick = renderPayLater;
+      $('#transferBtn',app).onclick = ()=> toast('Transfers demo coming soon.');
+      $('#show-trans',app).onclick = ()=> toast('Recent transactions demo coming soon.');
+  });
 }
 
-function viewPayLater(){
+/* -------- Pay over time page -------- */
+const PLANS_KEY='sapphire_plans';
+const getPlans = () => JSON.parse(localStorage.getItem(PLANS_KEY)||'[]');
+const savePlan = p => { const arr=getPlans(); arr.unshift(p); localStorage.setItem(PLANS_KEY, JSON.stringify(arr)); };
+
+function renderPlansList(plans){
+  return `
+  <div class="card">
+    <div style="font-weight:800;margin-bottom:8px">Created</div>
+    ${plans.map(p=>`
+      <div style="border-top:1px solid rgba(255,255,255,.08); padding:10px 0">
+        <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <div><strong>${p.store}</strong> • ${p.title}</div>
+          <div class="muted">${p.created}</div>
+        </div>
+        <div class="muted" style="margin-top:4px">Amount: <strong>${fmtMoney(p.amount)}</strong> — Payment: <strong>${fmtMoney(p.perPayment)}</strong></div>
+        <div><button class="link" data-id="${p.id}">View schedule</button></div>
+      </div>
+    `).join('')}
+    <div style="margin-top:12px"><button id="startPlan" class="primary-btn"><svg viewBox="0 0 24 24"><path fill="#c4c8ff" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"/></svg>Plan a purchase</button></div>
+  </div>`;
+}
+
+function renderPayLater(){
   const plans = getPlans();
   const count = plans.length;
 
-  const el = document.createElement('div');
-  el.id='paylater'; el.className='page active';
-  el.innerHTML = `
+  mount(`
     <div class="topbar paybar">
       <a class="backlink" href="#" id="backChecking">← Checking</a>
       <div class="pill">Active plans: <strong id="planCount" style="margin-left:6px">${count}</strong></div>
@@ -363,7 +386,6 @@ function viewPayLater(){
 
     <div class="container" id="potContainer">
       <h1 class="pot-header">Pay over<br/>time</h1>
-
       ${ count ? renderPlansList(plans) : `
         <div class="card empty" id="emptyState">
           <div class="muted">No active plans</div>
@@ -371,51 +393,37 @@ function viewPayLater(){
             <svg viewBox="0 0 24 24"><path fill="#c4c8ff" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"/></svg>
             Plan a purchase
           </button>
-        </div>
-      `}
+        </div>`}
     </div>
 
-    <!-- Planner Sheet -->
     <div id="sheet" class="sheet" aria-hidden="true">
       <div class="sheet-header">
         <div style="font-weight:900">Plan a purchase</div>
         <button class="close-btn" id="closeSheet">×</button>
       </div>
       <div class="sheet-body">
-        <!-- step 1 -->
         <div class="step active" id="step1">
           <div class="field">
             <label>Store name</label>
             <input id="storeInput" type="text" inputmode="text" autocomplete="off" placeholder="e.g., Best Buy" />
             <div id="err1" class="err">Please enter a store name.</div>
           </div>
-          <div class="actions-row">
-            <button id="s1Next" class="btn">Continue</button>
-          </div>
+          <div class="actions-row"><button id="s1Next" class="btn">Continue</button></div>
         </div>
 
-        <!-- step 2 -->
         <div class="step" id="step2">
           <div class="field">
             <label>Purchase amount (minimum $50)</label>
             <input id="amountInput" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="50" />
             <div id="err2" class="err">Enter a whole dollar amount of $50 or more.</div>
           </div>
-          <div class="actions-row">
-            <button id="back1" class="btn secondary">Back</button>
-            <button id="s2Next" class="btn">Continue</button>
-          </div>
+          <div class="actions-row"><button id="back1" class="btn secondary">Back</button><button id="s2Next" class="btn">Continue</button></div>
         </div>
 
-        <!-- step 3: loading -->
         <div class="step" id="loadingStep">
-          <div class="loader">
-            <div class="spinner"></div>
-            <div>Retrieving plans…</div>
-          </div>
+          <div class="loader"><div class="spinner"></div><div>Retrieving plans…</div></div>
         </div>
 
-        <!-- step 4: plans -->
         <div class="step" id="plansStep">
           <div id="plansWrap"></div>
           <label style="display:flex;align-items:center;gap:8px;margin-top:10px">
@@ -429,25 +437,17 @@ function viewPayLater(){
               Activate plan
             </button>
           </div>
-          <div class="actions-row" style="margin-top:8px">
-            <button id="back2" class="btn secondary">Back</button>
-          </div>
+          <div class="actions-row" style="margin-top:8px"><button id="back2" class="btn secondary">Back</button></div>
         </div>
 
-        <!-- step 5: activating -->
         <div class="step" id="activatingStep">
-          <div class="loader">
-            <div class="spinner"></div>
-            <div>Activating plan…</div>
-          </div>
+          <div class="loader"><div class="spinner"></div><div>Activating plan…</div></div>
         </div>
 
-        <!-- step 6: card -->
         <div class="step" id="cardStep">
           <div class="muted" id="cardMsg" style="margin-bottom:8px"></div>
           <div id="vcard" class="cc-card" role="button" title="Tap to reveal details">
-            <div class="cc-name">SAPPHIRE • VIRTUAL</div>
-            <div class="cc-visa">VISA</div>
+            <div class="cc-name">SAPPHIRE • VIRTUAL</div><div class="cc-visa">VISA</div>
           </div>
           <div id="ccDrawer" class="cc-drawer">
             <div class="cc-rows">
@@ -456,213 +456,98 @@ function viewPayLater(){
               <div class="row-label">Security</div><div id="ccCvv"></div>
             </div>
           </div>
-          <div class="actions-row">
-            <button id="finish" class="btn">Done</button>
-          </div>
+          <div class="actions-row"><button id="finish" class="btn">Done</button></div>
         </div>
       </div>
     </div>
-  `;
-  mountPage(el);
+  `, (app)=>{
+      $('#backChecking',app).onclick = e => { e.preventDefault(); renderChecking(); };
+      // open/close sheet
+      const openSheet = ()=>{ $('#sheet',app).classList.add('visible'); $('#sheet',app).setAttribute('aria-hidden','false'); };
+      const closeSheet = ()=>{ $('#sheet',app).classList.remove('visible'); $('#sheet',app).setAttribute('aria-hidden','true'); resetSheet(); };
+      $('#startPlan',app)?.addEventListener('click', openSheet);
+      $('#closeSheet',app).onclick = closeSheet;
 
-  // wiring
-  $('#backChecking', el).onclick = e => { e.preventDefault(); viewChecking(); };
-  const openSheet = () => { $('#sheet').classList.add('visible'); $('#sheet').setAttribute('aria-hidden','false'); };
-  const closeSheet = () => { $('#sheet').classList.remove('visible'); $('#sheet').setAttribute('aria-hidden','true'); resetSheet(); };
+      // steps
+      const s1 = $('#step1',app), s2=$('#step2',app), sLoad=$('#loadingStep',app), sPlans=$('#plansStep',app), sAct=$('#activatingStep',app), sCard=$('#cardStep',app);
+      const go = to => { [s1,s2,sLoad,sPlans,sAct,sCard].forEach(st=>st.classList.remove('active')); to.classList.add('active'); };
+      function resetSheet(){ $('#storeInput').value=''; $('#amountInput').value=''; $('#agree').checked=false; selectedPlan=null; $('#activateBtn').disabled=true; $('#ctaHint').textContent='Select a plan to continue.'; go(s1); }
 
-  $('#closeSheet', el).onclick = closeSheet;
-  $('#startPlan', el)?.addEventListener('click', openSheet);
+      $('#s1Next',app).onclick = ()=>{ const v=$('#storeInput').value.trim(); $('#err1').classList.toggle('show', !v); if(v){ go(s2); setTimeout(()=>$('#amountInput').focus(),40);} };
+      $('#amountInput',app).addEventListener('input', e=>{ e.target.value = e.target.value.replace(/[^\d]/g,''); });
+      $('#back1',app).onclick = ()=> go(s1);
 
-  // planner logic
-  const s1 = $('#step1'), s2 = $('#step2'), sLoad = $('#loadingStep'), sPlans = $('#plansStep'), sAct = $('#activatingStep'), sCard = $('#cardStep');
+      $('#s2Next',app).onclick = ()=>{
+        const raw=$('#amountInput').value.trim(); const amt=Number(raw);
+        const ok = raw!=='' && Number.isInteger(amt) && amt>=50;
+        $('#err2').classList.toggle('show', !ok); if(!ok) return;
+        go(sLoad); setTimeout(()=>{ renderPlans(amt, app); go(sPlans); }, 4000);
+      };
 
-  function go(to){
-    // smooth step swap
-    [s1,s2,sLoad,sPlans,sAct,sCard].forEach(st => st.classList.remove('active'));
-    to.classList.add('active');
-  }
-  function resetSheet(){
-    $('#storeInput').value = ''; $('#amountInput').value=''; $('#agree').checked=false;
-    $('#activateBtn').disabled = true; $('#ctaHint').textContent='Select a plan to continue.'; selectedPlan=null;
-    go(s1);
-  }
+      $('#back2',app).onclick = ()=> go(s2);
 
-  $('#s1Next').onclick = () => {
-    const v = $('#storeInput').value.trim();
-    $('#err1').classList.toggle('show', !v);
-    if(!v) return;
-    go(s2);
-    setTimeout(()=>$('#amountInput').focus(), 40);
-  };
-
-  // numbers only
-  $('#amountInput').addEventListener('input', (e)=>{
-    e.target.value = e.target.value.replace(/[^\d]/g,''); // digits only
-  });
-
-  $('#back1').onclick = ()=> go(s1);
-  $('#s2Next').onclick = () => {
-    const raw = $('#amountInput').value.trim();
-    const amt = Number(raw);
-    const ok = raw !== '' && Number.isInteger(amt) && amt >= 50;
-    $('#err2').classList.toggle('show', !ok);
-    if(!ok) return;
-    // loading 4s then show plans
-    go(sLoad);
-    setTimeout(()=>{
-      renderPlans(amt);
-      go(sPlans);
-    }, 4000);
-  };
-
-  let selectedPlan = null;
-
-  function renderPlans(amount){
-    const wrap = $('#plansWrap'); wrap.innerHTML='';
-    const today = new Date();
-    const nextMonthSameDay = shiftDate(today, {months:1});
-    const biweekly = makeBiweekly(amount); // with downpayment
-    const sixmo   = makeMonthly(amount, 6);
-    const twelve  = amount >= 100 ? makeMonthly(amount, 12) : null;
-
-    [biweekly, sixmo, twelve].filter(Boolean).forEach(p=>{
-      const div = document.createElement('div');
-      div.className='plan';
-      div.innerHTML = `
-        <input class="radio" type="radio" name="planPick">
-        <h4>${p.title}</h4>
-        <div class="sub">${p.subtitle}</div>
-        <div class="r"><span>Payment</span><strong>${fmtMoney(p.perPayment)} ${p.freqLabel}</strong></div>
-        <div class="r"><span>First due</span><strong>${p.firstDue.label}</strong></div>
-        <div class="link">View schedule</div>
-      `;
-      div.querySelector('.radio').addEventListener('change', ()=>{
-        selectedPlan = p;
-        $('#ctaHint').textContent = 'Review terms and activate.';
-        enableActivate();
+      // existing plans "view schedule"
+      $$('#potContainer .link',app).forEach(btn=>{
+        btn.onclick = ()=>{
+          const id = btn.getAttribute('data-id');
+          const plan = getPlans().find(p=>p.id===id);
+          if(plan) showScheduleModal(plan);
+        };
       });
-      // schedule
-      div.querySelector('.link').onclick = ()=> showScheduleModal(p);
-      wrap.appendChild(div);
-    });
 
-    function enableActivate(){
-      $('#activateBtn').disabled = !(selectedPlan && $('#agree').checked);
-    }
-    $('#agree').onchange = enableActivate;
+      let selectedPlan=null;
+      function renderPlans(amount, appRoot){
+        const wrap = $('#plansWrap',appRoot); wrap.innerHTML='';
+        const biweekly = makeBiweekly(amount);
+        const sixmo   = makeMonthly(amount, 6);
+        const twelve  = amount>=100 ? makeMonthly(amount, 12) : null;
+        [biweekly, sixmo, twelve].filter(Boolean).forEach(p=>{
+          const div = document.createElement('div'); div.className='plan';
+          div.innerHTML = `
+            <input class="radio" type="radio" name="planPick">
+            <h4>${p.title}</h4>
+            <div class="sub">${p.subtitle}</div>
+            <div class="r"><span>Payment</span><strong>${fmtMoney(p.perPayment)} ${p.freqLabel}</strong></div>
+            <div class="r"><span>First due</span><strong>${p.firstDue.label}</strong></div>
+            <div class="link">View schedule</div>`;
+          div.querySelector('.radio').addEventListener('change', ()=>{ selectedPlan=p; $('#ctaHint',appRoot).textContent='Review terms and activate.'; enableActivate(); });
+          div.querySelector('.link').onclick = ()=> showScheduleModal(p);
+          wrap.appendChild(div);
+        });
+        function enableActivate(){ $('#activateBtn',appRoot).disabled = !(selectedPlan && $('#agree',appRoot).checked); }
+        $('#agree',appRoot).onchange = enableActivate;
 
-    $('#activateBtn').onclick = ()=>{
-      // go to activating
-      go(sAct);
-      setTimeout(()=>{
-        // create + save plan with a virtual card
-        const plan = materializePlan(selectedPlan, $('#storeInput').value.trim(), amount);
-        savePlan(plan);
-        // produce card
-        const card = genVisa();
-        $('#cardMsg').textContent = `Use this virtual VISA to pay ${plan.store}. Tap to reveal info.`;
-        $('#ccNum').textContent = card.number;
-        $('#ccExp').textContent = card.exp;
-        $('#ccCvv').textContent = card.cvv;
-        $('#vcard').onclick = ()=> $('#ccDrawer').classList.toggle('open');
-        go(sCard);
-        // refresh counter / list
-        $('#planCount').textContent = getPlans().length;
-        const container = $('#potContainer');
-        container.innerHTML = renderPlansList(getPlans());
-      }, 5000);
-    };
+        $('#activateBtn',appRoot).onclick = ()=>{
+          go(sAct);
+          setTimeout(()=>{
+            const plan = materializePlan(selectedPlan, $('#storeInput').value.trim(), amount);
+            savePlan(plan);
+            const card = genVisa();
+            $('#cardMsg',appRoot).textContent = `Use this virtual VISA to pay ${plan.store}. Tap to reveal info.`;
+            $('#ccNum',appRoot).textContent = card.number; $('#ccExp',appRoot).textContent = card.exp; $('#ccCvv',appRoot).textContent = card.cvv;
+            $('#vcard',appRoot).onclick = ()=> $('#ccDrawer',appRoot).classList.toggle('open');
+            go(sCard);
+            $('#planCount',app).textContent = getPlans().length;
+            $('#potContainer',app).innerHTML = renderPlansList(getPlans());
+            // rebind "view schedule" buttons in list
+            $$('#potContainer .link',app).forEach(btn=>{
+              btn.onclick = ()=>{
+                const id = btn.getAttribute('data-id');
+                const plan = getPlans().find(p=>p.id===id);
+                if(plan) showScheduleModal(plan);
+              };
+            });
+          }, 5000);
+        };
+      }
 
-    $('#back2').onclick = ()=> go(s2);
-  }
-
-  $('#finish').onclick = () => { closeSheet(); };
+      $('#finish',app).onclick = ()=>{ closeSheet(); toast('Virtual card ready. Plan saved.'); };
+  });
 }
 
-/* ---------- Helpers for plan math ---------- */
-function shiftDate(d, {days=0, months=0} = {}){
-  const nd = new Date(d);
-  nd.setMonth(nd.getMonth()+months);
-  nd.setDate(nd.getDate()+days);
-  return nd;
-}
-function labelDate(d, down=false){
-  const opts = {month:'numeric',day:'numeric',year:'numeric'};
-  return `${d.toLocaleDateString(undefined,opts)}${down?' (downpayment)':''}`;
-}
-function makeBiweekly(amount){
-  // 4 payments over 8 weeks; first due is "today" (downpayment)
-  const per = Math.round((amount/4));
-  const schedule = [];
-  const start = new Date();
-  schedule.push({label: labelDate(start,true), amount: per});
-  for(let i=1;i<4;i++){
-    const due = shiftDate(start, {days: 14*i});
-    schedule.push({label: labelDate(due), amount: per});
-  }
-  return {
-    key:'biweekly',
-    title:'Bi-weekly',
-    subtitle:'4 payments • first due today (downpayment)',
-    perPayment: per, freqLabel:'/ every 2 weeks',
-    firstDue: schedule[0],
-    schedule
-  };
-}
-function makeMonthly(amount, months){
-  const per = Math.round(amount / months);
-  const start = shiftDate(new Date(), {months:1}); // first due next month
-  const schedule = [];
-  for(let i=0;i<months;i++){
-    const due = shiftDate(start, {months:i});
-    schedule.push({label: labelDate(due), amount: per});
-  }
-  return {
-    key:`${months}mo`,
-    title: months===6 ? '6 months' : '12 months',
-    subtitle: months===6 ? 'Equal monthly payments' : 'Lower monthly payments',
-    perPayment: per, freqLabel:'/ month',
-    firstDue: schedule[0],
-    schedule
-  };
-}
-function materializePlan(def, store, amount){
-  return {
-    id: 'pln_' + Math.random().toString(36).slice(2,10),
-    created: new Date().toLocaleString(),
-    store, amount,
-    defKey: def.key,
-    title: def.title,
-    perPayment: def.perPayment,
-    schedule: def.schedule
-  };
-}
-
-/* ---------- Local storage for plans ---------- */
-const PLANS_KEY='sapphire_plans';
-const getPlans = () => JSON.parse(localStorage.getItem(PLANS_KEY)||'[]');
-const savePlan = (p) => { const arr=getPlans(); arr.unshift(p); localStorage.setItem(PLANS_KEY, JSON.stringify(arr)); };
-function renderPlansList(plans){
-  return `
-  <div class="card">
-    <div style="font-weight:800;margin-bottom:8px">Created</div>
-    ${plans.map(p=>`
-      <div style="border-top:1px solid rgba(255,255,255,.08); padding:10px 0">
-        <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
-          <div><strong>${p.store}</strong> • ${p.title}</div>
-          <div class="muted">${p.created}</div>
-        </div>
-        <div class="muted" style="margin-top:4px">Amount: <strong>${fmtMoney(p.amount)}</strong> — Payment: <strong>${fmtMoney(p.perPayment)}</strong></div>
-        <div><button class="link" onclick='(${showScheduleModal.toString()})(${JSON.stringify(p)})'>View schedule</button></div>
-      </div>
-    `).join('')}
-    <div style="margin-top:12px"><button id="startPlan" class="primary-btn"><svg viewBox="0 0 24 24"><path fill="#c4c8ff" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"/></svg>Plan a purchase</button></div>
-  </div>`;
-}
-
-/* ---------- Schedule modal ---------- */
+/* schedule modal */
 function showScheduleModal(plan){
-  const overlay = ensureOverlay();
+  const overlay = $('#overlay'); overlay.classList.add('visible');
   const modal = document.createElement('div');
   modal.className='modal';
   modal.innerHTML = `
@@ -675,82 +560,53 @@ function showScheduleModal(plan){
         <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid rgba(255,255,255,.08)">
           <span>${i===0 && plan.defKey==='biweekly'?'Downpayment':'Payment ' + (i+1)}</span>
           <strong>${row.label} • ${fmtMoney(row.amount)}</strong>
-        </div>
-      `).join('')}
-    </div>
-  `;
-  overlay.appendChild(modal);
-  requestAnimationFrame(()=>{ overlay.classList.add('visible'); modal.classList.add('visible'); });
-  modal.querySelector('.close-btn').onclick = ()=> closeModal(overlay, modal);
-  overlay.onclick = (e)=>{ if(e.target===overlay) closeModal(overlay, modal); };
-}
-function ensureOverlay(){
-  let o = document.getElementById('overlay');
-  if(!o){ o=document.createElement('div'); o.id='overlay'; o.className='overlay'; document.body.appendChild(o); }
-  return o;
-}
-function closeModal(overlay, modal){
-  modal.classList.remove('visible'); overlay.classList.remove('visible');
-  setTimeout(()=> modal.remove(), 220);
+        </div>`).join('')}
+    </div>`;
+  document.body.appendChild(modal);
+  requestAnimationFrame(()=> modal.classList.add('visible'));
+  const close = ()=>{ modal.classList.remove('visible'); overlay.classList.remove('visible'); setTimeout(()=>modal.remove(),220); };
+  modal.querySelector('.close-btn').onclick = close; overlay.onclick = e=>{ if(e.target===overlay) close(); };
 }
 
-/* ---------- Budget ring demo ---------- */
-function setBudgetProgress(spent, budget){
-  const ring = document.getElementById('budgetRing');
-  const txt = document.getElementById('budgetPct');
-  const pct = clamp((spent/budget)*100,0,100);
-  ring.style.strokeDasharray = `${pct} 100`;
-  txt.textContent = `${Math.round(pct)}%`;
-  ring.style.stroke = pct>80?'#8b5cf6':(pct>50?'#fbbf24':'#60a5fa');
-  ring.style.filter = `drop-shadow(0 6px 16px ${pct>80?'#8b5cf6':(pct>50?'#fbbf24':'#60a5fa')}66)`;
+/* plan math */
+function shiftDate(d,{days=0,months=0}={}){const nd=new Date(d); nd.setMonth(nd.getMonth()+months); nd.setDate(nd.getDate()+days); return nd;}
+function labelDate(d,down=false){const o={month:'numeric',day:'numeric',year:'numeric'}; return `${d.toLocaleDateString(undefined,o)}${down?' (downpayment)':''}`;}
+function makeBiweekly(amount){const per=Math.round(amount/4); const schedule=[]; const start=new Date(); schedule.push({label:labelDate(start,true),amount:per}); for(let i=1;i<4;i++){schedule.push({label:labelDate(shiftDate(start,{days:14*i})),amount:per});} return {key:'biweekly',title:'Bi-weekly',subtitle:'4 payments • first due today (downpayment)',perPayment:per,freqLabel:'/ every 2 weeks',firstDue:schedule[0],schedule};}
+function makeMonthly(amount,months){const per=Math.round(amount/months); const start=shiftDate(new Date(),{months:1}); const schedule=[]; for(let i=0;i<months;i++){schedule.push({label:labelDate(shiftDate(start,{months:i})),amount:per});} return {key:`${months}mo`,title:months===6?'6 months':'12 months',subtitle:months===6?'Equal monthly payments':'Lower monthly payments',perPayment:per,freqLabel:'/ month',firstDue:schedule[0],schedule};}
+function materializePlan(def,store,amount){return {id:'pln_'+Math.random().toString(36).slice(2,10),created:new Date().toLocaleString(),store,amount,defKey:def.key,title:def.title,perPayment:def.perPayment,schedule:def.schedule};}
+
+/* tiny toast */
+function toast(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(10px);background:#121226;border:1px solid rgba(255,255,255,.08);padding:10px 12px;border-radius:10px;opacity:0;transition:opacity .25s,transform .25s;z-index:9999';
+  t.textContent=msg; document.body.appendChild(t);
+  requestAnimationFrame(()=>{t.style.opacity='1'; t.style.transform='translateX(-50%)';});
+  setTimeout(()=>{t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(10px)'; setTimeout(()=>t.remove(),220);},1600);
 }
 
-/* ---------- VISA generator ---------- */
+/* login */
+document.addEventListener('DOMContentLoaded', ()=>{
+  function tryLogin(){
+    const u=$('#username').value.trim(), p=$('#password').value, err=$('#login-error');
+    if(u && p){
+      const ls=$('#login-screen'); ls.style.transition='opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)';
+      ls.style.opacity='0'; ls.style.transform='scale(.98)'; setTimeout(()=>ls.remove(),360);
+      renderChecking();
+    }else{ err.textContent='Enter username & password'; err.style.opacity='1'; setTimeout(()=> err.style.opacity='0',1600); }
+  }
+  $('#login-btn').onclick = tryLogin;
+  ['username','password'].forEach(id=> $('#'+id).addEventListener('keydown',e=>{ if(e.key==='Enter') tryLogin(); }));
+});
+
+/* virtual card generator */
 function genVisa(){
-  const digits = Array.from({length:16}, (_,i)=> i===0?4:Math.floor(Math.random()*10));
+  const digits = Array.from({length:16},(_,i)=> i===0?4:Math.floor(Math.random()*10));
   const number = digits.join('').replace(/(\d{4})(?=\d)/g,'$1 ');
   const m = String(Math.floor(Math.random()*12)+1).padStart(2,'0');
   const y = String(new Date().getFullYear()+3+Math.floor(Math.random()*5));
   const cvv = String(Math.floor(Math.random()*900)+100);
   return {number, exp:`${m}/${y}`, cvv};
 }
-
-/* ---------- Page mount / swap ---------- */
-function mountPage(newPage){
-  const root = document.getElementById('dashboard');
-  // swap pages with fade/slide
-  root.replaceWith(root.cloneNode(false)); // clear previous listeners
-  const shell = document.createElement('div');
-  shell.id='dashboard'; shell.className='page active';
-  shell.appendChild(newPage.firstElementChild); // topbar
-  shell.appendChild(newPage.lastElementChild);  // container / sheet if present
-  document.body.appendChild(shell);
-}
-
-/* ---------- Login flow ---------- */
-document.addEventListener('DOMContentLoaded', ()=>{
-  const loginScreen = document.getElementById('login-screen');
-  const btn = document.getElementById('login-btn');
-  function tryLogin(){
-    const u = document.getElementById('username').value.trim();
-    const p = document.getElementById('password').value;
-    const err = document.getElementById('login-error');
-    if(u && p){
-      loginScreen.style.transition = `opacity var(--dur-m) var(--ease), transform var(--dur-m) var(--ease)`;
-      loginScreen.style.opacity = '0'; loginScreen.style.transform = 'scale(.98)';
-      setTimeout(()=> loginScreen.remove(), 360);
-      viewChecking();
-    }else{
-      err.textContent='Enter username & password'; err.style.opacity='1';
-      setTimeout(()=> err.style.opacity='0', 1600);
-    }
-  }
-  btn.addEventListener('click', tryLogin);
-  ['username','password'].forEach(id=> $( '#'+id ).addEventListener('keydown', e=>{ if(e.key==='Enter') tryLogin(); }));
-});
-
-/* expose schedule modal in inline onclick */
-window.showScheduleModal = showScheduleModal;
 </script>
 </body>
 </html>
