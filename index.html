@@ -1,340 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Chase Sapphire Checking</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    /* =========================
-       2030 NEON–GLASS DASHBOARD
-       ========================= */
+<meta charset="UTF-8" />
+<title>Chase Sapphire Checking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+/* =========================
+   2030 NEON–GLASS DASHBOARD
+   ========================= */
 
-    :root{
-      --bg:#0a0a10;
-      --panel:#0e0f17;
-      --panel-2:#0b0c14;
-      --text:#e9e8f7;
-      --muted:#a5a3c9;
-      --grid:rgba(140,140,200,.06);
+:root{
+  --bg:#0a0a10;
+  --panel:#0e0f17;
+  --panel-2:#0b0c14;
+  --text:#e9e8f7;
+  --muted:#a5a3c9;
+  --grid:rgba(140,140,200,.06);
 
-      --violet:#8b5cf6;
-      --pink:#ec4899;
-      --sky:#60a5fa;
-      --mint:#34d399;
-      --amber:#fbbf24;
+  --violet:#8b5cf6;
+  --pink:#ec4899;
+  --sky:#60a5fa;
+  --mint:#34d399;
+  --amber:#fbbf24;
 
-      --glow-violet: 0 10px 30px rgba(139,92,246,.35);
-      --glass: linear-gradient( to bottom right, rgba(18,18,30,.85), rgba(14,14,24,.85) ) padding-box,
-               linear-gradient(135deg, var(--sky), var(--violet)) border-box;
-    }
+  --glow-violet: 0 10px 30px rgba(139,92,246,.35);
+  --glass: linear-gradient( to bottom right, rgba(18,18,30,.9), rgba(14,14,24,.9) ) padding-box,
+           linear-gradient(135deg, var(--sky), var(--violet)) border-box;
+}
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0; font-family: "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
-      color:var(--text); background:var(--bg); overflow:auto;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0; font-family: "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+  color:var(--text); background:var(--bg); overflow:auto;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
 
-    /* ============= Global FX background ============= */
-    .fx{
-      position:fixed; inset:0; z-index:-2; pointer-events:none;
-      background:
-        radial-gradient(900px 600px at 15% -10%, rgba(96,165,250,.22), transparent 60%),
-        radial-gradient(900px 700px at 85% 120%, rgba(139,92,246,.18), transparent 60%),
-        linear-gradient(180deg, #090911 0%, #0a0a12 60%, #090911 100%);
-    }
-    .fx::before,
-    .fx::after{
-      content:""; position:absolute; inset:-40%;
-      background: conic-gradient(from 0turn, rgba(96,165,250,.12), rgba(124,58,237,.12), rgba(236,72,153,.12), rgba(96,165,250,.12));
-      filter: blur(60px); animation: swirl 26s linear infinite;
-    }
-    .fx::after{ animation-duration: 34s; animation-direction: reverse; opacity: .6; }
-    @keyframes swirl{ to{ transform: rotate(1turn); } }
-    /* Subtle grid */
-    .grid{
-      position:fixed; inset:0; z-index:-1; pointer-events:none;
-      background:
-        linear-gradient(transparent 79px, var(--grid) 80px),
-        linear-gradient(90deg, transparent 79px, var(--grid) 80px);
-      background-size:80px 80px;
-      mask: radial-gradient(60% 60% at 50% 50%, #000 68%, transparent 100%);
-    }
+/* ============= Global FX background ============= */
+.fx{
+  position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(900px 600px at 15% -10%, rgba(96,165,250,.22), transparent 60%),
+    radial-gradient(900px 700px at 85% 120%, rgba(139,92,246,.18), transparent 60%),
+    linear-gradient(180deg, #090911 0%, #0a0a12 60%, #090911 100%);
+}
+.fx::before,
+.fx::after{
+  content:""; position:absolute; inset:-40%;
+  background: conic-gradient(from 0turn, rgba(96,165,250,.12), rgba(124,58,237,.12), rgba(236,72,153,.12), rgba(96,165,250,.12));
+  filter: blur(60px); animation: swirl 26s linear infinite;
+}
+.fx::after{ animation-duration: 34s; animation-direction: reverse; opacity: .6; }
+@keyframes swirl{ to{ transform: rotate(1turn); } }
+/* Subtle grid */
+.grid{
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    linear-gradient(transparent 79px, var(--grid) 80px),
+    linear-gradient(90deg, transparent 79px, var(--grid) 80px);
+  background-size:80px 80px;
+  mask: radial-gradient(60% 60% at 50% 50%, #000 68%, transparent 100%);
+}
 
-    /* ===== Visibility helpers ===== */
-    .fade{ transition:opacity .4s ease; }
-    .hidden{ opacity:0; pointer-events:none; }
-    .visible{ opacity:1; pointer-events:auto; }
+/* ===== Visibility helpers ===== */
+.fade{ transition:opacity .35s ease; }
+.hidden{ opacity:0; pointer-events:none; }
+.visible{ opacity:1; pointer-events:auto; }
+.smooth{ transition:opacity .35s ease, transform .35s ease; }
 
-    /* ===================== LOGIN (black + neon) ===================== */
-    #login-screen{
-      position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-      padding:24px; color:#fff; z-index:9999;
-    }
-    .login-shell{
-      width:min(440px, 94vw); border-radius:22px; padding:3px; background:
-        linear-gradient(120deg, #60a5fa, #8b5cf6, #60a5fa);
-      box-shadow: 0 26px 80px rgba(0,0,0,.65), 0 0 120px rgba(96,165,250,.35);
-    }
-    #login-box{
-      border-radius:20px; padding:36px 30px 28px; text-align:center; color:#e8e7ef;
-      background:#0b0b10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
-    }
-    .login-title{
-      font-size: clamp(1.8rem, 3.6vw, 2.2rem); font-weight:700; letter-spacing:.3px;
-      background: linear-gradient(90deg, #60a5fa, #c084fc 45%, #60a5fa);
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-      margin-bottom:22px;
-    }
-    #login-error{ height:1.2em; margin-bottom:12px; color:#ff6b6b; opacity:0; transition:opacity .3s; }
-    .input-group{ position:relative; margin:14px 0; }
-    .input{
-      width:100%; padding:14px 14px 14px 50px; border-radius:14px;
-      background:#111223; border:1px solid #26263a; color:#e5e7eb; font-size:1rem;
-      transition: border-color .2s, box-shadow .2s, background .2s;
-    }
-    .input::placeholder{ color:#979bb2; }
-    .input:focus{ outline:none; border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.22), var(--glow-violet); background:#0f1020; }
-    .input-icon{ position:absolute; top:50%; left:14px; transform:translateY(-50%); width:22px; height:22px; filter: drop-shadow(0 2px 4px rgba(96,165,250,.55)); }
+/* ===================== LOGIN (black + neon) ===================== */
+#login-screen{
+  position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  padding:24px; color:#fff; z-index:9999;
+}
+.login-shell{
+  width:min(440px, 94vw); border-radius:22px; padding:3px; background:
+    linear-gradient(120deg, #60a5fa, #8b5cf6, #60a5fa);
+  box-shadow: 0 26px 80px rgba(0,0,0,.65), 0 0 120px rgba(96,165,250,.35);
+}
+#login-box{
+  border-radius:20px; padding:28px 22px 24px; text-align:center; color:#e8e7ef;
+  background:#0b0b10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.login-title{
+  font-size: clamp(1.6rem, 3.8vw, 2.2rem); font-weight:700; letter-spacing:.3px;
+  background: linear-gradient(90deg, #60a5fa, #c084fc 45%, #60a5fa);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  margin-bottom:18px;
+}
+#login-error{ min-height:1.2em; margin-bottom:10px; color:#ff6b6b; opacity:0; transition:opacity .3s; }
+.input-group{ position:relative; margin:12px 0; }
+.input{
+  width:100%; padding:14px 14px 14px 50px; border-radius:14px;
+  background:#111223; border:1px solid #26263a; color:#e5e7eb; font-size:1rem;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.input::placeholder{ color:#979bb2; }
+.input:focus{ outline:none; border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.22), var(--glow-violet); background:#0f1020; }
+.input-icon{ position:absolute; top:50%; left:14px; transform:translateY(-50%); width:22px; height:22px; filter: drop-shadow(0 2px 4px rgba(96,165,250,.55)); }
 
-    #login-btn{
-      width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
-      padding:13px 16px; border-radius:14px; cursor:pointer;
-      background:#0f0f18; color:#fff; font-weight:700; border:1px solid #2a2b36;
-      transition: box-shadow .2s, border-color .2s, transform .05s, filter .2s;
-    }
-    #login-btn:hover, #login-btn:focus{ border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.18), var(--glow-violet); outline:none; filter:saturate(1.08); }
-    #login-btn:active{ transform:translateY(1px); }
-    .btn-icon{ width:20px; height:20px; filter: drop-shadow(0 2px 4px rgba(96,165,250,.45)); }
+#login-btn{
+  width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
+  padding:14px 16px; border-radius:14px; cursor:pointer;
+  background:#0f0f18; color:#fff; font-weight:700; border:1px solid #2a2b36;
+  transition: box-shadow .2s, border-color .2s, transform .05s, filter .2s;
+}
+#login-btn:hover, #login-btn:focus{ border-color:var(--sky); box-shadow:0 0 0 4px rgba(96,165,250,.18), var(--glow-violet); outline:none; filter:saturate(1.08); }
+#login-btn:active{ transform:translateY(1px); }
+.btn-icon{ width:20px; height:20px; filter: drop-shadow(0 2px 4px rgba(96,165,250,.45)); }
 
-    /* ===================== DASHBOARD ===================== */
-    .page{ position:absolute; inset:0; opacity:0; pointer-events:none; overflow:auto; }
-    .page.active{ opacity:1; pointer-events:auto; }
+/* ===================== PAGES ===================== */
+.page{ position:absolute; inset:0; opacity:0; pointer-events:none; overflow:auto; }
+.page.active{ opacity:1; pointer-events:auto; }
 
-    .topbar{
-      position:sticky; top:0; z-index:5; padding:14px 20px; backdrop-filter: blur(10px);
-      background: linear-gradient( to right, rgba(12,12,22,.72), rgba(11,11,20,.58) );
-      border-bottom:1px solid rgba(255,255,255,.06);
-      display:flex; align-items:center; justify-content:space-between;
-    }
-    .brand{
-      font-weight:800; letter-spacing:.4px;
-      background: linear-gradient(90deg, var(--sky), var(--violet));
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-      font-size: clamp(1.2rem, 2.2vw, 1.5rem);
-    }
-    .top-actions{ display:flex; gap:10px; }
-    .chip{
-      padding:8px 12px; border-radius:999px; font-size:.9rem; color:#dfe3ff;
-      background: linear-gradient(120deg, #121225, #0e0f18); border:1px solid rgba(255,255,255,.08);
-    }
+.topbar{
+  position:sticky; top:0; z-index:5; padding:12px 16px; backdrop-filter: blur(10px);
+  background: linear-gradient( to right, rgba(12,12,22,.72), rgba(11,11,20,.58) );
+  border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.brand{
+  font-weight:800; letter-spacing:.4px;
+  background: linear-gradient(90deg, var(--sky), var(--violet));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+}
+.top-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+.chip{
+  padding:8px 12px; border-radius:999px; font-size:.9rem; color:#dfe3ff;
+  background: linear-gradient(120deg, #121225, #0e0f18); border:1px solid rgba(255,255,255,.08);
+}
 
-    .container{ max-width:1200px; margin:28px auto 56px; padding:0 20px; }
+.container{ max-width:1200px; margin:22px auto 56px; padding:0 16px; }
 
-    .kpis{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px; margin-bottom:16px; }
-    .card{
-      grid-column: span 4; border-radius:16px; padding:18px; background: var(--glass);
-      border:2px solid transparent; color:var(--text);
-      box-shadow: 0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.03);
-      backdrop-filter: blur(10px);
-      transition: transform .06s, box-shadow .25s, filter .25s;
-    }
-    .card:hover{ transform: translateY(-2px); box-shadow: 0 28px 80px rgba(96,165,250,.28); filter: saturate(1.05); }
-    .card h4{ margin-bottom:10px; font-weight:700; color:#dfe2ff; }
-    .stat{ font-size: clamp(1.4rem, 2.6vw, 2rem); font-weight:800; letter-spacing:.2px; }
-    .stat-gradient{
-      background: linear-gradient(90deg, var(--sky), var(--violet));
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-    }
-    .muted{ color:var(--muted); font-size:.92rem; }
+.kpis{ display:grid; grid-template-columns: repeat(12, 1fr); gap:14px; margin-bottom:16px; }
+.card{
+  grid-column: span 4; border-radius:16px; padding:16px; background: var(--glass);
+  border:2px solid transparent; color:var(--text);
+  box-shadow: 0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.03);
+  backdrop-filter: blur(10px);
+  transition: transform .1s, box-shadow .25s, filter .25s;
+}
+.card:hover{ transform: translateY(-2px); box-shadow: 0 28px 80px rgba(96,165,250,.28); filter: saturate(1.05); }
+.card h4{ margin-bottom:8px; font-weight:700; color:#dfe2ff; }
+.stat{ font-size: clamp(1.3rem, 2.6vw, 2rem); font-weight:800; letter-spacing:.2px; }
+.stat-gradient{
+  background: linear-gradient(90deg, var(--sky), var(--violet));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.muted{ color:var(--muted); font-size:.92rem; }
 
-    /* === Realistic progress ring (SVG) === */
-    .ring-3d{
-      position:relative; width:92px; height:92px; display:grid; place-items:center;
-      filter: drop-shadow(0 6px 18px rgba(96,165,250,.18));
-    }
-    .ring-3d::before{
-      content:""; position:absolute; inset:10px;
-      border-radius:50%;
-      background: radial-gradient(60% 60% at 50% 40%, rgba(96,165,250,.16), transparent 70%);
-      pointer-events:none;
-    }
-    .ring-svg{ width:100%; height:100%; transform:rotate(-90deg); }
-    .ring-track{ fill:none; stroke:#151b25; stroke-width:12; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); opacity:.95; }
-    .ring-progress{
-      fill:none; stroke:url(#ringGradBlue); stroke-width:12; stroke-linecap:round;
-      filter:url(#ringGlowBlue); stroke-dasharray: 0 100;
-      transition: stroke-dasharray .8s cubic-bezier(.22,.9,.2,1), stroke .2s;
-    }
-    .ring-txt{ position:absolute; inset:0; display:grid; place-items:center; font-weight:800; color:#d9ecff; text-shadow: 0 1px 0 rgba(0,0,0,.4); }
+.balance-panel{ grid-column: span 8; display:flex; align-items:center; gap:18px; }
+.actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+.action-btn{
+  display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; cursor:pointer;
+  background: linear-gradient(#0f0f18,#0a0a14) padding-box,
+              linear-gradient(135deg, var(--sky), var(--violet)) border-box;
+  border:1px solid transparent; color:#fff; font-weight:700; box-shadow: var(--glow-violet);
+  transition: transform .06s, box-shadow .2s, filter .2s;
+}
+.action-btn:hover{ box-shadow: 0 14px 34px rgba(96,165,250,.35); filter:saturate(1.08); }
+.action-btn:active{ transform: translateY(1px); }
+.action-btn svg{ width:18px; height:18px; }
 
-    .balance-panel{ grid-column: span 8; display:flex; align-items:center; gap:18px; }
-    .actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
-    .action-btn{
-      display:inline-flex; align-items:center; gap:10px; padding:12px 14px; border-radius:12px; cursor:pointer;
-      background: linear-gradient(#0f0f18,#0a0a14) padding-box,
-                  linear-gradient(135deg, var(--sky), var(--violet)) border-box;
-      border:1px solid transparent; color:#fff; font-weight:700; box-shadow: var(--glow-violet);
-      transition: transform .05s, box-shadow .2s, filter .2s;
-    }
-    .action-btn:hover{ box-shadow: 0 14px 34px rgba(96,165,250,.35); filter:saturate(1.1); }
-    .action-btn:active{ transform: translateY(1px); }
-    .action-btn svg{ width:20px; height:20px; }
+/* Budget ring (kept exactly like original) */
+.ring-3d{ position:relative; width:88px; height:88px; display:grid; place-items:center; filter: drop-shadow(0 6px 18px rgba(96,165,250,.18)); }
+.ring-3d::before{ content:""; position:absolute; inset:10px; border-radius:50%; background: radial-gradient(60% 60% at 50% 40%, rgba(96,165,250,.16), transparent 70%); pointer-events:none; }
+.ring-svg{ width:100%; height:100%; transform:rotate(-90deg); }
+.ring-track{ fill:none; stroke:#151b25; stroke-width:12; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); opacity:.95; }
+.ring-progress{ fill:none; stroke:url(#ringGradBlue); stroke-width:12; stroke-linecap:round; filter:url(#ringGlowBlue); stroke-dasharray: 0 100; transition: stroke-dasharray .8s cubic-bezier(.22,.9,.2,1), stroke .2s; }
+.ring-txt{ position:absolute; inset:0; display:grid; place-items:center; font-weight:800; color:#d9ecff; text-shadow: 0 1px 0 rgba(0,0,0,.4); }
 
-    .facts{ grid-column: span 4; }
-    .kv{ display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid rgba(255,255,255,.07); }
-    .kv:first-child{ border-top:none; }
+/* Facts */
+.facts{ grid-column: span 4; }
+.kv{ display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid rgba(255,255,255,.07); }
+.kv:first-child{ border-top:none; }
 
-    .overlay{
-      position:fixed; inset:0; background:rgba(0,0,0,.5);
-      opacity:0; pointer-events:none; transition:opacity .25s ease;
-    }
-    .overlay.visible{ opacity:1; pointer-events:auto; }
-    .modal{
-      position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.94);
-      width:min(520px, 94vw); border-radius:16px; padding:18px;
-      background: var(--glass); border:2px solid transparent; color:var(--text);
-      box-shadow: 0 24px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.03);
-      backdrop-filter: blur(10px);
-      opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
-    }
-    .modal.visible{ opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1); }
-    .modal h3{ margin:6px 0 10px; font-weight:800; }
-    .modal .close-btn{ position:absolute; top:8px; right:10px; font-size:1.3rem; background:none; border:none; color:var(--muted); cursor:pointer; }
+/* Overlay + Modal */
+.overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.55);
+  opacity:0; pointer-events:none; transition:opacity .25s ease;
+}
+.overlay.visible{ opacity:1; pointer-events:auto; }
+.modal{
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.96);
+  width:min(560px, 94vw); border-radius:16px; padding:16px;
+  background: var(--glass); border:2px solid transparent; color:var(--text);
+  box-shadow: 0 24px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.03);
+  backdrop-filter: blur(10px);
+  opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+}
+.modal.visible{ opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1); }
+.modal h3{ margin:6px 0 10px; font-weight:800; }
+.modal .close-btn{ position:absolute; top:8px; right:10px; font-size:1.3rem; background:none; border:none; color:#c9c7ee; cursor:pointer; }
+.hr{ height:1px; background:rgba(255,255,255,.08); margin:10px 0; }
 
-    /* Transactions list + search */
-    .transactions-list{ list-style:none; margin:8px 0 0; padding:0; max-height:420px; overflow:auto; }
-    .transactions-list .date-header{ font-weight:700; color:#dfe2ff; margin-bottom:6px; }
-    .tx-item{
-      padding:12px; border-radius:12px; margin:10px 0; cursor:pointer;
-      background: linear-gradient(#121222,#0f1020) padding-box,
-                  linear-gradient(135deg, rgba(96,165,250,.55), rgba(139,92,246,.55)) border-box;
-      border:1px solid transparent; transition:filter .2s, transform .05s, box-shadow .2s;
-    }
-    .tx-item:hover{ filter:saturate(1.06); box-shadow: 0 10px 26px rgba(96,165,250,.28); }
-    .tx-summary{ display:flex; justify-content:space-between; gap:10px; }
-    .credit{ color:#22c55e; font-weight:700; }
-    .debit{ color:#f87171; font-weight:700; }
-    .muted{ color:var(--muted); font-size:.92rem; }
+/* Transactions list + search */
+.transactions-list{ list-style:none; margin:8px 0 0; padding:0; max-height:420px; overflow:auto; }
+.transactions-list .date-header{ font-weight:700; color:#dfe2ff; margin:10px 0 6px; }
+.tx-item{ padding:12px; border-radius:12px; margin:10px 0; cursor:pointer; background: linear-gradient(#121222,#0f1020) padding-box, linear-gradient(135deg, rgba(96,165,250,.55), rgba(139,92,246,.55)) border-box; border:1px solid transparent; transition:filter .2s, transform .05s, box-shadow .2s; }
+.tx-item:hover{ filter:saturate(1.06); box-shadow: 0 10px 26px rgba(96,165,250,.28); }
+.tx-summary{ display:flex; justify-content:space-between; gap:10px; }
+.credit{ color:#22c55e; font-weight:700; }
+.debit{ color:#f87171; font-weight:700; }
 
-    .search-wrap{
-      display:flex; align-items:center; gap:10px;
-      margin:10px 0 6px; padding:10px 12px; border-radius:12px;
-      background: linear-gradient(#121222,#0f1020) padding-box,
-                  linear-gradient(135deg, rgba(96,165,250,.5), rgba(139,92,246,.5)) border-box;
-      border:1px solid transparent; box-shadow: var(--glow-violet);
-    }
-    .search-wrap svg{ width:18px; height:18px; opacity:.8; }
-    #tx-search{
-      flex:1; background:transparent; border:none; outline:none; color:var(--text);
-      font-size:.98rem; padding:4px 0;
-    }
-    #tx-clear{
-      background:none; border:none; color:var(--muted); cursor:pointer;
-      font-size:1.1rem; line-height:1; padding:2px 6px; border-radius:8px;
-      visibility:hidden;
-    }
-    #tx-clear:hover{ color:#fff; }
+.search-wrap{ display:flex; align-items:center; gap:10px; margin:10px 0 6px; padding:10px 12px; border-radius:12px; background: linear-gradient(#121222,#0f1020) padding-box, linear-gradient(135deg, rgba(96,165,250,.5), rgba(139,92,246,.5)) border-box; border:1px solid transparent; box-shadow: var(--glow-violet); }
+.search-wrap svg{ width:18px; height:18px; opacity:.8; }
+#tx-search{ flex:1; background:transparent; border:none; outline:none; color:var(--text); font-size:.98rem; padding:4px 0; }
+#tx-clear{ background:none; border:none; color:#c9c7ee; cursor:pointer; font-size:1.1rem; line-height:1; padding:2px 6px; border-radius:8px; visibility:hidden; }
+#tx-clear:hover{ color:#fff; }
 
-    #tx-detail-modal{ padding-top:56px; }
-    .back-btn{ position:absolute; top:16px; left:16px; background:none; border:none; color:var(--muted); cursor:pointer; }
-    .detail-rows .row{ padding:8px 0; border-top:1px solid rgba(255,255,255,.08); }
-    .detail-rows .row:first-child{ border-top:none; }
-    .row-label{ color:var(--muted); font-size:.92rem; }
+#tx-detail-modal{ padding-top:56px; }
+.back-btn{ position:absolute; top:16px; left:14px; background:none; border:none; color:#c9c7ee; cursor:pointer; }
 
-    @media (max-width: 980px){
-      .card{ grid-column: span 6; }
-      .balance-panel{ grid-column: span 12; }
-      .facts{ grid-column: span 12; }
-    }
-    @media (max-width: 640px){
-      .card{ grid-column: span 12; }
-      .actions{ gap:10px; }
-      .action-btn{ width:100%; justify-content:center; }
-    }
-    @media (prefers-reduced-motion: reduce){
-      .fade, .modal, #login-btn, .tx-item, .card, .action-btn{ transition:none !important; }
-      .fx::before, .fx::after{ animation:none !important; }
-    }
+/* ========= Pay Later page ========= */
+.pay-header{ display:flex; align-items:center; gap:12px; justify-content:space-between; flex-wrap:wrap; }
+.pill{ padding:8px 12px; border-radius:999px; background:#0e0f18; border:1px solid rgba(255,255,255,.08); color:#dfe2ff; }
 
-    /* ---------- PAY LATER (bottom sheet, steps, plans, virtual card) ---------- */
-    .sheet{
-      position:fixed; left:0; right:0; bottom:0; z-index:9998;
-      background: linear-gradient(180deg, rgba(13,13,22,.65), rgba(10,10,16,.82));
-      transform: translateY(16px); opacity:0; pointer-events:none;
-      transition: opacity .26s ease, transform .26s ease;
-      border-top:1px solid rgba(255,255,255,.08);
-      backdrop-filter: blur(12px);
-    }
-    .sheet.open{ opacity:1; transform: translateY(0); pointer-events:auto; }
-    .sheet-header{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 16px; }
-    .sheet .close-btn{ font-size:1.3rem; background:none; border:none; color:var(--muted); cursor:pointer; }
-    .sheet-scroll{ padding:0 16px 18px; max-height: calc(78vh - 44px); overflow:auto; }
+.section{ border-radius:16px; padding:14px; background: var(--glass); border:2px solid transparent; box-shadow: 0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.03); margin-top:14px; }
 
-    .step{ display:none; opacity:0; transform: translateY(8px); transition: opacity .26s ease, transform .26s ease; }
-    .step.active{ display:block; opacity:1; transform: translateY(0); }
+.plan-tile{ width:100%; text-align:left; padding:12px 14px; border-radius:12px; background:#111223; border:1px solid #27283a; color:#eaeafb; display:flex; justify-content:space-between; align-items:center; gap:10px; cursor:pointer; transition:transform .06s, box-shadow .25s, filter .2s; }
+.plan-tile:hover{ transform:translateY(-1px); box-shadow:0 10px 26px rgba(96,165,250,.25); }
+.tile-sub{ color:#aeb1d3; font-size:.92rem; }
 
-    .field{ display:grid; gap:8px; margin:8px 0; }
-    .field input{
-      background:#111223; color:#e5e7eb; border:1px solid #26263a; border-radius:12px; padding:12px;
-      outline:none; transition:border-color .2s, box-shadow .2s, background .2s;
-    }
-    .field input:focus{ border-color:var(--violet); box-shadow:0 0 0 4px rgba(139,92,246,.22); background:#0f1020; }
-    .err{ color:#ff7b7b; font-size:.9rem; opacity:0; transform:translateY(-4px); transition:opacity .22s ease, transform .22s ease; }
-    .err.show{ opacity:1; transform:translateY(0); }
+.btn-primary{ display:inline-flex; align-items:center; gap:10px; padding:12px 14px; border-radius:12px; cursor:pointer; background: linear-gradient(#0f0f18,#0a0a14) padding-box, linear-gradient(135deg, var(--sky), var(--violet)) border-box; border:1px solid transparent; color:#fff; font-weight:700; box-shadow: var(--glow-violet); }
+.btn-ghost{ display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:10px; background:#111223; border:1px solid #2a2b36; color:#e7e7ff; }
+.btn-green{ background: linear-gradient(#0f1a13,#0b1510) padding-box, linear-gradient(135deg, #34d399, #10b981) border-box; color:#d8ffe9; }
+.btn-danger{ background:#17131a; border-color:#3a2237; }
 
-    .plan{
-      border-radius:14px; padding:14px; margin:12px 0;
-      background: linear-gradient(#121222,#0f1020) padding-box,
-                  linear-gradient(135deg, rgba(124,58,237,.45), rgba(236,72,153,.35)) border-box;
-      border:1px solid transparent;
-    }
-    .plan .row{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
-    .plan .schedule{ margin-top:10px; display:none; }
-    .plan .schedule.open{ display:block; }
-    .plan .sched-row{ display:flex; justify-content:space-between; padding:6px 0; border-top:1px dashed rgba(255,255,255,.08); }
-    .plan .sched-row:first-child{ border-top:none; }
+.help{ color:#a5a3c9; font-size:.92rem; }
 
-    .sticky-cta{
-      position:sticky; bottom:0; display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:12px 12px; margin-top:12px; border-radius:14px; background:#121225; border:1px solid rgba(255,255,255,.08);
-    }
-    .sticky-cta button{
-      background:linear-gradient(#1eae5f,#148947) padding-box, linear-gradient(135deg,#2be477,#0ea463) border-box;
-      border:1px solid transparent; color:#fff; font-weight:900; border-radius:12px; padding:10px 14px; display:inline-flex; align-items:center; gap:8px;
-    }
-    .sticky-cta button:disabled{ opacity:.55; filter:saturate(.6); cursor:not-allowed; }
+/* Plan selector (inside popup) */
+.plan-card{ background:#0f1020; border:1px solid #2a2b3a; border-radius:14px; padding:12px; margin:10px 0; overflow:hidden; }
+.plan-head{ display:flex; align-items:center; gap:10px; justify-content:space-between; }
+.radio{ width:18px; height:18px; border-radius:50%; border:2px solid #6ea1ff; display:inline-grid; place-items:center; cursor:pointer; }
+.radio-dot{ width:10px; height:10px; background:#6ea1ff; border-radius:50%; transform:scale(0); transition:transform .18s; }
+.radio.checked .radio-dot{ transform:scale(1); }
 
-    .loader{ display:grid; place-items:center; gap:12px; padding:22px 0; }
-    .spinner{
-      width:36px; height:36px; border-radius:50%;
-      border:4px solid rgba(255,255,255,.15); border-top-color:#c1c5ff;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin{ to{ transform: rotate(360deg); } }
+.krow{ display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid rgba(255,255,255,.07); font-size:1.02rem; }
+.krow:first-child{ border-top:none; }
+.btn-sched{ margin-top:8px; }
 
-    /* Virtual card */
-    .cc-card{
-      width:min(520px, 100%); aspect-ratio:1.586; position:relative; border-radius:16px; padding:18px; cursor:pointer; overflow:hidden;
-      background:
-        radial-gradient(120% 140% at 0% 0%, rgba(96,165,250,.22), transparent 60%),
-        radial-gradient(120% 140% at 100% 100%, rgba(236,72,153,.22), transparent 60%),
-        linear-gradient(135deg, #101222, #0b0d18 55%, #0a0a14);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow: 0 28px 80px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04);
-    }
-    .cc-card::after{
-      content:""; position:absolute; inset:-40%;
-      background: conic-gradient(from 0turn, rgba(96,165,250,.12), rgba(124,58,237,.12), rgba(236,72,153,.12), rgba(96,165,250,.12));
-      filter: blur(48px); opacity:.28; animation: swirl 22s linear infinite;
-    }
-    .cc-name{ position:absolute; left:16px; top:14px; font-size:.78rem; letter-spacing:.22rem; font-weight:800; color:#c9c9ffb0; text-transform:uppercase; }
-    .cc-visa{ position:absolute; right:16px; bottom:12px; font-weight:900; letter-spacing:.04rem; font-size: clamp(1.1rem, 3.8vw, 1.6rem); color:#e9ecff; opacity:.92; text-shadow: 0 4px 18px rgba(139,92,246,.25); }
-    .cc-drawer{ overflow:hidden; border-radius:14px; margin-top:10px; background:#0f1020; border:1px solid rgba(255,255,255,.08); max-height:0; opacity:.7; transform: translateY(-4px); transition:max-height .28s ease, opacity .28s ease, transform .28s ease; }
-    .cc-drawer.open{ max-height:260px; opacity:1; transform: translateY(0); }
-    .cc-rows{ display:grid; grid-template-columns: 1fr 1fr; gap:10px 16px; padding:12px; }
-  </style>
+.slide{ max-height:0; opacity:.0; overflow:hidden; transition:max-height .35s ease, opacity .35s ease; }
+.slide.open{ max-height:400px; opacity:1; }
+
+/* Virtual card */
+.cc-card{ width:min(520px,100%); aspect-ratio: 1.586; position:relative; border-radius:18px; padding:22px; overflow:hidden; background: radial-gradient(120% 140% at 0% 0%, rgba(96,165,250,.22), transparent 60%), radial-gradient(120% 140% at 100% 100%, rgba(236,72,153,.22), transparent 60%), linear-gradient(135deg, #101222, #0b0d18 55%, #0a0a14); border:1px solid rgba(255,255,255,.10); box-shadow: 0 28px 80px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04); }
+.cc-brand{ position:absolute; top:14px; left:16px; font-size:.78rem; letter-spacing:.22rem; font-weight:700; color:#c9c9ffb0; text-transform:uppercase; }
+.cc-chip{ position:absolute; top:56px; left:22px; width:50px; height:36px; border-radius:8px; background: linear-gradient(135deg, #e8d9a7, #c8b77a 40%, #fff0c5 70%); box-shadow: inset 0 0 0 1px rgba(0,0,0,.25), 0 4px 12px rgba(0,0,0,.35); }
+.cc-visa{ position:absolute; right:18px; bottom:14px; font-weight:900; letter-spacing:.04rem; font-size: clamp(1.1rem, 2.8vw, 1.6rem); color:#e9ecff; opacity:.92; text-shadow: 0 4px 18px rgba(139,92,246,.25); }
+.cc-num{ position:absolute; left:22px; bottom:58px; font-weight:800; letter-spacing:.2rem; color:#eef2ff; }
+.cc-name{ position:absolute; left:22px; bottom:22px; font-weight:700; color:#eef2ff; }
+
+/* Payment modal */
+.option{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; border:1px solid #2a2b36; background:#111223; cursor:pointer; }
+.option input{ margin:0; }
+.row{ display:flex; gap:10px; }
+.row > *{ flex:1; }
+
+.inputBox{ display:flex; flex-direction:column; gap:6px; margin:8px 0; }
+.inputBox input{ padding:10px 12px; border-radius:10px; border:1px solid #2a2b36; background:#0f1020; color:#e9e9ff; }
+.error{ color:#ff6b6b; font-size:.9rem; min-height:1em; }
+
+/* Mobile tweaks */
+@media (max-width: 980px){
+  .card{ grid-column: span 6; }
+  .balance-panel{ grid-column: span 12; }
+  .facts{ grid-column: span 12; }
+}
+@media (max-width: 640px){
+  .card{ grid-column: span 12; }
+  .actions{ gap:10px; }
+  .action-btn{ width:100%; justify-content:center; }
+  .plan-tile{ flex-direction:column; align-items:flex-start; }
+}
+@media (prefers-reduced-motion: reduce){
+  .fade, .modal, #login-btn, .tx-item, .card, .action-btn, .slide{ transition:none !important; }
+  .fx::before, .fx::after{ animation:none !important; }
+}
+</style>
 </head>
 <body>
   <div class="fx"></div>
@@ -373,9 +317,8 @@
     </div>
   </div>
 
-  <!-- =================== DASHBOARD =================== -->
+  <!-- =================== CHECKING PAGE =================== -->
   <div id="dashboard" class="hidden fade">
-    <!-- CHECKING PAGE -->
     <div id="checking" class="page active">
       <div class="topbar">
         <div class="brand">Chase Sapphire Checking</div>
@@ -395,22 +338,23 @@
               <div class="actions">
                 <button id="show-trans" class="action-btn" title="See recent activity">
                   <svg viewBox="0 0 24 24"><path fill="#60a5fa" d="M4 4h16a1 1 0 0 1 1 1v3H3V5a1 1 0 0 1 1-1zm-1 7h18v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7zm4 2v2h2v-2H7zm4 0v2h6v-2h-6z"/></svg>
-                  Recent transactions
+                  Recent
                 </button>
-                <button class="action-btn" title="Transfer">
+
+                <button id="transfer-btn" class="action-btn" title="Transfer">
                   <svg viewBox="0 0 24 24"><path fill="#8b5cf6" d="M4 7h9V4l5 5-5 5v-3H4zM20 17H11v3l-5-5 5-5v3h9z"/></svg>
                   Transfer
                 </button>
-                <!-- NEW: Pay later -->
-                <button id="open-paylater" class="action-btn" title="Pay later">
-                  <svg viewBox="0 0 24 24"><path fill="#34d399" d="M12 22a9 9 0 1 1 9-9 9.01 9.01 0 0 1-9 9Zm1-9.6 3.5-3.5 1.4 1.4L12 16l-3.9-3.9 1.4-1.4L13 12.4V6h2v6.4Z"/></svg>
+
+                <button id="to-paylater" class="action-btn" title="Pay later">
+                  <svg viewBox="0 0 24 24"><path fill="#34d399" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Zm1 5v4.3l3 1.8-1 1.7-4-2.3V7h2Z"/></svg>
                   Pay later
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Budget/Spending Ring -->
+          <!-- Budget/Spending Ring (kept as in original) -->
           <div class="card" style="display:flex; align-items:center; gap:16px;">
             <div class="ring-3d">
               <svg class="ring-svg" viewBox="0 0 120 120" aria-hidden="true">
@@ -451,26 +395,41 @@
     <!-- =================== PAY LATER PAGE =================== -->
     <div id="paylater" class="page">
       <div class="topbar">
-        <a href="#" id="back-checking" style="color:#cfd2ff;font-weight:800;text-decoration:none;">← Checking</a>
-        <div class="top-actions">
-          <div class="chip">Active plans: <strong id="plan-count">0</strong></div>
+        <button id="back-to-checking" class="btn-ghost" title="Back to Checking">← Checking</button>
+        <div class="pay-header">
+          <div class="brand" style="font-size:1.6rem;">Pay over time</div>
+          <div class="pill">Active plans: <strong id="activeCount">0</strong></div>
+          <div class="pill">Outstanding: <strong id="outstandingLbl">$0.00</strong></div>
         </div>
       </div>
 
       <div class="container">
-        <h2 style="margin:10px 0 14px;font-size:clamp(1.5rem,6vw,2.1rem);line-height:1.05">Pay over<br/>time</h2>
-
-        <!-- Empty state -->
-        <div id="pot-empty" class="card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <div class="muted">No active plans</div>
-          <button id="plan-open" class="action-btn">
-            <svg viewBox="0 0 24 24"><path fill="#c4c8ff" d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2z"/></svg>
-            Plan a purchase
-          </button>
+        <div class="section">
+          <div id="plansEmpty" class="help">No active plans.</div>
+          <div id="plansList" class="col" style="display:flex; flex-direction:column; gap:10px;"></div>
+          <div style="margin-top:12px;">
+            <button id="open-plan" class="btn-primary">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#a8c8ff" d="M12 5v6H6v2h6v6h2v-6h6v-2h-6V5z"/></svg>
+              Plan a purchase
+            </button>
+          </div>
         </div>
 
-        <!-- Where active plans will render -->
-        <div id="pot-list"></div>
+        <div id="planDetail" class="section hidden fade">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+            <div>
+              <h3 id="pdTitle" style="margin:6px 0 8px;">Plan details</h3>
+              <div class="help" id="pdMeta"></div>
+            </div>
+            <button id="pd-makePay" class="btn-primary btn-green">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#b7ffd9" d="M12 22a10 10 0 1 1 .001-20.001A10 10 0 0 1 12 22Zm1-14v3.59l2.3 2.3-1.4 1.41L11 12.41V8h2Z"/></svg>
+              Make a payment
+            </button>
+          </div>
+          <div class="hr"></div>
+          <div id="pdSummary" class="help" style="margin-bottom:8px;"></div>
+          <div id="pdSchedule"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -478,11 +437,10 @@
   <!-- ============ OVERLAY & MODALS ============ -->
   <div id="overlay" class="overlay"></div>
 
+  <!-- Recent transactions -->
   <div id="trans-modal" class="modal">
     <button id="close-trans" class="close-btn">×</button>
     <h3>Recent transactions</h3>
-
-    <!-- search -->
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path fill="#60a5fa" d="M15.5 14h-.8l-.3-.3a6 6 0 1 0-.9.9l.3.3v.8L19 20.5 20.5 19 15.5 14Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14Z"/>
@@ -490,467 +448,647 @@
       <input id="tx-search" type="text" autocomplete="off" placeholder="Search merchant, amount, date…" />
       <button id="tx-clear" title="Clear">×</button>
     </div>
-
     <div class="date-header" style="color:var(--muted);">Pending (0)</div>
     <div style="margin-bottom:8px;color:var(--muted);">No pending transactions</div>
-
     <ul id="tx-list" class="transactions-list"></ul>
   </div>
 
+  <!-- Transaction details -->
   <div id="tx-detail-modal" class="modal">
     <button class="back-btn">← Back</button>
     <h3>Transaction Details</h3>
     <div class="detail-rows"></div>
   </div>
 
-  <!-- ============ PAY LATER SHEET (bottom) ============ -->
-  <div id="plan-sheet" class="sheet" aria-hidden="true">
-    <div class="sheet-header">
-      <div style="font-weight:900">Plan a purchase</div>
-      <button class="close-btn" id="sheet-close" aria-label="Close">×</button>
+  <!-- Plan a purchase wizard -->
+  <div id="plan-modal" class="modal">
+    <button id="close-plan" class="close-btn">×</button>
+    <h3 id="planStepTitle">Plan a purchase</h3>
+    <div id="step1">
+      <div class="inputBox">
+        <label>Store name</label>
+        <input id="storeInput" type="text" placeholder="e.g., Apple" />
+      </div>
+      <div id="err1" class="error"></div>
+      <button id="s1next" class="btn-primary">Continue</button>
     </div>
-    <div class="sheet-scroll">
-      <!-- Step 1 -->
-      <div class="step active" id="pl-step1">
-        <div class="field">
-          <label>Store name</label>
-          <input id="pl-store" type="text" inputmode="text" autocomplete="off" placeholder="e.g., Best Buy">
-          <div id="pl-err1" class="err">Please enter a store name.</div>
-        </div>
-        <div class="actions"><button id="pl-next1" class="action-btn">Continue</button></div>
-      </div>
 
-      <!-- Step 2 -->
-      <div class="step" id="pl-step2">
-        <div class="field">
-          <label>Purchase amount (minimum $50)</label>
-          <input id="pl-amount" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="50">
-          <div id="pl-err2" class="err">Enter a whole dollar amount of $50 or more.</div>
-        </div>
-        <div class="actions">
-          <button id="pl-back1" class="action-btn" style="background:linear-gradient(#101020,#0b0c14) padding-box;border-color:rgba(255,255,255,.14)">Back</button>
-          <button id="pl-next2" class="action-btn">Continue</button>
-        </div>
+    <div id="step2" class="hidden fade">
+      <div class="inputBox">
+        <label>Purchase amount (minimum $50)</label>
+        <input id="amtInput" inputmode="numeric" pattern="[0-9]*" placeholder="Enter a whole number (no cents)" />
       </div>
-
-      <!-- Loading -->
-      <div class="step" id="pl-loading">
-        <div class="loader"><div class="spinner"></div><div>Retrieving plans…</div></div>
+      <div id="err2" class="error"></div>
+      <div style="display:flex; gap:8px; margin-top:4px;">
+        <button id="s2back" class="btn-ghost">Back</button>
+        <button id="s2next" class="btn-primary">Continue</button>
       </div>
+    </div>
 
-      <!-- Plans -->
-      <div class="step" id="pl-plans">
-        <div id="pl-options"></div>
-        <label style="display:flex;align-items:center;gap:8px;margin-top:10px">
-          <input id="pl-agree" type="checkbox"><span>I agree to the loan terms and the Truth in Lending disclosure.</span>
-        </label>
-        <div class="sticky-cta" id="pl-cta">
-          <div class="muted" id="pl-cta-hint">Select a plan to continue.</div>
-          <button id="pl-activate" disabled>
-            <svg viewBox="0 0 24 24"><path fill="#fff" d="M10 17l-4-4 1.4-1.4L10 14.2l6.6-6.6L18 9l-8 8z"/></svg>
-            Activate plan
-          </button>
-        </div>
-        <div class="actions" style="margin-top:10px">
-          <button id="pl-back2" class="action-btn" style="background:linear-gradient(#101020,#0b0c14) padding-box;border-color:rgba(255,255,255,.14)">Back</button>
-        </div>
+    <div id="stepLoading" class="hidden fade" style="display:grid; place-items:center; gap:6px; min-height:120px;">
+      <div class="help">Retrieving plans…</div>
+    </div>
+
+    <div id="stepPlans" class="hidden fade">
+      <div id="plansContainer"></div>
+      <div class="hr"></div>
+      <label style="display:flex; gap:8px; align-items:center;">
+        <input id="agreeTerms" type="checkbox" />
+        <span>I agree to the loan terms and the Truth in Lending disclosure.</span>
+      </label>
+      <div id="agreeErr" class="error"></div>
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <button id="plansBack" class="btn-ghost">Back</button>
+        <button id="activateBtn" class="btn-primary btn-green" disabled>Activate plan</button>
       </div>
+    </div>
 
-      <!-- Activating -->
-      <div class="step" id="pl-activating">
-        <div class="loader"><div class="spinner"></div><div>Activating plan…</div></div>
+    <div id="stepActivating" class="hidden fade" style="display:grid; place-items:center; gap:6px; min-height:120px;">
+      <div class="help">Activating plan…</div>
+    </div>
+
+    <div id="stepCard" class="hidden fade">
+      <div class="help" style="margin-bottom:8px;">Your virtual VISA debit card</div>
+      <div id="vcard" class="cc-card" role="button" aria-expanded="false" title="Tap to show details">
+        <div class="cc-brand">Sapphire • Pay Later</div>
+        <div class="cc-chip" aria-hidden="true"></div>
+        <div class="cc-num" id="vcNum">0000 0000 0000 0000</div>
+        <div class="cc-name" id="vcName">Virtual Card</div>
+        <div class="cc-visa">VISA</div>
       </div>
-
-      <!-- Virtual card -->
-      <div class="step" id="pl-card">
-        <div class="muted" id="pl-card-msg" style="margin-bottom:8px"></div>
-        <div id="vcard" class="cc-card" role="button" title="Tap to reveal details">
-          <div class="cc-name">SAPPHIRE • VIRTUAL</div><div class="cc-visa">VISA</div>
-        </div>
-        <div id="ccDrawer" class="cc-drawer">
-          <div class="cc-rows">
-            <div class="row-label">Card number</div><div id="ccNum"></div>
-            <div class="row-label">Expiry</div><div id="ccExp"></div>
-            <div class="row-label">Security</div><div id="ccCvv"></div>
-          </div>
-        </div>
-        <div class="actions"><button id="pl-done" class="action-btn">Done</button></div>
+      <div id="vDetails" class="slide" style="margin-top:8px;">
+        <div class="krow"><span>Card number</span><strong id="vNum"></strong></div>
+        <div class="krow"><span>Expiry</span><strong id="vExp"></strong></div>
+        <div class="krow"><span>Security</span><strong id="vCvv"></strong></div>
+      </div>
+      <div style="display:flex; gap:8px; margin-top:10px;">
+        <button id="cardDone" class="btn-primary">View plan</button>
       </div>
     </div>
   </div>
 
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const overlay     = document.getElementById('overlay');
-    const transModal  = document.getElementById('trans-modal');
-    const detailModal = document.getElementById('tx-detail-modal');
-    const loginScreen = document.getElementById('login-screen');
-    const dashboard   = document.getElementById('dashboard');
-    const btn         = document.getElementById('login-btn');
+  <!-- Make a payment modal -->
+  <div id="pay-modal" class="modal">
+    <button id="close-pay" class="close-btn">×</button>
+    <h3>Make a payment</h3>
 
-    /* ========= CHECKING DATA ========= */
-    const balance = 414.00;
-    const monthlyBudget = 1000; // tweak if you like
+    <div id="pm-step1">
+      <div class="help">Choose amount</div>
+      <div style="display:flex; flex-direction:column; gap:8px; margin:8px 0;">
+        <label class="option"><input type="radio" name="amtChoice" value="upcoming"> Upcoming payment • <span id="pmUpcomingLbl" style="margin-left:6px;"></span></label>
+        <label class="option"><input type="radio" name="amtChoice" value="remaining"> Remaining balance • <span id="pmRemainLbl" style="margin-left:6px;"></span></label>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button id="pm1next" class="btn-primary">Continue</button>
+      </div>
+    </div>
 
-    // Every checking transaction provided — nothing omitted.
-    const transactions = [
-      { date:'Aug 18, 2025', merchant:'ACH transfer from TOTAL CHECKING (..6750)', amount:64.00,  type:'credit' },
-      { date:'Aug 05, 2025', merchant:'Online Transfer from SAVINGS ****9124',     amount:350.00, type:'credit' }
+    <div id="pm-step2" class="hidden fade">
+      <div class="help">Payment method</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
+        <button id="chooseBank" class="btn-ghost">Bank account</button>
+        <button id="chooseCard" class="btn-ghost">Credit / debit card</button>
+      </div>
+      <div id="bankForm" class="hidden fade">
+        <div class="row">
+          <div class="inputBox"><label>Routing number</label><input id="bankRouting" inputmode="numeric" maxlength="9" /></div>
+          <div class="inputBox"><label>Account number</label><input id="bankAccount" inputmode="numeric" maxlength="17" /></div>
+        </div>
+      </div>
+      <div id="cardForm" class="hidden fade">
+        <div class="inputBox"><label>Card number</label><input id="cardNumber" inputmode="numeric" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"/></div>
+        <div class="row">
+          <div class="inputBox"><label>Expiry (MM/YY)</label><input id="cardExpiry" maxlength="5" placeholder="MM/YY"/></div>
+          <div class="inputBox"><label>Security code</label><input id="cardCvv" inputmode="numeric" maxlength="4"/></div>
+        </div>
+      </div>
+      <div id="pmErr" class="error"></div>
+      <div style="display:flex; gap:8px;">
+        <button id="pm2back" class="btn-ghost">Back</button>
+        <button id="pm2next" class="btn-primary">Continue</button>
+      </div>
+    </div>
+
+    <div id="pm-step3" class="hidden fade">
+      <div class="help">Review</div>
+      <div class="krow"><span>Amount</span><strong id="pmAmountLbl"></strong></div>
+      <div class="krow"><span>Method</span><strong id="pmMethodLbl"></strong></div>
+      <div style="display:flex; gap:8px;">
+        <button id="pm3back" class="btn-ghost">Back</button>
+        <button id="pmMake" class="btn-primary btn-green">Make payment</button>
+      </div>
+    </div>
+
+    <div id="pm-loading" class="hidden fade" style="display:grid; place-items:center; gap:6px; min-height:120px;">
+      <div class="help">Making payment…</div>
+    </div>
+
+    <div id="pm-done" class="hidden fade" style="display:grid; gap:6px;">
+      <h3>Payment successful</h3>
+      <div class="help">We've applied this payment to your final loan amount.</div>
+      <div style="text-align:right;">
+        <button id="pmClose" class="btn-primary">Close</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay     = document.getElementById('overlay');
+  const loginScreen = document.getElementById('login-screen');
+  const dashboard   = document.getElementById('dashboard');
+  const checkingPg  = document.getElementById('checking');
+  const paylaterPg  = document.getElementById('paylater');
+
+  /* ========= CHECKING DATA ========= */
+  const balance = 414.00;
+  const monthlyBudget = 1000; // kept from original
+
+  // EXACT transactions from your original message (no additions, no removals).
+  const transactions = [
+    { date:'Aug 18, 2025', merchant:'ACH transfer from TOTAL CHECKING (..6750)', amount:64.00,  type:'credit' },
+    { date:'Aug 05, 2025', merchant:'Online Transfer from SAVINGS ****9124',     amount:350.00, type:'credit' }
+  ];
+
+  /* ========= Utilities ========= */
+  const $ = (sel,root=document)=>root.querySelector(sel);
+  const $$ = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
+  const fmtMoney = n => '$' + n.toFixed(2);
+  const today = () => new Date(); // live today
+  const addDays = (d,n)=>{ const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+  const addMonths = (d,n)=>{ const x=new Date(d); x.setMonth(x.getMonth()+n); return x; };
+  const pad = n => n.toString().padStart(2,'0');
+  const fmtMDY = d => `${pad(d.getMonth()+1)}/${pad(d.getDate())}/${d.getFullYear()}`;
+
+  function open(m){ overlay.classList.add('visible'); m.classList.add('visible'); }
+  function close(m){ m.classList.remove('visible'); overlay.classList.remove('visible'); }
+
+  /* ========= Budget ring (same behavior as original) ========= */
+  const ring = document.getElementById('budgetRing');
+  const ringTxt = document.getElementById('budgetPct');
+  function calcMonthSpending(list){
+    const now = new Date(); const m = now.getMonth(), y = now.getFullYear();
+    return list
+      .filter(t => { const d=new Date(t.date+' 00:00:00'); return d.getMonth()===m && d.getFullYear()===y && t.amount < 0; })
+      .reduce((s,t)=>s + Math.abs(t.amount), 0);
+  }
+  function setBudgetProgress(spent, budget){
+    const pct = Math.max(0, Math.min(100, (spent/budget)*100));
+    ring.style.strokeDasharray = `${pct} 100`;
+    ringTxt.textContent = `${Math.round(pct)}%`;
+    let color = '#34d399';
+    if (pct >= 80) color = '#8b5cf6';
+    else if (pct >= 50) color = '#fbbf24';
+    ring.style.stroke = color;
+    ring.style.filter = `drop-shadow(0 6px 16px ${color}66)`;
+  }
+  const spentThisMonth = calcMonthSpending(transactions);
+  setBudgetProgress(spentThisMonth, monthlyBudget);
+  document.getElementById('budgetLbl').textContent = fmtMoney(monthlyBudget);
+  document.getElementById('bal').textContent = fmtMoney(balance);
+  document.getElementById('present').textContent = fmtMoney(balance);
+
+  /* ========= Transactions modal ========= */
+  const txListEl = document.getElementById('tx-list');
+  function renderList(list = transactions){
+    txListEl.innerHTML = '';
+    if (!list.length){
+      txListEl.innerHTML = '<li class="muted" style="padding:12px 6px;">No matches.</li>';
+      return;
+    }
+    const byDate = {};
+    list.forEach(t => { (byDate[t.date] ??= []).push(t); });
+
+    Object.entries(byDate).forEach(([date, items])=>{
+      const header = document.createElement('div');
+      header.className = 'date-header';
+      header.textContent = `${date} (${items.length})`;
+      txListEl.appendChild(header);
+
+      items.forEach(tx => {
+        const li = document.createElement('li');
+        li.className = 'tx-item';
+        const amt = (tx.amount >= 0 ? '+' : '-') + Math.abs(tx.amount).toFixed(2);
+        li.innerHTML = `
+          <div class="tx-summary">
+            <span>${tx.merchant}</span>
+            <span class="${tx.amount >= 0 ? 'credit' : 'debit'}">${fmtMoney(parseFloat(amt))}</span>
+          </div>`;
+        li.addEventListener('click', () => openDetail(tx));
+        txListEl.appendChild(li);
+      });
+    });
+  }
+  renderList();
+
+  function openDetail(tx){
+    const dm = document.getElementById('tx-detail-modal');
+    const cont = dm.querySelector('.detail-rows');
+    const rows = [
+      {label:'Merchant', value: tx.merchant},
+      {label:'Date',     value: tx.date},
+      {label:'Amount',   value: (tx.amount>=0?'+':'-') + fmtMoney(Math.abs(tx.amount))},
+      {label:'Type',     value: tx.type}
     ];
+    cont.innerHTML = rows.map(r=>`<div class="krow"><span class="row-label">${r.label}</span><strong>${r.value}</strong></div>`).join('');
+    close(document.getElementById('trans-modal'));
+    open(dm);
+  }
 
-    // ====== Budget ring (based on debit spending this month) ======
-    const ring = document.getElementById('budgetRing');
-    const ringTxt = document.getElementById('budgetPct');
+  const searchInput = document.getElementById('tx-search');
+  const clearBtn    = document.getElementById('tx-clear');
+  function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function filterTx(q){
+    if(!q) return transactions;
+    const tokens = q.trim().toLowerCase().split(/\s+/).map(escapeRegExp);
+    return transactions.filter(tx => {
+      const hay = `${tx.merchant} ${tx.date} ${tx.amount.toFixed(2)} ${tx.type}`.toLowerCase();
+      return tokens.every(t => new RegExp(`(^|\\b|\\s)${t}`).test(hay));
+    });
+  }
+  document.getElementById('show-trans').onclick = () => { open(document.getElementById('trans-modal')); renderList(filterTx(searchInput.value)); setTimeout(()=>searchInput.focus(), 40); };
+  document.getElementById('close-trans').onclick = () => close(document.getElementById('trans-modal'));
+  document.querySelector('#tx-detail-modal .back-btn').onclick = () => { close(document.getElementById('tx-detail-modal')); open(document.getElementById('trans-modal')); };
+  searchInput.addEventListener('input', () => { const q = searchInput.value; renderList(filterTx(q)); clearBtn.style.visibility = q ? 'visible' : 'hidden'; });
+  clearBtn.addEventListener('click', () => { searchInput.value = ''; renderList(transactions); clearBtn.style.visibility = 'hidden'; searchInput.focus(); });
 
-    function calcMonthSpending(list){
-      // Sum only debits for the current month/year
-      const now = new Date('2025-08-15'); // static demo date; change to new Date() in real app
-      const m = now.getMonth(), y = now.getFullYear();
-      return list
-        .filter(t => {
-          const d = new Date(t.date + ' 00:00:00');
-          return d.getMonth()===m && d.getFullYear()===y && t.amount < 0;
-        })
-        .reduce((sum,t)=>sum + Math.abs(t.amount), 0);
-    }
+  // Placeholder action for transfer
+  document.getElementById('transfer-btn').onclick = () => {
+    alert('Transfers feature is not included in this demo.');
+  };
 
-    function setBudgetProgress(spent, budget){
-      const pct = Math.max(0, Math.min(100, (spent/budget)*100));
-      ring.style.strokeDasharray = `${pct} 100`;
-      ringTxt.textContent = `${Math.round(pct)}%`;
-      let color = '#34d399';
-      if (pct >= 80) color = '#8b5cf6';
-      else if (pct >= 50) color = '#fbbf24';
-      ring.style.stroke = color;
-      ring.style.filter = `drop-shadow(0 6px 16px ${color}66)`;
-    }
+  /* ========= Navigation to Pay Later ========= */
+  const toPaylaterBtn = document.getElementById('to-paylater');
+  const backToChecking = document.getElementById('back-to-checking');
+  toPaylaterBtn.onclick = () => { checkingPg.classList.remove('active'); paylaterPg.classList.add('active'); };
+  backToChecking.onclick = () => { paylaterPg.classList.remove('active'); checkingPg.classList.add('active'); };
 
-    const spentThisMonth = calcMonthSpending(transactions);
-    setBudgetProgress(spentThisMonth, monthlyBudget);
-    document.getElementById('budgetLbl').textContent = `$${monthlyBudget.toLocaleString()}`;
-    document.getElementById('bal').textContent = `$${balance.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
-    document.getElementById('present').textContent = `$${balance.toFixed(2)}`;
+  /* ========= Pay Later: data + persistence ========= */
+  const LS_KEY = 'sapphirePlansV1';
+  let plans = [];
 
-    // ===== Render transactions =====
-    const txListEl = document.getElementById('tx-list');
+  function savePlans(){ localStorage.setItem(LS_KEY, JSON.stringify(plans)); }
+  function loadPlans(){ try{ plans = JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch{ plans = []; } }
+  loadPlans();
 
-    function renderList(list = transactions){
-      txListEl.innerHTML = '';
-      if (!list.length){
-        txListEl.innerHTML = '<li class="muted" style="padding:12px 6px;">No matches.</li>';
-        return;
-      }
-      const byDate = {};
-      list.forEach(t => { (byDate[t.date] ??= []).push(t); });
+  function planOutstanding(p){ return p.schedule.filter(s=>!s.paid).reduce((a,b)=>a+b.amount,0); }
+  function nextUnpaid(p){ return p.schedule.find(s=>!s.paid) || null; }
 
-      Object.entries(byDate).forEach(([date, items])=>{
-        const header = document.createElement('div');
-        header.className = 'date-header';
-        header.textContent = `${date} (${items.length})`;
-        txListEl.appendChild(header);
+  function refreshPayLater(){
+    $('#activeCount').textContent = plans.length;
+    const totalOutstanding = plans.reduce((s,p)=>s+planOutstanding(p),0);
+    $('#outstandingLbl').textContent = fmtMoney(totalOutstanding);
 
-        items.forEach(tx => {
-          const li = document.createElement('li');
-          li.className = 'tx-item';
-          const amt = (tx.amount >= 0 ? '+' : '') + tx.amount.toFixed(2);
-          li.innerHTML = `
-            <div class="tx-summary">
-              <span>${tx.merchant}</span>
-              <span class="${tx.amount >= 0 ? 'credit' : 'debit'}">$${amt}</span>
-            </div>
-          `;
-          li.addEventListener('click', () => openDetail(tx));
-          txListEl.appendChild(li);
-        });
-      });
-    }
-    renderList();
+    const list = $('#plansList');
+    const empty = $('#plansEmpty');
+    list.innerHTML = '';
+    empty.style.display = plans.length ? 'none' : 'block';
 
-    function openDetail(tx){
-      const rows = [
-        {label:'Merchant', value: tx.merchant},
-        {label:'Date',     value: tx.date},
-        {label:'Amount',   value: (tx.amount>=0?'+':'-') + '$' + Math.abs(tx.amount).toFixed(2)},
-        {label:'Type',     value: tx.type}
+    plans.forEach(p => {
+      const nu = nextUnpaid(p);
+      const tile = document.createElement('button');
+      tile.className = 'plan-tile';
+      tile.innerHTML = `
+        <div>
+          <div style="font-weight:800">${p.store}</div>
+          <div class="tile-sub">${p.planLabel} • Total ${fmtMoney(p.amount)}</div>
+        </div>
+        <div class="tile-sub">${nu ? `Next due ${fmtMDY(new Date(nu.date))} • ${fmtMoney(nu.amount)}` : 'Paid'}</div>
+      `;
+      tile.addEventListener('click', () => openPlanDetail(p.id));
+      list.appendChild(tile);
+    });
+  }
+
+  refreshPayLater();
+
+  /* ========= Plan details ========= */
+  let currentPlanId = null;
+
+  function openPlanDetail(id){
+    currentPlanId = id;
+    const p = plans.find(x=>x.id===id);
+    $('#planDetail').classList.remove('hidden');
+    $('#pdTitle').textContent = `${p.store} — ${p.planLabel}`;
+    $('#pdMeta').textContent = `Created ${fmtMDY(new Date(p.created))} • Outstanding ${fmtMoney(planOutstanding(p))}`;
+
+    const s = $('#pdSchedule');
+    s.innerHTML = `
+      <div class="krow"><span>Total</span><strong>${fmtMoney(p.amount)}</strong></div>
+      <div class="hr"></div>
+      ${p.schedule.map((i,idx)=>`
+        <div class="krow">
+          <span>${idx===0 && i.type==='downpayment' ? 'Downpayment' : 'Payment ' + (i.type==='downpayment'?0:idx)}</span>
+          <strong>${fmtMDY(new Date(i.date))} • ${fmtMoney(i.amount)}${i.paid? ' • PAID':''}</strong>
+        </div>
+      `).join('')}
+    `;
+    $('#pdSummary').textContent = nextUnpaid(p) ? `Next payment on ${fmtMDY(new Date(nextUnpaid(p).date))}` : 'Plan paid off.';
+  }
+
+  // Pay button -> modal
+  $('#pd-makePay').onclick = () => {
+    if(!currentPlanId) return;
+    const p = plans.find(x=>x.id===currentPlanId);
+    const upcoming = nextUnpaid(p);
+    $('#pmUpcomingLbl').textContent = upcoming ? fmtMoney(upcoming.amount) : fmtMoney(0);
+    $('#pmRemainLbl').textContent = fmtMoney(planOutstanding(p));
+    showStep('pm-step1');
+    open($('#pay-modal'));
+  };
+
+  /* ========= Plan a purchase flow ========= */
+  const planModal = $('#plan-modal');
+  $('#open-plan').onclick = ()=>{ resetWizard(); open(planModal); };
+  $('#close-plan').onclick = ()=>close(planModal);
+
+  function showWiz(stepId){
+    ['step1','step2','stepLoading','stepPlans','stepActivating','stepCard'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(!el) return;
+      if(id===stepId){ el.classList.remove('hidden'); el.classList.add('visible'); }
+      else{ el.classList.add('hidden'); el.classList.remove('visible'); }
+    });
+  }
+
+  function resetWizard(){
+    $('#storeInput').value = '';
+    $('#amtInput').value = '';
+    $('#err1').textContent=''; $('#err2').textContent='';
+    $('#agreeTerms').checked=false; $('#agreeErr').textContent='';
+    $('#activateBtn').disabled = true;
+    selectedPlanChoice = null; tempPlan = null;
+    showWiz('step1');
+  }
+
+  let selectedPlanChoice = null; // 'biweekly'|'6m'|'12m'
+  let tempPlan = null; // preview object prior to saving
+
+  $('#s1next').onclick = () => {
+    const name = $('#storeInput').value.trim();
+    if(!name){ $('#err1').textContent = 'Please enter a store name.'; return; }
+    $('#err1').textContent='';
+    showWiz('step2');
+  };
+
+  // numbers only
+  $('#amtInput').addEventListener('input', (e)=>{ e.target.value = e.target.value.replace(/\D/g,''); });
+
+  $('#s2back').onclick = ()=>showWiz('step1');
+  $('#s2next').onclick = () => {
+    const amtStr = $('#amtInput').value.trim();
+    if(!amtStr){ $('#err2').textContent = 'Enter an amount.'; return; }
+    const amt = parseInt(amtStr,10);
+    if(isNaN(amt) || amt < 50){ $('#err2').textContent = 'Amount must be at least $50 (whole dollars only).'; return; }
+    $('#err2').textContent='';
+    showWiz('stepLoading');
+    setTimeout(()=>generatePlanOptions($('#storeInput').value.trim(), amt), 4000);
+  };
+
+  function splitEven(total, parts){
+    // return array of 'parts' numbers summing to total with 2-dec rounding
+    const base = Math.floor((total/parts)*100)/100;
+    const arr = Array(parts).fill(base);
+    let sum = arr.reduce((a,b)=>a+b,0);
+    arr[arr.length-1] += +(total - sum).toFixed(2);
+    return arr;
+  }
+
+  function buildSchedule(amount, type){
+    const start = today();
+    if(type==='biweekly'){
+      const pieces = splitEven(amount, 4);
+      return [
+        {label:'Downpayment', type:'downpayment', date:fmtMDY(start),           amount:pieces[0], paid:false},
+        {label:'Payment 1',   type:'payment',     date:fmtMDY(addDays(start,14)), amount:pieces[1], paid:false},
+        {label:'Payment 2',   type:'payment',     date:fmtMDY(addDays(start,28)), amount:pieces[2], paid:false},
+        {label:'Payment 3',   type:'payment',     date:fmtMDY(addDays(start,42)), amount:pieces[3], paid:false},
       ];
-      const cont = detailModal.querySelector('.detail-rows');
-      cont.innerHTML = rows.map(r=>`<div class="row"><div class="row-label">${r.label}</div><div>${r.value}</div></div>`).join('');
-      close(transModal);
-      open(detailModal);
     }
+    if(type==='6m'){
+      const pieces = splitEven(amount, 6);
+      return pieces.map((a,i)=>({label:`Payment ${i+1}`, type:'payment', date:fmtMDY(addMonths(start, i+1)), amount:a, paid:false}));
+    }
+    // 12 months
+    const pieces = splitEven(amount, 12);
+    return pieces.map((a,i)=>({label:`Payment ${i+1}`, type:'payment', date:fmtMDY(addMonths(start, i+1)), amount:a, paid:false}));
+  }
 
-    // ===== Search (prefix / word-start) =====
-    const searchInput = document.getElementById('tx-search');
-    const clearBtn    = document.getElementById('tx-clear');
+  function optionCard({key,label,sub,amount,firstDue}){
+    const wrap = document.createElement('div');
+    wrap.className = 'plan-card';
+    wrap.innerHTML = `
+      <div class="plan-head">
+        <div>
+          <div style="font-weight:800">${label}</div>
+          <div class="help">${sub}</div>
+        </div>
+        <div class="radio" data-k="${key}" role="button" aria-label="${label}"><div class="radio-dot"></div></div>
+      </div>
+      <div class="krow"><span>Payment</span><strong id="${key}-pay">${amount}</strong></div>
+      <div class="krow"><span>First due</span><strong id="${key}-due">${firstDue}</strong></div>
+      <button class="btn-ghost btn-sched" data-expand="${key}">View schedule</button>
+      <div id="${key}-sched" class="slide"></div>
+    `;
+    return wrap;
+  }
 
-    function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-    function filterTx(q){
-      if(!q) return transactions;
-      const tokens = q.trim().toLowerCase().split(/\s+/).map(escapeRegExp);
-      return transactions.filter(tx => {
-        const hay = `${tx.merchant} ${tx.date} ${tx.amount.toFixed(2)} ${tx.type}`.toLowerCase();
-        return tokens.every(t => new RegExp(`(^|\\b|\\s)${t}`).test(hay));
+  function generatePlanOptions(store, amount){
+    // create preview schedules to show amounts
+    const wrap = $('#plansContainer'); wrap.innerHTML='';
+    const bi = buildSchedule(amount,'biweekly');
+    const s6 = buildSchedule(amount,'6m');
+    const s12= buildSchedule(amount,'12m');
+
+    const biEl = optionCard({
+      key:'bi', label:'Bi-weekly', sub:'4 payments (first due today as downpayment)',
+      amount: fmtMoney(bi[0].amount) + ' / bi-weekly', firstDue: `${fmtMDY(new Date())} (downpayment)`
+    });
+    const s6El = optionCard({
+      key:'m6', label:'6 months', sub:'Equal monthly payments',
+      amount: fmtMoney(s6[0].amount) + ' / month', firstDue: fmtMDY(new Date(s6[0].date))
+    });
+    wrap.appendChild(biEl); wrap.appendChild(s6El);
+    if(amount>100){
+      const s12El = optionCard({
+        key:'m12', label:'12 months', sub:'Lower monthly payments',
+        amount: fmtMoney(s12[0].amount) + ' / month', firstDue: fmtMDY(new Date(s12[0].date))
       });
-    }
-    searchInput.addEventListener('input', () => {
-      const q = searchInput.value;
-      renderList(filterTx(q));
-      clearBtn.style.visibility = q ? 'visible' : 'hidden';
-    });
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      renderList(transactions);
-      clearBtn.style.visibility = 'hidden';
-      searchInput.focus();
-    });
-
-    // ===== Open/close helpers =====
-    const open = (m)=>{ overlay.classList.add('visible'); m.classList.add('visible'); };
-    const close= (m)=>{ m.classList.remove('visible'); overlay.classList.remove('visible'); };
-
-    document.getElementById('show-trans').onclick = () => {
-      open(transModal);
-      renderList(filterTx(searchInput.value));
-      setTimeout(()=>searchInput.focus(), 50);
-    };
-    document.getElementById('close-trans').onclick = () => close(transModal);
-    document.querySelector('#tx-detail-modal .back-btn').onclick = () => { close(detailModal); open(transModal); };
-
-    /* ========= Login: allow ANY non-empty credentials ========= */
-    function tryLogin(){
-      const u = document.getElementById('username').value.trim();
-      const p = document.getElementById('password').value;
-      const err = document.getElementById('login-error');
-      if (u && p){
-        loginScreen.classList.remove('visible');
-        loginScreen.classList.add('hidden');
-        setTimeout(() => {
-          dashboard.classList.remove('hidden');
-          dashboard.classList.add('visible');
-        }, 300);
-      } else {
-        err.textContent = 'Enter username & password';
-        err.style.opacity = '1';
-        setTimeout(() => err.style.opacity = '0', 1800);
-      }
-    }
-    btn.addEventListener('click', tryLogin);
-    ['username','password'].forEach(id=>{
-      document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
-    });
-
-    /* ========= PAY LATER: storage ========= */
-    const PL_KEY = 'sapphire.paylater.v1';
-    const getPlans = () => { try { return JSON.parse(localStorage.getItem(PL_KEY) || '[]'); } catch { return []; } };
-    const savePlans = (arr) => localStorage.setItem(PL_KEY, JSON.stringify(arr));
-
-    /* ========= Simple router between pages ========= */
-    const pages = { checking: document.getElementById('checking'), paylater: document.getElementById('paylater') };
-    function go(pageId){
-      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-      pages[pageId].classList.add('active');
-      window.scrollTo({top:0, behavior:'smooth'});
+      wrap.appendChild(s12El);
     }
 
-    /* Buttons to open Pay later page and go back */
-    document.getElementById('open-paylater').onclick = () => { renderPayLater(); go('paylater'); };
-    document.getElementById('back-checking').onclick = (e)=>{ e.preventDefault(); go('checking'); };
-
-    /* ========= Render Pay later page ========= */
-    function renderPayLater(){
-      const list = getPlans();
-      document.getElementById('plan-count').textContent = String(list.length);
-      const empty = document.getElementById('pot-empty');
-      const listBox = document.getElementById('pot-list');
-      if(!list.length){
-        empty.style.display = 'flex';
-        listBox.innerHTML = '';
-      } else {
-        empty.style.display = 'none';
-        listBox.innerHTML = list.map(p=>`
-          <div class="card">
-            <div class="kv"><span class="muted">Created</span><strong>${p.created}</strong></div>
-            <div class="kv"><span class="muted">Store</span><strong>${p.store}</strong></div>
-            <div class="kv"><span class="muted">Total</span><strong>$${Number(p.total).toFixed(2)}</strong></div>
-            <h4 style="margin-top:8px">Schedule</h4>
-            ${p.schedule.map((s,i)=>`
-              <div class="kv"><span class="muted">${i===0?'Downpayment':'Payment '+i}</span><strong>${s.date} • $${s.amount.toFixed(2)}</strong></div>
-            `).join('')}
-          </div>`).join('');
-      }
-    }
-
-    /* ========= Bottom sheet open/close ========= */
-    const sheet = document.getElementById('plan-sheet');
-    function openSheet(){
-      // reset
-      document.querySelectorAll('#plan-sheet .step').forEach(s=>s.classList.remove('active'));
-      document.getElementById('pl-step1').classList.add('active');
-      document.getElementById('pl-store').value='';
-      document.getElementById('pl-amount').value='';
-      document.getElementById('pl-err1').classList.remove('show');
-      document.getElementById('pl-err2').classList.remove('show');
-      document.getElementById('pl-options').innerHTML='';
-      document.getElementById('pl-agree').checked=false;
-      document.getElementById('pl-activate').disabled=true;
-      overlay.classList.add('visible');
-      sheet.classList.add('open');
-      sheet.setAttribute('aria-hidden','false');
-    }
-    function closeSheet(){
-      sheet.classList.remove('open');
-      overlay.classList.remove('visible');
-      sheet.setAttribute('aria-hidden','true');
-    }
-    document.getElementById('plan-open').onclick = openSheet;
-    document.getElementById('sheet-close').onclick = closeSheet;
-    overlay.addEventListener('click', ()=>{ if(sheet.classList.contains('open')) closeSheet(); });
-
-    /* ========= Wizard step helpers ========= */
-    const goStep = (sel)=>{ document.querySelectorAll('#plan-sheet .step').forEach(s=>s.classList.remove('active')); document.querySelector(sel).classList.add('active'); };
-    document.getElementById('pl-next1').onclick = ()=>{
-      const v = document.getElementById('pl-store').value.trim();
-      if(!v){ document.getElementById('pl-err1').classList.add('show'); return; }
-      document.getElementById('pl-err1').classList.remove('show');
-      goStep('#pl-step2'); setTimeout(()=>document.getElementById('pl-amount').focus(), 40);
-    };
-    document.getElementById('pl-back1').onclick = ()=> goStep('#pl-step1');
-
-    // numbers only; no cents
-    document.getElementById('pl-amount').addEventListener('input', (e)=>{
-      e.target.value = e.target.value.replace(/\D/g,''); // digits only
-    });
-    document.getElementById('pl-next2').onclick = ()=>{
-      const raw = document.getElementById('pl-amount').value.trim();
-      const num = Number(raw);
-      if(!raw || !Number.isInteger(num) || num<50){
-        document.getElementById('pl-err2').classList.add('show'); return;
-      }
-      document.getElementById('pl-err2').classList.remove('show');
-      goStep('#pl-loading');
-      setTimeout(()=>{
-        const plans = buildPlans(num);
-        renderPlanOptions(plans);
-        goStep('#pl-plans');
-      }, 4000);
-    };
-    document.getElementById('pl-back2').onclick = ()=> goStep('#pl-step2');
-
-    /* ========= Build plan options (AI rules) ========= */
-    function buildPlans(total){
-      const plans = [];
-
-      // Bi-weekly (4 payments) with downpayment today
-      const biAmt = +(total/4).toFixed(2);
-      const biSched = [];
-      const now = new Date();
-      biSched.push({ date: fmtDate(now)+' (downpayment)', amount: biAmt });
-      for(let i=1;i<4;i++){ const d=new Date(now); d.setDate(d.getDate()+14*i); biSched.push({ date: fmtDate(d), amount: biAmt }); }
-      plans.push({ key:'bi', label:'Bi-weekly', sub:'4 payments (first due today as downpayment)', payment:biAmt, unit:'/ bi-weekly', first:biSched[0].date, schedule:biSched, total });
-
-      // 6 months
-      const m6Amt = +(total/6).toFixed(2);
-      const m6Sched=[]; const m0=new Date(); m0.setMonth(m0.getMonth()+1);
-      for(let i=0;i<6;i++){ const d=new Date(m0); d.setMonth(m0.getMonth()+i); m6Sched.push({ date: fmtDate(d), amount:m6Amt }); }
-      plans.push({ key:'m6', label:'6 months', sub:'Equal monthly payments', payment:m6Amt, unit:'/ month', first:m6Sched[0].date, schedule:m6Sched, total });
-
-      // 12 months only if > $100
-      if(total>100){
-        const m12Amt = +(total/12).toFixed(2);
-        const m12Sched=[]; const m1=new Date(); m1.setMonth(m1.getMonth()+1);
-        for(let i=0;i<12;i++){ const d=new Date(m1); d.setMonth(m1.getMonth()+i); m12Sched.push({ date: fmtDate(d), amount:m12Amt }); }
-        plans.push({ key:'m12', label:'12 months', sub:'Lower monthly payments', payment:m12Amt, unit:'/ month', first:m12Sched[0].date, schedule:m12Sched, total });
-      }
-      return plans;
-    }
-    function fmtDate(d){ return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}/${d.getFullYear()}`; }
-
-    /* Render selectable plans */
-    function renderPlanOptions(plans){
-      const wrap = document.getElementById('pl-options');
-      wrap.innerHTML = plans.map((p,i)=>`
-        <label class="plan">
-          <div class="row">
-            <div>
-              <div style="font-weight:900">${p.label}</div>
-              <div class="muted">${p.sub}</div>
-            </div>
-            <input type="radio" name="planOpt" ${i===0?'checked':''} value='${JSON.stringify(p)}'>
-          </div>
-          <div class="kv"><span class="muted">Payment</span><strong>$${p.payment.toFixed(2)} ${p.unit}</strong></div>
-          <div class="kv"><span class="muted">First due</span><strong>${p.first}</strong></div>
-          <div style="margin-top:8px"><button type="button" class="action-btn viewSched" style="background:linear-gradient(#101020,#0b0c14) padding-box;border-color:rgba(255,255,255,.14)">View schedule</button></div>
-          <div class="schedule">
-            ${p.schedule.map((s,i)=>`<div class="sched-row"><span>${i===0?'Downpayment':'Payment '+i}</span><span>${s.date} • $${s.amount.toFixed(2)}</span></div>`).join('')}
-          </div>
-        </label>
-      `).join('');
-
-      // Toggle schedules
-      wrap.addEventListener('click', (e)=>{
-        if(e.target.closest('.viewSched')){
-          const box = e.target.closest('.plan').querySelector('.schedule');
-          box.classList.toggle('open');
+    // schedule viewers
+    wrap.addEventListener('click', (e)=>{
+      const btn = e.target.closest('[data-expand]');
+      const radio = e.target.closest('.radio');
+      if(btn){
+        const k = btn.getAttribute('data-expand');
+        const panel = document.getElementById(k+'-sched');
+        if(!panel.dataset.rendered){
+          const items = k==='bi'?bi : (k==='m6'?s6:s12);
+          panel.innerHTML = items.map(i=>`<div class="krow"><span>${i.label}</span><strong>${i.date} • ${fmtMoney(i.amount)}${i.type==='downpayment'?' (downpayment)':''}</strong></div>`).join('');
+          panel.dataset.rendered = '1';
         }
-      });
-
-      const agree = document.getElementById('pl-agree');
-      const activate = document.getElementById('pl-activate');
-      const hint = document.getElementById('pl-cta-hint');
-
-      function updateCTA(){
-        const chosen = wrap.querySelector('input[name="planOpt"]:checked');
-        activate.disabled = !(chosen && agree.checked);
-        hint.textContent = chosen ? (agree.checked ? 'Ready to activate.' : 'Please agree to the terms.') : 'Select a plan to continue.';
+        panel.classList.toggle('open');
+        btn.textContent = panel.classList.contains('open') ? 'Hide schedule' : 'View schedule';
       }
-      wrap.addEventListener('change', updateCTA);
-      agree.addEventListener('change', updateCTA);
-      updateCTA();
-    }
+      if(radio){
+        $$('.radio',wrap).forEach(r=>r.classList.remove('checked'));
+        radio.classList.add('checked');
+        selectedPlanChoice = radio.dataset.k==='bi' ? 'biweekly' : (radio.dataset.k==='m6' ? '6m' : '12m');
+      }
+    });
 
-    /* ========= Activate -> virtual card ========= */
-    document.getElementById('pl-activate').onclick = ()=>{
-      goStep('#pl-activating');
-      setTimeout(()=>{
-        const chosen = document.querySelector('#pl-options input[name="planOpt"]:checked');
-        if(!chosen){ goStep('#pl-plans'); return; }
-        const plan = JSON.parse(chosen.value);
-        const store = document.getElementById('pl-store').value.trim();
+    // enable activate
+    $('#agreeTerms').onchange = ()=>{ $('#activateBtn').disabled = !(selectedPlanChoice && $('#agreeTerms').checked); };
+    const maybeEnable = ()=>{ $('#activateBtn').disabled = !(selectedPlanChoice && $('#agreeTerms').checked); };
+    wrap.addEventListener('click', maybeEnable);
 
-        // save plan
-        const saved = getPlans();
-        saved.unshift({ created: new Date().toLocaleString(), store, total: plan.total, schedule: plan.schedule });
-        savePlans(saved);
-
-        // virtual card
-        const card = makeVirtualCard();
-        document.getElementById('pl-card-msg').textContent = `Virtual card for $${plan.total.toFixed(2)} at ${store}`;
-        document.getElementById('ccNum').textContent = card.number;
-        document.getElementById('ccExp').textContent = card.exp;
-        document.getElementById('ccCvv').textContent = card.cvv;
-
-        goStep('#pl-card');
-        const drawer= document.getElementById('ccDrawer');
-        document.getElementById('vcard').onclick = ()=> drawer.classList.toggle('open');
-      }, 5000);
-    };
-    document.getElementById('pl-done').onclick = ()=>{
-      closeSheet();
-      renderPayLater();    // refresh list/count
-      go('paylater');
+    // temp plan when activating
+    $('#activateBtn').onclick = ()=>{
+      if(!selectedPlanChoice || !$('#agreeTerms').checked){ $('#agreeErr').textContent='Please select a plan and agree to the terms.'; return; }
+      $('#agreeErr').textContent='';
+      const schedule = selectedPlanChoice==='biweekly'? bi : (selectedPlanChoice==='6m'? s6 : s12);
+      tempPlan = {
+        id: 'pl-'+Date.now(),
+        created: new Date().toISOString(),
+        store, amount,
+        planType: selectedPlanChoice,
+        planLabel: selectedPlanChoice==='biweekly' ? 'Bi-weekly' : (selectedPlanChoice==='6m' ? '6 months' : '12 months'),
+        schedule
+      };
+      showWiz('stepActivating');
+      setTimeout(()=>showVirtualCard(), 5000);
     };
 
-    /* ========= Virtual card generator ========= */
-    function makeVirtualCard(){
-      const digits = Array.from({length:16}, ()=> Math.floor(Math.random()*10)).join('');
-      const groups = digits.match(/.{1,4}/g).join(' ');
-      const now = new Date();
-      const month = String(Math.floor(Math.random()*12)+1).padStart(2,'0');
-      const year  = (now.getFullYear()+3).toString().slice(-2);
-      const cvv   = String(Math.floor(100+Math.random()*900));
-      return { number:groups, exp: `${month}/${year}`, cvv };
+    showWiz('stepPlans');
+  }
+
+  function showVirtualCard(){
+    // generate fake card
+    const num = Array(16).fill(0).map(()=>Math.floor(Math.random()*10)).join('').replace(/(\d{4})(?=\d)/g,'$1 ');
+    const exp = `${pad((today().getMonth()+1))}/${(today().getFullYear()+3).toString().slice(-2)}`;
+    const cvv = String(Math.floor(100+Math.random()*900));
+    $('#vcNum').textContent = num; $('#vNum').textContent = num; $('#vExp').textContent = exp; $('#vCvv').textContent = cvv;
+
+    // save plan now
+    plans.push(tempPlan); savePlans(); refreshPayLater(); openPlanDetail(tempPlan.id);
+
+    // reveal details on tap
+    $('#vcard').onclick = ()=>{
+      const panel = $('#vDetails');
+      panel.classList.toggle('open');
+    };
+    $('#cardDone').onclick = ()=>{ close(planModal); };
+
+    showWiz('stepCard');
+  }
+
+  /* ========= Make a payment flow ========= */
+  const payModal = $('#pay-modal');
+  $('#close-pay').onclick = ()=>close(payModal);
+  $('#pmClose').onclick = ()=>{ close(payModal); openPlanDetail(currentPlanId); refreshPayLater(); };
+
+  function showStep(id){
+    ['pm-step1','pm-step2','pm-step3','pm-loading','pm-done'].forEach(s=>{
+      const el = document.getElementById(s);
+      if(!el) return;
+      if(s===id){ el.classList.remove('hidden'); el.classList.add('visible'); }
+      else{ el.classList.add('hidden'); el.classList.remove('visible'); }
+    });
+    $('#pmErr').textContent='';
+  }
+
+  let pmChoice = null; // 'upcoming'|'remaining'
+  let pmMethod = null; // 'bank'|'card'
+  let pmAmount = 0;
+  let pmMethodText = '';
+
+  $('#pm1next').onclick = ()=>{
+    const sel = $$('input[name="amtChoice"]').find(i=>i.checked);
+    if(!sel){ alert('Choose an amount.'); return; }
+    pmChoice = sel.value;
+    const p = plans.find(x=>x.id===currentPlanId);
+    pmAmount = pmChoice==='upcoming' ? (nextUnpaid(p)?.amount || 0) : planOutstanding(p);
+    showStep('pm-step2');
+  };
+
+  $('#chooseBank').onclick = ()=>{ pmMethod='bank'; $('#bankForm').classList.remove('hidden'); $('#cardForm').classList.add('hidden'); };
+  $('#chooseCard').onclick = ()=>{ pmMethod='card'; $('#cardForm').classList.remove('hidden'); $('#bankForm').classList.add('hidden'); };
+
+  $('#pm2back').onclick = ()=>showStep('pm-step1');
+  $('#pm2next').onclick = ()=>{
+    if(pmMethod==='bank'){
+      const r = $('#bankRouting').value.trim();
+      const a = $('#bankAccount').value.trim();
+      if(!/^\d{9}$/.test(r) || !/^\d{4,17}$/.test(a)){ $('#pmErr').textContent='Enter a valid routing (9 digits) and account number (4–17 digits).'; return; }
+      pmMethodText = `Bank • ****${a.slice(-4)}`;
+    }else if(pmMethod==='card'){
+      const n = $('#cardNumber').value.replace(/\s+/g,'');
+      const e = $('#cardExpiry').value.trim();
+      const c = $('#cardCvv').value.trim();
+      if(!/^\d{16}$/.test(n) || !/^\d{2}\/\d{2}$/.test(e) || !/^\d{3,4}$/.test(c)){ $('#pmErr').textContent='Enter a valid card number, expiry (MM/YY) and security code.'; return; }
+      pmMethodText = `Card • ****${n.slice(-4)}`;
+    }else{
+      $('#pmErr').textContent='Choose a payment method.';
+      return;
     }
+    $('#pmAmountLbl').textContent = fmtMoney(pmAmount);
+    $('#pmMethodLbl').textContent = pmMethodText;
+    showStep('pm-step3');
+  };
+
+  $('#pm3back').onclick = ()=>showStep('pm-step2');
+
+  $('#pmMake').onclick = ()=>{
+    showStep('pm-loading');
+    setTimeout(()=>{
+      // apply payment to plan
+      const p = plans.find(x=>x.id===currentPlanId);
+      if(pmChoice==='remaining'){
+        p.schedule.forEach(s=> s.paid = true);
+      }else{
+        const nu = nextUnpaid(p);
+        if(nu) nu.paid = true;
+      }
+      savePlans();
+      refreshPayLater();
+      // if plan fully paid, auto remove + update
+      if(planOutstanding(p) <= 0){
+        plans = plans.filter(x=>x.id!==p.id); savePlans(); refreshPayLater();
+        $('#pdTitle').textContent = 'Plan paid off';
+        $('#pdSchedule').innerHTML = '';
+        $('#pdSummary').textContent = 'This plan has been paid and removed.';
+      }else{
+        openPlanDetail(p.id);
+      }
+      showStep('pm-done');
+    }, 5000);
+  };
+
+  /* ========= Login: allow ANY non-empty credentials ========= */
+  function tryLogin(){
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    const err = document.getElementById('login-error');
+    if (u && p){
+      loginScreen.classList.remove('visible');
+      loginScreen.classList.add('hidden');
+      setTimeout(() => {
+        dashboard.classList.remove('hidden');
+        dashboard.classList.add('visible');
+      }, 250);
+    } else {
+      err.textContent = 'Enter username & password';
+      err.style.opacity = '1';
+      setTimeout(() => err.style.opacity = '0', 1600);
+    }
+  }
+  document.getElementById('login-btn').addEventListener('click', tryLogin);
+  ['username','password'].forEach(id=>{
+    document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
   });
-  </script>
+});
+</script>
 </body>
 </html>
