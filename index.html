@@ -66,7 +66,6 @@ body{
 .fade{ transition:opacity .35s ease; }
 .hidden{ opacity:0; pointer-events:none; }
 .visible{ opacity:1; pointer-events:auto; }
-.smooth{ transition:opacity .35s ease, transform .35s ease; }
 
 /* ===================== LOGIN (black + neon) ===================== */
 #login-screen{
@@ -179,7 +178,7 @@ body{
 /* Overlay + Modal */
 .overlay{
   position:fixed; inset:0; background:rgba(0,0,0,.55);
-  opacity:0; pointer-events:none; transition:opacity .25s ease;
+  opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:10000;
 }
 .overlay.visible{ opacity:1; pointer-events:auto; }
 .modal{
@@ -189,6 +188,7 @@ body{
   box-shadow: 0 24px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.03);
   backdrop-filter: blur(10px);
   opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  max-height:92vh; overflow:auto; z-index:10001;
 }
 .modal.visible{ opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1); }
 .modal h3{ margin:6px 0 10px; font-weight:800; }
@@ -473,7 +473,7 @@ body{
       <button id="s1next" class="btn-primary">Continue</button>
     </div>
 
-    <div id="step2" class="hidden fade">
+    <div id="step2" class="hidden fade" style="display:none">
       <div class="inputBox">
         <label>Purchase amount (minimum $50)</label>
         <input id="amtInput" inputmode="numeric" pattern="[0-9]*" placeholder="Enter a whole number (no cents)" />
@@ -485,11 +485,11 @@ body{
       </div>
     </div>
 
-    <div id="stepLoading" class="hidden fade" style="display:grid; place-items:center; gap:6px; min-height:120px;">
+    <div id="stepLoading" class="hidden fade" style="display:none; place-items:center; gap:6px; min-height:120px;">
       <div class="help">Retrieving plans…</div>
     </div>
 
-    <div id="stepPlans" class="hidden fade">
+    <div id="stepPlans" class="hidden fade" style="display:none">
       <div id="plansContainer"></div>
       <div class="hr"></div>
       <label style="display:flex; gap:8px; align-items:center;">
@@ -503,11 +503,11 @@ body{
       </div>
     </div>
 
-    <div id="stepActivating" class="hidden fade" style="display:grid; place-items:center; gap:6px; min-height:120px;">
+    <div id="stepActivating" class="hidden fade" style="display:none; place-items:center; gap:6px; min-height:120px;">
       <div class="help">Activating plan…</div>
     </div>
 
-    <div id="stepCard" class="hidden fade">
+    <div id="stepCard" class="hidden fade" style="display:none">
       <div class="help" style="margin-bottom:8px;">Your virtual VISA debit card</div>
       <div id="vcard" class="cc-card" role="button" aria-expanded="false" title="Tap to show details">
         <div class="cc-brand">Sapphire • Pay Later</div>
@@ -543,19 +543,19 @@ body{
       </div>
     </div>
 
-    <div id="pm-step2" class="hidden fade">
+    <div id="pm-step2" class="hidden fade" style="display:none">
       <div class="help">Payment method</div>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
         <button id="chooseBank" class="btn-ghost">Bank account</button>
         <button id="chooseCard" class="btn-ghost">Credit / debit card</button>
       </div>
-      <div id="bankForm" class="hidden fade">
+      <div id="bankForm" class="hidden fade" style="display:none">
         <div class="row">
           <div class="inputBox"><label>Routing number</label><input id="bankRouting" inputmode="numeric" maxlength="9" /></div>
           <div class="inputBox"><label>Account number</label><input id="bankAccount" inputmode="numeric" maxlength="17" /></div>
         </div>
       </div>
-      <div id="cardForm" class="hidden fade">
+      <div id="cardForm" class="hidden fade" style="display:none">
         <div class="inputBox"><label>Card number</label><input id="cardNumber" inputmode="numeric" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"/></div>
         <div class="row">
           <div class="inputBox"><label>Expiry (MM/YY)</label><input id="cardExpiry" maxlength="5" placeholder="MM/YY"/></div>
@@ -569,7 +569,7 @@ body{
       </div>
     </div>
 
-    <div id="pm-step3" class="hidden fade">
+    <div id="pm-step3" class="hidden fade" style="display:none">
       <div class="help">Review</div>
       <div class="krow"><span>Amount</span><strong id="pmAmountLbl"></strong></div>
       <div class="krow"><span>Method</span><strong id="pmMethodLbl"></strong></div>
@@ -579,11 +579,11 @@ body{
       </div>
     </div>
 
-    <div id="pm-loading" class="hidden fade" style="display:grid; place-items:center; gap:6px; min-height:120px;">
+    <div id="pm-loading" class="hidden fade" style="display:none; place-items:center; gap:6px; min-height:120px;">
       <div class="help">Making payment…</div>
     </div>
 
-    <div id="pm-done" class="hidden fade" style="display:grid; gap:6px;">
+    <div id="pm-done" class="hidden fade" style="display:none; grid-gap:6px;">
       <h3>Payment successful</h3>
       <div class="help">We've applied this payment to your final loan amount.</div>
       <div style="text-align:right;">
@@ -613,8 +613,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ========= Utilities ========= */
   const $ = (sel,root=document)=>root.querySelector(sel);
   const $$ = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
-  const fmtMoney = n => '$' + n.toFixed(2);
-  const today = () => new Date(); // live today
+  const fmtMoney = n => '$' + Number(n).toFixed(2);
+  const today = () => new Date();
   const addDays = (d,n)=>{ const x=new Date(d); x.setDate(x.getDate()+n); return x; };
   const addMonths = (d,n)=>{ const x=new Date(d); x.setMonth(x.getMonth()+n); return x; };
   const pad = n => n.toString().padStart(2,'0');
@@ -623,7 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function open(m){ overlay.classList.add('visible'); m.classList.add('visible'); }
   function close(m){ m.classList.remove('visible'); overlay.classList.remove('visible'); }
 
-  /* ========= Budget ring (same behavior as original) ========= */
+  /* ========= Budget ring ========= */
   const ring = document.getElementById('budgetRing');
   const ringTxt = document.getElementById('budgetPct');
   function calcMonthSpending(list){
@@ -644,9 +644,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const spentThisMonth = calcMonthSpending(transactions);
   setBudgetProgress(spentThisMonth, monthlyBudget);
-  document.getElementById('budgetLbl').textContent = fmtMoney(monthlyBudget);
-  document.getElementById('bal').textContent = fmtMoney(balance);
-  document.getElementById('present').textContent = fmtMoney(balance);
+  $('#budgetLbl').textContent = fmtMoney(monthlyBudget);
+  $('#bal').textContent = fmtMoney(balance);
+  $('#present').textContent = fmtMoney(balance);
 
   /* ========= Transactions modal ========= */
   const txListEl = document.getElementById('tx-list');
@@ -668,11 +668,12 @@ document.addEventListener('DOMContentLoaded', () => {
       items.forEach(tx => {
         const li = document.createElement('li');
         li.className = 'tx-item';
-        const amt = (tx.amount >= 0 ? '+' : '-') + Math.abs(tx.amount).toFixed(2);
+        const sign = tx.amount >= 0 ? '+' : '-';
+        const amt = `${sign}${Math.abs(tx.amount).toFixed(2)}`;
         li.innerHTML = `
           <div class="tx-summary">
             <span>${tx.merchant}</span>
-            <span class="${tx.amount >= 0 ? 'credit' : 'debit'}">${fmtMoney(parseFloat(amt))}</span>
+            <span class="${tx.amount >= 0 ? 'credit' : 'debit'}">${fmtMoney(Math.abs(tx.amount)).replace('$', '$'+(tx.amount>=0?'+':'-'))}</span>
           </div>`;
         li.addEventListener('click', () => openDetail(tx));
         txListEl.appendChild(li);
@@ -691,7 +692,7 @@ document.addEventListener('DOMContentLoaded', () => {
       {label:'Type',     value: tx.type}
     ];
     cont.innerHTML = rows.map(r=>`<div class="krow"><span class="row-label">${r.label}</span><strong>${r.value}</strong></div>`).join('');
-    close(document.getElementById('trans-modal'));
+    close($('#trans-modal'));
     open(dm);
   }
 
@@ -706,33 +707,28 @@ document.addEventListener('DOMContentLoaded', () => {
       return tokens.every(t => new RegExp(`(^|\\b|\\s)${t}`).test(hay));
     });
   }
-  document.getElementById('show-trans').onclick = () => { open(document.getElementById('trans-modal')); renderList(filterTx(searchInput.value)); setTimeout(()=>searchInput.focus(), 40); };
-  document.getElementById('close-trans').onclick = () => close(document.getElementById('trans-modal'));
-  document.querySelector('#tx-detail-modal .back-btn').onclick = () => { close(document.getElementById('tx-detail-modal')); open(document.getElementById('trans-modal')); };
+  $('#show-trans').onclick = () => { open($('#trans-modal')); renderList(filterTx(searchInput.value)); setTimeout(()=>searchInput.focus(), 40); };
+  $('#close-trans').onclick = () => close($('#trans-modal'));
+  document.querySelector('#tx-detail-modal .back-btn').onclick = () => { close($('#tx-detail-modal')); open($('#trans-modal')); };
   searchInput.addEventListener('input', () => { const q = searchInput.value; renderList(filterTx(q)); clearBtn.style.visibility = q ? 'visible' : 'hidden'; });
   clearBtn.addEventListener('click', () => { searchInput.value = ''; renderList(transactions); clearBtn.style.visibility = 'hidden'; searchInput.focus(); });
 
-  // Placeholder action for transfer
-  document.getElementById('transfer-btn').onclick = () => {
-    alert('Transfers feature is not included in this demo.');
-  };
+  // Placeholder transfer action
+  $('#transfer-btn').onclick = () => alert('Transfers feature is not included in this demo.');
 
   /* ========= Navigation to Pay Later ========= */
-  const toPaylaterBtn = document.getElementById('to-paylater');
-  const backToChecking = document.getElementById('back-to-checking');
-  toPaylaterBtn.onclick = () => { checkingPg.classList.remove('active'); paylaterPg.classList.add('active'); };
-  backToChecking.onclick = () => { paylaterPg.classList.remove('active'); checkingPg.classList.add('active'); };
+  $('#to-paylater').onclick = () => { checkingPg.classList.remove('active'); paylaterPg.classList.add('active'); };
+  $('#back-to-checking').onclick = () => { paylaterPg.classList.remove('active'); checkingPg.classList.add('active'); };
 
   /* ========= Pay Later: data + persistence ========= */
   const LS_KEY = 'sapphirePlansV1';
   let plans = [];
-
   function savePlans(){ localStorage.setItem(LS_KEY, JSON.stringify(plans)); }
   function loadPlans(){ try{ plans = JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch{ plans = []; } }
   loadPlans();
 
-  function planOutstanding(p){ return p.schedule.filter(s=>!s.paid).reduce((a,b)=>a+b.amount,0); }
-  function nextUnpaid(p){ return p.schedule.find(s=>!s.paid) || null; }
+  const planOutstanding = p => p.schedule.filter(s=>!s.paid).reduce((a,b)=>a+b.amount,0);
+  const nextUnpaid = p => p.schedule.find(s=>!s.paid) || null;
 
   function refreshPayLater(){
     $('#activeCount').textContent = plans.length;
@@ -759,7 +755,6 @@ document.addEventListener('DOMContentLoaded', () => {
       list.appendChild(tile);
     });
   }
-
   refreshPayLater();
 
   /* ========= Plan details ========= */
@@ -786,7 +781,6 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#pdSummary').textContent = nextUnpaid(p) ? `Next payment on ${fmtMDY(new Date(nextUnpaid(p).date))}` : 'Plan paid off.';
   }
 
-  // Pay button -> modal
   $('#pd-makePay').onclick = () => {
     if(!currentPlanId) return;
     const p = plans.find(x=>x.id===currentPlanId);
@@ -802,12 +796,13 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#open-plan').onclick = ()=>{ resetWizard(); open(planModal); };
   $('#close-plan').onclick = ()=>close(planModal);
 
+  // Show wizard helper: ALSO toggles display so hidden steps don't take space
   function showWiz(stepId){
     ['step1','step2','stepLoading','stepPlans','stepActivating','stepCard'].forEach(id=>{
       const el = document.getElementById(id);
       if(!el) return;
-      if(id===stepId){ el.classList.remove('hidden'); el.classList.add('visible'); }
-      else{ el.classList.add('hidden'); el.classList.remove('visible'); }
+      if(id===stepId){ el.style.display='block'; el.classList.remove('hidden'); el.classList.add('visible'); }
+      else{ el.style.display='none'; el.classList.add('hidden'); el.classList.remove('visible'); }
     });
   }
 
@@ -846,7 +841,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   function splitEven(total, parts){
-    // return array of 'parts' numbers summing to total with 2-dec rounding
     const base = Math.floor((total/parts)*100)/100;
     const arr = Array(parts).fill(base);
     let sum = arr.reduce((a,b)=>a+b,0);
@@ -859,7 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(type==='biweekly'){
       const pieces = splitEven(amount, 4);
       return [
-        {label:'Downpayment', type:'downpayment', date:fmtMDY(start),           amount:pieces[0], paid:false},
+        {label:'Downpayment', type:'downpayment', date:fmtMDY(start),             amount:pieces[0], paid:false},
         {label:'Payment 1',   type:'payment',     date:fmtMDY(addDays(start,14)), amount:pieces[1], paid:false},
         {label:'Payment 2',   type:'payment',     date:fmtMDY(addDays(start,28)), amount:pieces[2], paid:false},
         {label:'Payment 3',   type:'payment',     date:fmtMDY(addDays(start,42)), amount:pieces[3], paid:false},
@@ -869,7 +863,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const pieces = splitEven(amount, 6);
       return pieces.map((a,i)=>({label:`Payment ${i+1}`, type:'payment', date:fmtMDY(addMonths(start, i+1)), amount:a, paid:false}));
     }
-    // 12 months
     const pieces = splitEven(amount, 12);
     return pieces.map((a,i)=>({label:`Payment ${i+1}`, type:'payment', date:fmtMDY(addMonths(start, i+1)), amount:a, paid:false}));
   }
@@ -894,7 +887,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function generatePlanOptions(store, amount){
-    // create preview schedules to show amounts
     const wrap = $('#plansContainer'); wrap.innerHTML='';
     const bi = buildSchedule(amount,'biweekly');
     const s6 = buildSchedule(amount,'6m');
@@ -917,7 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
       wrap.appendChild(s12El);
     }
 
-    // schedule viewers
+    // schedule viewers and radio selection
     wrap.addEventListener('click', (e)=>{
       const btn = e.target.closest('[data-expand]');
       const radio = e.target.closest('.radio');
@@ -936,15 +928,14 @@ document.addEventListener('DOMContentLoaded', () => {
         $$('.radio',wrap).forEach(r=>r.classList.remove('checked'));
         radio.classList.add('checked');
         selectedPlanChoice = radio.dataset.k==='bi' ? 'biweekly' : (radio.dataset.k==='m6' ? '6m' : '12m');
+        $('#activateBtn').disabled = !($('#agreeTerms').checked && selectedPlanChoice);
       }
     });
 
-    // enable activate
     $('#agreeTerms').onchange = ()=>{ $('#activateBtn').disabled = !(selectedPlanChoice && $('#agreeTerms').checked); };
-    const maybeEnable = ()=>{ $('#activateBtn').disabled = !(selectedPlanChoice && $('#agreeTerms').checked); };
-    wrap.addEventListener('click', maybeEnable);
 
-    // temp plan when activating
+    $('#plansBack').onclick = ()=>showWiz('step2');
+
     $('#activateBtn').onclick = ()=>{
       if(!selectedPlanChoice || !$('#agreeTerms').checked){ $('#agreeErr').textContent='Please select a plan and agree to the terms.'; return; }
       $('#agreeErr').textContent='';
@@ -987,14 +978,15 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ========= Make a payment flow ========= */
   const payModal = $('#pay-modal');
   $('#close-pay').onclick = ()=>close(payModal);
-  $('#pmClose').onclick = ()=>{ close(payModal); openPlanDetail(currentPlanId); refreshPayLater(); };
+  $('#pmClose').onclick = ()=>{ close(payModal); if(currentPlanId){ openPlanDetail(currentPlanId); } refreshPayLater(); };
 
+  // Show step helper: also toggles display to avoid giant empty modal
   function showStep(id){
     ['pm-step1','pm-step2','pm-step3','pm-loading','pm-done'].forEach(s=>{
       const el = document.getElementById(s);
       if(!el) return;
-      if(s===id){ el.classList.remove('hidden'); el.classList.add('visible'); }
-      else{ el.classList.add('hidden'); el.classList.remove('visible'); }
+      if(s===id){ el.style.display='block'; el.classList.remove('hidden'); el.classList.add('visible'); }
+      else{ el.style.display='none'; el.classList.add('hidden'); el.classList.remove('visible'); }
     });
     $('#pmErr').textContent='';
   }
@@ -1013,8 +1005,8 @@ document.addEventListener('DOMContentLoaded', () => {
     showStep('pm-step2');
   };
 
-  $('#chooseBank').onclick = ()=>{ pmMethod='bank'; $('#bankForm').classList.remove('hidden'); $('#cardForm').classList.add('hidden'); };
-  $('#chooseCard').onclick = ()=>{ pmMethod='card'; $('#cardForm').classList.remove('hidden'); $('#bankForm').classList.add('hidden'); };
+  $('#chooseBank').onclick = ()=>{ pmMethod='bank'; $('#bankForm').style.display='block'; $('#bankForm').classList.remove('hidden'); $('#cardForm').style.display='none'; $('#cardForm').classList.add('hidden'); };
+  $('#chooseCard').onclick = ()=>{ pmMethod='card'; $('#cardForm').style.display='block'; $('#cardForm').classList.remove('hidden'); $('#bankForm').style.display='none'; $('#bankForm').classList.add('hidden'); };
 
   $('#pm2back').onclick = ()=>showStep('pm-step1');
   $('#pm2next').onclick = ()=>{
@@ -1053,7 +1045,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       savePlans();
       refreshPayLater();
-      // if plan fully paid, auto remove + update
       if(planOutstanding(p) <= 0){
         plans = plans.filter(x=>x.id!==p.id); savePlans(); refreshPayLater();
         $('#pdTitle').textContent = 'Plan paid off';
@@ -1066,10 +1057,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000);
   };
 
-  /* ========= Login: allow ANY non-empty credentials ========= */
+  /* ========= Login ========= */
   function tryLogin(){
-    const u = document.getElementById('username').value.trim();
-    const p = document.getElementById('password').value;
+    const u = $('#username').value.trim();
+    const p = $('#password').value;
     const err = document.getElementById('login-error');
     if (u && p){
       loginScreen.classList.remove('visible');
